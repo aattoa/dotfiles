@@ -1,0 +1,1 @@
+Symlink `~/.xinitrc` to `./xinitrc`

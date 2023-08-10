@@ -1,0 +1,1 @@
+Symlink `~/.bashrc` to `./bashrc`

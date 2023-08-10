@@ -1,0 +1,1 @@
+Symlink `~/.vimrc` to `./vimrc`

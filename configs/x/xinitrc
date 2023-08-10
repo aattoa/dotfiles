@@ -1,0 +1,5 @@
+setxkbmap fi -option caps:swapescape &
+dbus-update-activation-environment --all &
+exec slstatus &
+exec dunst &
+exec dwm
