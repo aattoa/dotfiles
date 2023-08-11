@@ -1,0 +1,20 @@
+#!/bin/sh
+
+addressfile="$MY_DOTFILES_REPO/state/headphones-address"
+
+if [ ! -e "$addressfile" ]
+then
+    echo "Headphones address file not found"
+    exit
+fi
+
+headphones=$(cat "$addressfile")
+
+case "$(bluetoothctl info "$headphones" | grep Connected)" in
+  *yes*)
+    bluetoothctl disconnect "$headphones"
+    ;;
+  *)
+    bluetoothctl connect "$headphones"
+    ;;
+esac

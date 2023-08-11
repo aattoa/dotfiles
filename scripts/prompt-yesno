@@ -1,0 +1,10 @@
+#!/bin/sh
+
+while true; do
+    printf "%s [y/n]: " "$*"
+    read -r str
+    case $str in
+        [Yy]) exit 0;;
+        [Nn]) exit 1;;
+    esac
+done
