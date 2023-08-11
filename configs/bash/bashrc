@@ -4,9 +4,6 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-# Enable case insensitive autocompletion
-bind -s "set completion-ignore-case on"
-
 # Set dotfiles repo location
 export MY_DOTFILES_REPO=$HOME/misc/dotfiles
 

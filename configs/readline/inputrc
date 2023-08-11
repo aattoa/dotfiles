@@ -1,0 +1,24 @@
+set editing-mode vi
+
+$if mode=vi
+    set keymap vi-command
+    Control-l: clear-screen
+    set keymap vi-insert
+    Control-l: clear-screen
+$endif
+
+# Enable cycling through completions
+TAB: menu-complete
+
+# Enable case insensitive autocompletion
+set completion-ignore-case on
+
+# Partially complete and show possible completions on a single tab when ambiguous
+set show-all-if-ambiguous on
+
+# Color files by type
+set colored-stats on
+
+# Color common prefix on completion ambiguity
+set colored-completion-prefix on
+set menu-complete-display-prefix on
