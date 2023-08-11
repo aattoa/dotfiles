@@ -1,0 +1,23 @@
+#!/bin/bash
+
+
+# Make and change directory (mkdir + cd)
+mc () {
+    if [ "$#" == "1" ]; then
+        mkdir -p -- "$1"
+        cd -- "$1" || return
+        echo "Created and moved to $(pwd)"
+    else
+        echo "Exactly one argument must be passed to mc"
+    fi
+}
+
+# List working directory (pwd + ls)
+lwd () {
+    if [ "$#" == "0" ]; then
+        echo "$(pwd):"
+        ls
+    else
+        echo "lwd takes no arguments"
+    fi
+}

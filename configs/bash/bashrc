@@ -1,89 +1,26 @@
-#
-# ~/.bashrc
-#
+#!/bin/bash
+# shellcheck disable=SC1091 # shellcheck can not follow the sources
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-
-# Primary prompt
-PS1="$ "
-# Continuation prompt
-PS2="> "
-
 # Enable case insensitive autocompletion
 bind -s "set completion-ignore-case on"
 
-# Disable logging of duplicate and exit commands
-export HISTCONTROL=ignoredups
-export HISTIGNORE='q:exit'
+# Set dotfiles repo location
+export MY_DOTFILES_REPO=$HOME/misc/dotfiles
 
-# Set default editor & browser
-export EDITOR=vim
-export BROWSER=firefox
+# Stop here if the dotfiles repo was not found
+if [ ! -e "$MY_DOTFILES_REPO" ]
+then
+    echo "dotfiles repo not found"
+    return
+fi
 
-# Add custom scripts & programs to path
-export PATH=$HOME/scripts:$HOME/misc/bin:$PATH
-
-# Disable python, less, and sqlite history
-export PYTHONSTARTUP=$HOME/misc/dotfiles/configs/python/startup.py
-export LESSHISTFILE=/dev/null
-export SQLITE_HISTORY=/dev/null
-
-# Place cargo stuff somewhere other than $HOME
-export CARGO_HOME=$HOME/.config/.cargo
-
-# Default CLI arguments
-alias ls='ls -h --color=auto --group-directories-first'
-alias cp='cp -iv'
-alias mv='mv -iv'
-alias rg='rg -i'
-alias md='mkdir -pv'
-alias rd='rmdir -v'
-alias pwd='pwd -P'
-alias cal='cal --monday'
-alias grep='grep -i --color=auto'
-alias onefetch='onefetch --true-color=always'
-
-# Convenience aliases
-alias q='exit'
-alias sv='sudo vim'
-alias sdn='shutdown now'
-alias ubl='rfkill unblock bluetooth'
-alias lsn='mpv --no-video --shuffle --loop-playlist'
-alias calendar='cal $(date +%Y)'
-alias memcheck='valgrind --leak-check=full --show-leak-kinds=all -s'
-
-alias r='ctest --rerun-failed --output-on-failure'
-alias n='ninja'
-alias t='n && (ctest --progress || r)'
-
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
-alias .....='cd ../../../..'
-
-
-# Make and change directory (mkdir + cd)
-mc () {
-    if [ "$#" == "1" ]; then
-        mkdir -p -- "$1"
-        cd -- "$1" || return
-        echo "Created and moved to $(pwd)"
-    else
-        echo "Exactly one argument must be passed to mc"
-    fi
-}
-
-# List working directory (pwd + ls)
-lwd () {
-    if [ "$#" == "0" ]; then
-        echo "$(pwd):"
-        ls
-    else
-        echo "lwd takes no arguments"
-    fi
-}
+source "$MY_DOTFILES_REPO/configs/bash/variables"
+source "$MY_DOTFILES_REPO/configs/bash/default-cli-arguments"
+source "$MY_DOTFILES_REPO/configs/bash/convenience-aliases"
+source "$MY_DOTFILES_REPO/configs/bash/utility-functions"
 
 # Added by ghcup
 [ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env

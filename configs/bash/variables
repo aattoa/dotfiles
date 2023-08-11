@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Set primary and continuation prompt
+PS1="$ "
+PS2="> "
+
+# Add custom scripts to PATH
+export PATH=$MY_DOTFILES_REPO/scripts:$PATH
+
+# Disable logging of duplicate and exit commands
+export HISTCONTROL=ignoredups
+export HISTIGNORE='q:exit'
+
+# Set default editor and browser
+export EDITOR=vim
+export BROWSER=firefox
+
+# Disable python, less, and sqlite history
+export PYTHONSTARTUP=$MY_DOTFILES_REPO/configs/python/startup.py
+export LESSHISTFILE=/dev/null
+export SQLITE_HISTORY=/dev/null
+
+# Place cargo stuff somewhere other than $HOME
+export CARGO_HOME=$HOME/.config/.cargo
