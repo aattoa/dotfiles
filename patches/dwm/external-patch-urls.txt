@@ -1,0 +1,6 @@
+https://dwm.suckless.org/patches/centeredmaster/dwm-centeredmaster-20160719-56a31dc.diff
+https://dwm.suckless.org/patches/noborder/dwm-noborderfloatingfix-6.2.diff
+https://dwm.suckless.org/patches/cfacts/dwm-cfacts-20200913-61bb8b2.diff
+https://dwm.suckless.org/patches/pertag/dwm-pertag-perseltag-6.2.diff
+https://dwm.suckless.org/patches/gridmode/dwm-gridmode-5.8.2.diff
+https://dwm.suckless.org/patches/swallow/dwm-swallow-6.3.diff
