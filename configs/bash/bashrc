@@ -18,6 +18,3 @@ source "$MY_DOTFILES_REPO/configs/bash/variables"
 source "$MY_DOTFILES_REPO/configs/bash/default-cli-arguments"
 source "$MY_DOTFILES_REPO/configs/bash/convenience-aliases"
 source "$MY_DOTFILES_REPO/configs/bash/utility-functions"
-
-# Added by ghcup
-[ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env

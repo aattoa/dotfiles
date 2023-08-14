@@ -1,1 +1,1 @@
-Open CoC configuration with `:CocConfig`, copy-paste contents of `./config.json`
+Symlink `$HOME/.vim/coc-settings.json` to `./settings.json`

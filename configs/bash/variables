@@ -16,9 +16,23 @@ export EDITOR=vim
 export BROWSER=firefox
 
 # Disable python, less, and sqlite history
-export PYTHONSTARTUP=$MY_DOTFILES_REPO/configs/python/startup.py
+export PYTHONSTARTUP="$MY_DOTFILES_REPO/configs/python/startup.py"
 export LESSHISTFILE=/dev/null
 export SQLITE_HISTORY=/dev/null
 
-# Place cargo stuff somewhere other than $HOME
-export CARGO_HOME=$HOME/.config/.cargo
+
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_STATE_HOME="$HOME/.local/state"
+
+export HISTFILE="$XDG_STATE_HOME/bash/history"
+export XINITRC="$MY_DOTFILES_REPO/configs/x/xinitrc"
+export CARGO_HOME="$XDG_DATA_HOME/cargo"
+export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
+export OPAMROOT="$XDG_DATA_HOME/opam"
+export WINEPREFIX="$XDG_DATA_HOME/wineprefixes/default"
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
+
+# shellcheck disable=1091
+source "$HOME/.ghcup/env"
