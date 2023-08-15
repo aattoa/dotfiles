@@ -1,1 +1,1 @@
-Symlink `$HOME/.vim/coc-settings.json` to `./settings.json`
+Symlink `~/.vim/coc-settings.json` to `./settings.json`

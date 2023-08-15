@@ -1,1 +1,1 @@
-Symlink `~/.vimrc` to `./vimrc`
+Symlink `~/.vim/vimrc` to `./vimrc`

@@ -1,1 +1,1 @@
-Symlink `~/.inputrc` to `./inputrc`
+The environment variable `INPUTRC` should point to `./inputrc`

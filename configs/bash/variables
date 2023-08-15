@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Set primary and continuation prompt
+# Primary and continuation prompt
 PS1="$ "
 PS2="> "
 
@@ -11,22 +11,25 @@ export PATH=$MY_DOTFILES_REPO/scripts:$PATH
 export HISTCONTROL=ignoredups
 export HISTIGNORE='q:exit'
 
-# Set default editor and browser
+# Default editor and browser
 export EDITOR=vim
 export BROWSER=firefox
 
-# Disable python, less, and sqlite history
+# Miscellaneous app configuration
 export PYTHONSTARTUP="$MY_DOTFILES_REPO/configs/python/startup.py"
 export LESSHISTFILE=/dev/null
 export SQLITE_HISTORY=/dev/null
+export WATCH_INTERVAL=0.1
 
-
+# XDG directories
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_STATE_HOME="$HOME/.local/state"
 
+# Config and state locations for apps that don't respect XDG
 export HISTFILE="$XDG_STATE_HOME/bash/history"
+export INPUTRC="$MY_DOTFILES_REPO/configs/readline/inputrc"
 export XINITRC="$MY_DOTFILES_REPO/configs/x/xinitrc"
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
 export RUSTUP_HOME="$XDG_DATA_HOME/rustup"

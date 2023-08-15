@@ -22,5 +22,10 @@ then
     exit 1
 fi
 
-echo "$selection" >> "$bookmarks/$bookmarkfile"
-notify-send Success "Bookmark saved to $bookmarkfile"
+if grep -q -F -x "$selection" "$bookmarks/$bookmarkfile"
+then
+    notify-send Notice "Already bookmarked"
+else
+    echo "$selection" >> "$bookmarks/$bookmarkfile"
+    notify-send Success "Bookmark saved to $bookmarkfile"
+fi
