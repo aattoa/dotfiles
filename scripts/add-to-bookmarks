@@ -1,0 +1,26 @@
+#!/bin/sh
+
+
+selection=$(xclip -o -r)
+if [ -z "$selection" ]
+then
+    notify-send Error "No selection"
+    exit 1
+fi
+
+bookmarks="$HOME/misc/bookmarks"
+if [ ! -e "$bookmarks" ]
+then
+    notify-send Error "Bookmarks directory not found"
+    exit 1
+fi
+
+bookmarkfile=$(find "$bookmarks" -type f -exec basename {} \; | dmenu -i -p "Save where?")
+if [ -z "$bookmarkfile" ]
+then
+    notify-send Notice "No bookmark file selected"
+    exit 1
+fi
+
+echo "$selection" >> "$bookmarks/$bookmarkfile"
+notify-send Success "Bookmark saved to $bookmarkfile"

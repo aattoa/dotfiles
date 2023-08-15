@@ -1,6 +1,6 @@
  Makefile     |  2 +-
- config.def.h | 67 +++++++++++++++++++++++++++++++++++++++++++---------
- 2 files changed, 57 insertions(+), 12 deletions(-)
+ config.def.h | 68 +++++++++++++++++++++++++++++++++++++++++++---------
+ 2 files changed, 58 insertions(+), 12 deletions(-)
 
 diff --git a/Makefile b/Makefile
 index 77bcbc0..c05dbdd 100644
@@ -16,7 +16,7 @@ index 77bcbc0..c05dbdd 100644
  dist: clean
  	mkdir -p dwm-${VERSION}
 diff --git a/config.def.h b/config.def.h
-index 14d52c0..714b72b 100644
+index 14d52c0..0ae49c2 100644
 --- a/config.def.h
 +++ b/config.def.h
 @@ -1,13 +1,17 @@
@@ -75,7 +75,7 @@ index 14d52c0..714b72b 100644
  	{ MODKEY,                       XK_space,  setlayout,      {0} },
  	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
  	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-@@ -97,6 +101,47 @@ static const Key keys[] = {
+@@ -97,6 +101,48 @@ static const Key keys[] = {
  	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
  	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
  	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
@@ -83,6 +83,7 @@ index 14d52c0..714b72b 100644
 +#define WINKEY Mod4Mask
 +#define COMMAND(...) spawn, { .v = (const char*[]){ __VA_ARGS__, NULL } }
 +
++    { WINKEY, XK_k,  COMMAND("add-to-bookmarks") },
 +    { WINKEY, XK_F6, COMMAND("toggle-headphones") },
 +
 +#define VOLUMECOMMAND(x) COMMAND("/usr/bin/amixer", "set", "Master", x)
