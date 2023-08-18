@@ -12,7 +12,7 @@ export HISTCONTROL=ignoredups
 export HISTIGNORE='q:exit'
 
 # Default editor and browser
-export EDITOR=vim
+export EDITOR=nvim
 export BROWSER=firefox
 
 # Miscellaneous app configuration
@@ -20,6 +20,7 @@ export PYTHONSTARTUP="$MY_DOTFILES_REPO/configs/python/startup.py"
 export LESSHISTFILE=/dev/null
 export SQLITE_HISTORY=/dev/null
 export WATCH_INTERVAL=0.1
+export MANPAGER="nvim +Man!"
 
 # XDG directories
 export XDG_CONFIG_HOME="$HOME/.config"
