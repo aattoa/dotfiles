@@ -1,6 +1,8 @@
-vim.g.mapleader     = ","   -- Set the leader key
+vim.g.mapleader     = " "   -- Set the leader key
 
 vim.g.netrw_banner  = 0     -- Disable the Netrw help banner
+
+vim.opt.guicursor   = ""    -- Disable cursor styling
 
 vim.opt.number      = true  -- Enable line numbers
 
