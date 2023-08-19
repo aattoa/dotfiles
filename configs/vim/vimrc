@@ -1,54 +1,34 @@
-" Disable vi compatibility
-set nocompatible
+filetype off                          " Disable file type detection
 
-" Disable file type detection
-filetype off
+syntax enable                         " Enable syntax highting
 
-" Faster CursorHold events
-set updatetime=200
+colorscheme koehler                   " Color preferences
 
+nnoremap \h :set hlsearch!<return>"   " Toggle search highlight
+nnoremap \n :set number!<return>"     " Toggle line numbers
 
-call plug#begin()
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-call plug#end()
+set incsearch                         " Interactive search highlight
+set ignorecase                        " Enable case insensitive search
 
+set number                            " Enable line numbers
 
-filetype plugin indent on
-syntax enable
-colorscheme koehler
+set encoding=utf-8                    " Enable unicode
 
+set smartindent                       " Automatically indent new lines
 
-" Enable syntax-based code folding
-set foldmethod=syntax
+set foldmethod=syntax                 " Enable syntax-based code folding
+set foldlevelstart=30                 " Don't fold files by default
 
-" Don't fold files by default
-set foldlevelstart=30
+set nocompatible                      " Disable vi compatibility
+set noesckeys                         " Disable insert mode escape sequences
 
-" Toggle search highlight with two backslashes
-nnoremap \\ :set hlsearch!<return>
+set undofile                          " Enable persistent undo
 
-" Always show file path
-set statusline=%F
+set tabstop=4                         " Tabs appear as 4 spaces
+set shiftwidth=4                      " Set indentation to 4 spaces
+set expandtab                         " Convert tabs to spaces
 
-
-" Set indentation rules
-set autoindent
-set smartindent
-set cindent
-
-" Set backup, swap, and undo directories
-set directory=$HOME/.cache/vim/swap
-set undodir=$HOME/.cache/vim/undo
-set backupdir=$HOME/.cache/vim/backup
-set undofile
-
-
-set encoding=utf-8 " Enable unicode
-set number         " Enable line numbers
-set tabstop=4      " Tabs appear as 4 spaces
-set shiftwidth=4   " Set indentation to 4 spaces
-set expandtab      " Convert tabs to spaces
-set ignorecase     " Case insensitive search
-
-
-source $MY_DOTFILES_REPO/configs/vim/coc-bindings.vim
+" Set swap, undo, and backup directories
+set directory=$XDG_CACHE_HOME/vim/swap
+set undodir=$XDG_CACHE_HOME/vim/undo
+set backupdir=$XDG_CACHE_HOME/vim/backup
