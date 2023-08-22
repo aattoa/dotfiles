@@ -1,0 +1,10 @@
+#!/bin/sh
+
+triggerfile="$MY_DOTFILES_REPO/state/compilation-trigger" 
+
+if [ -e "$triggerfile" ]
+then
+    echo "$triggerfile" | entr -p -c -s "$*"
+else
+    notify-send Error "Trigger file not found"
+fi
