@@ -36,9 +36,9 @@ return require('packer').startup(function(use)
             {'williamboman/mason-lspconfig.nvim'}, -- Optional
 
             -- Autocompletion
+            {'hrsh7th/nvim-cmp'},     -- Required
             {'hrsh7th/cmp-nvim-lsp'}, -- Required
             {'L3MON4D3/LuaSnip'},     -- Required
-            {'hrsh7th/nvim-cmp'},     -- Required
         }
     }
 
@@ -47,6 +47,9 @@ return require('packer').startup(function(use)
         'folke/trouble.nvim',
         requires = {{ 'nvim-tree/nvim-web-devicons' }}
     }
+
+    -- Preview colors in source code
+    use 'ap/vim-css-color'
 
     -- Colorscheme
     use 'tiagovla/tokyodark.nvim'
