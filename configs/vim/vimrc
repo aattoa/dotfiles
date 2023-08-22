@@ -2,8 +2,6 @@ filetype off                          " Disable file type detection
 
 syntax enable                         " Enable syntax highting
 
-colorscheme koehler                   " Color preferences
-
 nnoremap \h :set hlsearch!<return>"   " Toggle search highlight
 nnoremap \n :set number!<return>"     " Toggle line numbers
 

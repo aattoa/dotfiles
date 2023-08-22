@@ -1,6 +1,5 @@
 #!/bin/bash
 
-alias ls='ls -h --color=auto --group-directories-first'
 alias cp='cp -iv'
 alias mv='mv -iv'
 alias rg='rg -i'
