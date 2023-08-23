@@ -1,6 +1,6 @@
  Makefile     |  2 +-
- config.def.h | 70 +++++++++++++++++++++++++++++++++++++++++++---------
- 2 files changed, 60 insertions(+), 12 deletions(-)
+ config.def.h | 73 ++++++++++++++++++++++++++++++++++++++++++----------
+ 2 files changed, 61 insertions(+), 14 deletions(-)
 
 diff --git a/Makefile b/Makefile
 index 77bcbc0..c05dbdd 100644
@@ -16,7 +16,7 @@ index 77bcbc0..c05dbdd 100644
  dist: clean
  	mkdir -p dwm-${VERSION}
 diff --git a/config.def.h b/config.def.h
-index 14d52c0..0cfa53d 100644
+index 14d52c0..b37ebb3 100644
 --- a/config.def.h
 +++ b/config.def.h
 @@ -1,13 +1,17 @@
@@ -49,12 +49,16 @@ index 14d52c0..0cfa53d 100644
  	{ NULL,      NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
  };
  
-@@ -78,17 +81,18 @@ static const Key keys[] = {
+@@ -76,19 +79,20 @@ static const Key keys[] = {
+ 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
+ 	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
  	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
- 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
- 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
+-	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
+-	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
 -	{ MODKEY|ShiftMask,             XK_h,      setcfact,       {.f = +0.25} },
 -	{ MODKEY|ShiftMask,             XK_l,      setcfact,       {.f = -0.25} },
++	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.03} },
++	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.03} },
 +	{ MODKEY|ShiftMask,             XK_h,      setcfact,       {.f = +0.1} },
 +	{ MODKEY|ShiftMask,             XK_l,      setcfact,       {.f = -0.1} },
  	{ MODKEY|ShiftMask,             XK_o,      setcfact,       {.f =  0.00} },
@@ -75,7 +79,7 @@ index 14d52c0..0cfa53d 100644
  	{ MODKEY,                       XK_space,  setlayout,      {0} },
  	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
  	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-@@ -97,6 +101,50 @@ static const Key keys[] = {
+@@ -97,6 +101,49 @@ static const Key keys[] = {
  	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
  	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
  	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
@@ -83,10 +87,18 @@ index 14d52c0..0cfa53d 100644
 +#define WINKEY Mod4Mask
 +#define COMMAND(...) spawn, { .v = (const char*[]){ __VA_ARGS__, NULL } }
 +
-+    { WINKEY, XK_w,  COMMAND("bookmark-add") },
-+    { WINKEY, XK_e,  COMMAND("bookmark-open") },
-+    { WINKEY, XK_r,  COMMAND("trigger-compilation") },
-+    { WINKEY, XK_F6, COMMAND("toggle-headphones") },
++    { WINKEY,        XK_w,      COMMAND("bookmark-add") },
++    { WINKEY,        XK_e,      COMMAND("bookmark-open") },
++    { WINKEY,        XK_r,      COMMAND("trigger-compilation") },
++    { WINKEY,        XK_F6,     COMMAND("toggle-headphones") },
++    { WINKEY,        XK_Menu,   COMMAND("rotate-keyboard-layout") },
++    { WINKEY,        XK_Escape, COMMAND("swap-caps-and-escape") },
++    { WINKEY,        XK_b,      COMMAND("/usr/bin/firefox") },
++    { WINKEY,        XK_g,      COMMAND("/usr/bin/steam") },
++    { WINKEY,        XK_l,      COMMAND("/usr/bin/xsecurelock") },
++    { WINKEY,        XK_o,      COMMAND("/usr/bin/libreoffice") },
++    { WINKEY,        XK_s,      COMMAND("/usr/bin/scrot") },
++    { WINKEY|MODKEY, XK_s,      COMMAND("/usr/bin/flameshot", "gui") },
 +
 +#define VOLUMECOMMAND(x) COMMAND("/usr/bin/amixer", "set", "Master", x)
 +#if LAPTOP
@@ -98,28 +110,19 @@ index 14d52c0..0cfa53d 100644
 +    { ShiftMask, XF86XK_AudioRaiseVolume,  VOLUMECOMMAND("20%+") },
 +    { ShiftMask, XF86XK_AudioLowerVolume,  VOLUMECOMMAND("20%-") },
 +#else
-+    { WINKEY,             XK_F5, VOLUMECOMMAND("toggle") },
-+    { WINKEY,             XK_F8, VOLUMECOMMAND("5%+") },
-+    { WINKEY,             XK_F7, VOLUMECOMMAND("5%-") },
-+    { WINKEY | ShiftMask, XK_F8, VOLUMECOMMAND("20%+") },
-+    { WINKEY | ShiftMask, XK_F7, VOLUMECOMMAND("20%-") },
++    { WINKEY,           XK_F5, VOLUMECOMMAND("toggle") },
++    { WINKEY,           XK_F8, VOLUMECOMMAND("5%+") },
++    { WINKEY,           XK_F7, VOLUMECOMMAND("5%-") },
++    { WINKEY|ShiftMask, XK_F8, VOLUMECOMMAND("20%+") },
++    { WINKEY|ShiftMask, XK_F7, VOLUMECOMMAND("20%-") },
 +#endif
 +#undef VOLUMECOMMAND
-+
 +#define MEDIACOMMAND(x) COMMAND("/usr/bin/playerctl", "--player=mpv", x)
 +    { 0, XF86XK_AudioNext,  MEDIACOMMAND("next") },
 +    { 0, XF86XK_AudioPrev,  MEDIACOMMAND("previous") },
-+    { 0, XF86XK_AudioPlay,  MEDIACOMMAND("play") },
-+    { 0, XF86XK_AudioPause, MEDIACOMMAND("pause") },
++    { 0, XF86XK_AudioPlay,  MEDIACOMMAND("play-pause") },
++    { 0, XF86XK_AudioPause, MEDIACOMMAND("play-pause") },
 +#undef MEDIACOMMAND
-+
-+    { WINKEY,          XK_b, COMMAND("/usr/bin/firefox") },
-+    { WINKEY,          XK_g, COMMAND("/usr/bin/steam") },
-+    { WINKEY,          XK_l, COMMAND("/usr/bin/xsecurelock") },
-+    { WINKEY,          XK_o, COMMAND("/usr/bin/libreoffice") },
-+    { WINKEY,          XK_s, COMMAND("/usr/bin/scrot") },
-+    { WINKEY | MODKEY, XK_s, COMMAND("/usr/bin/flameshot", "gui") },
-+
 +#undef COMMAND
 +#undef WINKEY
 +
@@ -127,5 +130,5 @@ index 14d52c0..0cfa53d 100644
  	TAGKEYS(                        XK_2,                      1)
  	TAGKEYS(                        XK_3,                      2)
 -- 
-2.41.0
+2.42.0
 

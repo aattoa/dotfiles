@@ -1,0 +1,23 @@
+#!/bin/sh
+
+statefile="$MY_DOTFILES_REPO/state/do-swap-caps-and-escape"
+
+if [ ! -f "$statefile" ]
+then
+    notify-send "Error: swap-caps-and-escape" "State file does not exist"
+    exit 1
+fi
+
+case $(cat "$statefile") in
+    yes)
+        setxkbmap -option caps:swapescape
+        printf no > "$statefile"
+        notify-send "Caps/Escape swap on";;
+    no)
+        setxkbmap -option
+        printf yes > "$statefile"
+        notify-send "Caps/Escape swap off";;
+    *)
+        notify-send "Error: swap-caps-and-escape" "Invalid state file content"
+        exit 1;;
+esac
