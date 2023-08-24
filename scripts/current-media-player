@@ -1,0 +1,18 @@
+#!/bin/sh
+
+error () {
+    echo "Error: current-media-player: $1" >&2
+    exit 1
+}
+
+statefile="$MY_DOTFILES_REPO/state/current-media-player"
+[ ! -f "$statefile" ] && error "Player file does not exist"
+
+case $# in
+    0)
+        cat "$statefile";;
+    1)
+        echo "$1" > "$statefile";;
+    *)
+        error "Argument count must be 0 or 1";;
+esac

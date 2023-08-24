@@ -1,0 +1,142 @@
+#!/bin/sh
+
+
+error () {
+    notify-send "Error: media-control" "$1"
+    spd-say "Media control error"
+    exit 1
+}
+
+simple_notify () {
+    notify-send -t 2000 Notice "$1"
+    spd-say --wait "$1"
+}
+
+currentplayerfile="$MY_DOTFILES_REPO/state/current-media-player"
+currentactionfile="$MY_DOTFILES_REPO/state/current-media-action"
+playercyclefile="$MY_DOTFILES_REPO/state/media-player-cycle"
+actioncyclefile="$MY_DOTFILES_REPO/state/media-action-cycle"
+
+if [ ! -f "$currentplayerfile" ] ||
+   [ ! -f "$currentactionfile" ] ||
+   [ ! -f "$playercyclefile" ]   ||
+   [ ! -f "$actioncyclefile" ]
+then
+    error "Required state files missing"
+fi
+
+currentplayer=$(cat "$currentplayerfile")
+currentaction=$(cat "$currentactionfile")
+
+was_recently_modified () {
+    if [ -f "$1" ]
+    then
+        currenttime="$(date +%s)"
+        writetime="$(stat -c%Y "$1")"
+        timedifference=$(("$currenttime" - "$writetime"))
+        [ $timedifference -le 1 ]
+    else
+        false
+    fi
+}
+
+rotate_current_action () {
+    was_recently_modified "$currentactionfile" && return
+    currentaction=$(grep "$currentaction:" "$actioncyclefile" | cut -d: -f2)
+    echo "$currentaction" > "$currentactionfile"
+    simple_notify "$currentaction"
+}
+
+rotate_player () {
+    was_recently_modified "$currentplayerfile" && return
+    currentplayer=$(grep "$currentplayer:" "$playercyclefile" | cut -d: -f2)
+    echo "$currentplayer" > "$currentplayerfile"
+    simple_notify "$currentplayer"
+}
+
+control_current_player () {
+    playerctl --player="$currentplayer" "$@"
+}
+
+try_modify_position () {
+    if control_current_player position "$1"
+    then
+        true
+    else
+        simple_notify "Could not seek"
+        false
+    fi
+}
+
+seek () {
+    lockfile="$MY_DOTFILES_REPO/state/lock-media-control-seek"
+    [ -f "$lockfile" ] && return
+    touch "$lockfile"
+    case $(control_current_player status) in
+        Paused)
+            seconds=30
+            try_modify_position "$seconds$1" &&
+                simple_notify "$2 $seconds seconds";;
+        Playing)
+            try_modify_position "2$1" &&
+                sleep 0.2;;
+        *)
+            simple_notify "Invalid player state";;
+    esac
+    rm "$lockfile"
+}
+
+modify_volume () {
+    volumetimestampfile="$MY_DOTFILES_REPO/state/timestamp-media-volume-modified"
+    was_recently_modified "$volumetimestampfile" && return
+    touch "$volumetimestampfile"
+    if control_current_player volume "0.1$1"
+    then
+        simple_notify "$2"
+    else
+        simple_notify "Could not modify volume"
+    fi
+}
+
+perform_current_action () {
+    case $currentaction in
+        "rotate player")
+            rotate_player;;
+        "backward seek")
+            seek - Back;;
+        "forward seek")
+            seek + Skip;;
+        "decrease volume")
+            modify_volume - Minus;;
+        "increase volume")
+            modify_volume + Plus;;
+        *)
+            error "Invalid action state";;
+    esac
+}
+
+pause () {
+    pausetimestampfile="$MY_DOTFILES_REPO/state/timestamp-media-paused"
+    if was_recently_modified "$pausetimestampfile"
+    then
+        playerctl --all-players pause
+    else
+        control_current_player play-pause
+        touch "$pausetimestampfile"
+    fi
+}
+
+case $1 in
+    play|pause)
+        pause;;
+    next)
+        control_current_player next;;
+    previous)
+        control_current_player previous;;
+    forward)
+        perform_current_action;;
+    rewind)
+        rotate_current_action;;
+    *)
+        error "Invalid argument";;
+esac

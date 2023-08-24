@@ -1,0 +1,17 @@
+#!/bin/sh
+
+control () {
+    amixer set Master "$1"
+}
+
+case $1 in
+    toggle)
+        control toggle;;
+    up)
+        control 5%+;;
+    down)
+        control 5%-;;
+    *)
+        notify-send "Error: volume-control" "Invalid argument"
+        exit 1;;
+esac
