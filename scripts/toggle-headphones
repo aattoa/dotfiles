@@ -1,20 +1,20 @@
 #!/bin/sh
 
-addressfile="$MY_DOTFILES_REPO/state/headphones-address"
+error () {
+    notify-send "Error: toggle-headphones" "$1"
+    error 1
+}
 
-if [ ! -e "$addressfile" ]
-then
-    echo "Headphones address file not found"
-    exit
-fi
+addressfile="$MY_DOTFILES_REPO/state/headphones-address"
+[ ! -e "$addressfile" ] && error "Headphones address file not found"
 
 headphones=$(cat "$addressfile")
 
 case "$(bluetoothctl info "$headphones" | grep Connected)" in
   *yes*)
-    bluetoothctl disconnect "$headphones"
-    ;;
+      bluetoothctl disconnect "$headphones";;
+  *no*)
+      bluetoothctl connect "$headphones";;
   *)
-    bluetoothctl connect "$headphones"
-    ;;
+      error "Invalid bluetoothctl output";;
 esac

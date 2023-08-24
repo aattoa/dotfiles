@@ -4,7 +4,7 @@ show_new_brightness() {
     notify-send -t 250 "New brightness" "$(light)%"
 }
 
-case "$1" in
+case $1 in
 up)
     light -A 10
     show_new_brightness;;
@@ -12,5 +12,6 @@ down)
     light -U 10
     show_new_brightness;;
 *)
-    ;;
+    notify-send "Error: change-brightness" "Invalid argument"
+    exit 1;;
 esac

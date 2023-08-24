@@ -6,5 +6,5 @@ if [ -e "$triggerfile" ]
 then
     touch "$triggerfile"
 else
-    notify-send Error "Trigger file not found"
+    notify-send "Error: trigger-compilation" "Trigger file not found"
 fi

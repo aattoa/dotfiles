@@ -1,6 +1,6 @@
  Makefile     |  2 +-
- config.def.h | 63 +++++++++++++++++++++++++++-------------------------
- 2 files changed, 34 insertions(+), 31 deletions(-)
+ config.def.h | 66 ++++++++++++++++++++++++++++------------------------
+ 2 files changed, 37 insertions(+), 31 deletions(-)
 
 diff --git a/Makefile b/Makefile
 index 470ac86..4d49649 100644
@@ -16,7 +16,7 @@ index 470ac86..4d49649 100644
  dist: clean
  	mkdir -p st-$(VERSION)
 diff --git a/config.def.h b/config.def.h
-index e3b469b..e8d1a95 100644
+index e3b469b..3f29dde 100644
 --- a/config.def.h
 +++ b/config.def.h
 @@ -5,7 +5,7 @@
@@ -90,19 +90,31 @@ index e3b469b..e8d1a95 100644
  };
  
  
-@@ -201,8 +202,10 @@ static Shortcut shortcuts[] = {
+@@ -185,6 +186,7 @@ static MouseShortcut mshortcuts[] = {
+ 
+ /* Internal keyboard shortcuts. */
+ #define MODKEY Mod1Mask
++#define WINKEY Mod4Mask
+ #define TERMMOD (ControlMask|ShiftMask)
+ 
+ static Shortcut shortcuts[] = {
+@@ -201,10 +203,14 @@ static Shortcut shortcuts[] = {
  	{ TERMMOD,              XK_Y,           selpaste,       {.i =  0} },
  	{ ShiftMask,            XK_Insert,      selpaste,       {.i =  0} },
  	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
 -	{ ShiftMask,            XK_Page_Up,     kscrollup,      {.i = -1} },
 -	{ ShiftMask,            XK_Page_Down,   kscrolldown,    {.i = -1} },
-+	{ ControlMask,          XK_k,           kscrollup,      {.i =  3} },
-+	{ ControlMask,          XK_j,           kscrolldown,    {.i =  3} },
-+	{ TERMMOD,              XK_K,           kscrollup,      {.i = 30} },
-+	{ TERMMOD,              XK_J,           kscrolldown,    {.i = 30} },
++	{ WINKEY,               XK_k,           kscrollup,      {.i =  3} },
++	{ WINKEY,               XK_j,           kscrolldown,    {.i =  3} },
++	{ WINKEY|MODKEY,        XK_k,           kscrollup,      {.i = 30} },
++	{ WINKEY|MODKEY,        XK_j,           kscrolldown,    {.i = 30} },
  };
  
++#undef WINKEY
++
  /*
+  * Special keys (change & recompile st.info accordingly)
+  *
 -- 
 2.42.0
 

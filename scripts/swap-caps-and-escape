@@ -1,12 +1,12 @@
 #!/bin/sh
 
-statefile="$MY_DOTFILES_REPO/state/do-swap-caps-and-escape"
-
-if [ ! -f "$statefile" ]
-then
-    notify-send "Error: swap-caps-and-escape" "State file does not exist"
+error () {
+    notify-send "Error: swap-caps-and-escape" "$1"
     exit 1
-fi
+}
+
+statefile="$MY_DOTFILES_REPO/state/do-swap-caps-and-escape"
+[ ! -f "$statefile" ] && error "State file does not exist"
 
 case $(cat "$statefile") in
     yes)
@@ -18,6 +18,5 @@ case $(cat "$statefile") in
         printf yes > "$statefile"
         notify-send "Caps/Escape swap off";;
     *)
-        notify-send "Error: swap-caps-and-escape" "Invalid state file content"
-        exit 1;;
+        error "Invalid state file content";;
 esac

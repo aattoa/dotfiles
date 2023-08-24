@@ -3,10 +3,11 @@ vim.g.mapleader       = " "   -- Set the leader key
 vim.g.netrw_banner    = 0     -- Disable the Netrw help banner
 
 vim.opt.guicursor     = ""    -- Disable cursor styling
+vim.opt.cursorline    = true  -- Highlight current line
 
 vim.opt.number        = true  -- Enable line numbers
 
-vim.opt.tabstop       = 4     -- How wide tabs are
+vim.opt.tabstop       = 4     -- Tab character width
 vim.opt.expandtab     = true  -- Insert spaces in place of tabs
 
 vim.opt.shiftwidth    = 4     -- Indentation width
@@ -24,5 +25,5 @@ vim.opt.wrap          = false -- Do not wrap long lines
 
 vim.opt.pumheight     = 10    -- Limit autocompletion suggestions
 
-vim.opt.scrolloff     = 5     -- Vertical scrolloff
+vim.opt.scrolloff     = 10    -- Vertical scrolloff
 vim.opt.sidescrolloff = 20    -- Horizontal scrolloff
