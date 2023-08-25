@@ -1,22 +1,13 @@
 #!/bin/sh
 
-error () {
-    notify-send "Error: swap-caps-and-escape" "$1"
-    exit 1
-}
+# FIXME: Swap-off works by resetting all setxkbmap options,
+#        which would also interfere with unrelated options.
 
-statefile="$MY_DOTFILES_REPO/state/do-swap-caps-and-escape"
-[ ! -f "$statefile" ] && error "State file does not exist"
-
-case $(cat "$statefile") in
-    yes)
-        setxkbmap -option caps:swapescape
-        printf no > "$statefile"
-        notify-send "Caps/Escape swap on";;
-    no)
-        setxkbmap -option
-        printf yes > "$statefile"
-        notify-send "Caps/Escape swap off";;
-    *)
-        error "Invalid state file content";;
-esac
+if setxkbmap -query | grep -q -F "caps:swapescape"
+then
+    setxkbmap -option
+    notify-send "Caps/Escape swap off"
+else
+    setxkbmap -option caps:swapescape
+    notify-send "Caps/Escape swap on"
+fi

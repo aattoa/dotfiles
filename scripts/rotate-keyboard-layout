@@ -1,22 +1,24 @@
 #!/bin/sh
 
-cyclefile="$MY_DOTFILES_REPO/state/keyboard-layout-cycle"
-statefile="$MY_DOTFILES_REPO/state/current-keyboard-layout"
-
-if [ ! -f "$cyclefile" ] || [ ! -f "$statefile" ]
-then
-    notify-send "Error: rotate-keyboard-layout" "Keyboard layout cycle or state file missing"
+error () {
+    notify-send "Error: rotate-keyboard-layout" "$1"
     exit 1
-fi
+}
 
-currentlayout=$(cat "$statefile")
-nextlayout=$(grep "$currentlayout:" "$cyclefile" | cut -d: -f2)
+setlayout () {
+    if setxkbmap -layout "$1"
+    then
+        notify-send "Set keyboard layout to $1"
+    else
+        error "Invalid keyboard layout"
+    fi
+}
 
-if setxkbmap -layout "$nextlayout"
-then
-    printf "%s" "$nextlayout" > "$statefile"
-    notify-send "Set keyboard layout to $nextlayout"
-else
-    notify-send "Error: rotate-keyboard-layout" "Invalid keyboard layout"
-    exit 1
-fi
+case $(setxkbmap -query | grep "layout:" | awk '{print $2}') in
+    fi)
+        setlayout "us";;
+    us)
+        setlayout "fi";;
+    *)
+        error "Unrecognized layout state";;
+esac
