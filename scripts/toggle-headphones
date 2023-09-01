@@ -20,7 +20,7 @@ do
     deviceinfo=$(bluetoothctl info "$deviceaddress")
     echo "$deviceinfo" | grep -q -x "\s*Paired: yes"         || continue
     echo "$deviceinfo" | grep -q -x "\s*Alias: myheadphones" || continue
-    case "$(echo "$deviceinfo" | grep -F "Connected" | awk '{print $2}')" in
+    case "$(echo "$deviceinfo" | awk '/Connected/{print $2}')" in
         yes)
             connect_or_disconnect "disconnect" "$deviceaddress";;
         no)

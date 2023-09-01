@@ -69,6 +69,6 @@ then
         exit 1
     fi
 else
-    printf %s "$bookmarkchoice" | xclip -i
+    printf %s "$bookmarkchoice" | xclip -selection clipboard
     notify-send Success "Copied bookmark to clipboard"
 fi

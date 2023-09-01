@@ -14,7 +14,7 @@ setlayout () {
     fi
 }
 
-case $(setxkbmap -query | grep "layout:" | awk '{print $2}') in
+case $(setxkbmap -query | awk '/layout:/{print$2}') in
     fi)
         setlayout "us";;
     us)
