@@ -31,8 +31,8 @@ vim.keymap.set({ "n", "v" }, "\"", "10kzz")
 vim.keymap.set({ "n", "v" }, "|",  "10jzz")
 
 -- System clipboard
-vim.keymap.set({ "n", "v" }, "Y", "\"+y")
-vim.keymap.set({ "n", "v" }, "P", "\"+p")
+vim.keymap.set({ "n", "v" }, "<C-c>", "\"+y")
+vim.keymap.set({ "n", "v" }, "<C-p>", "\"+p")
 
 -- Disable arrow keys
 vim.keymap.set({ "n", "v", "i" }, "<Up>",    "")
