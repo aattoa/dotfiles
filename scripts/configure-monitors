@@ -1,0 +1,20 @@
+#!/bin/sh
+
+monitorfile="$MY_DOTFILES_REPO/state/monitors"
+
+if [ ! -f "$monitorfile" ]; then
+    echo "Monitor file not found"
+    exit 1
+fi
+
+primary=$(awk "/primary/{print\$2}" "$monitorfile")
+secondary=$(awk "/secondary/{print\$2}" "$monitorfile")
+
+if [ -z "$primary" ] || [ -z "$secondary" ]; then
+    echo "Monitor file misconfigured"
+    exit 1
+fi
+
+if xrandr --listmonitors | grep -q -F "$primary"; then
+    xrandr --output "$secondary" --off
+fi

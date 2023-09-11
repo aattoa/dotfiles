@@ -6,8 +6,7 @@ error () {
 }
 
 setlayout () {
-    if setxkbmap -layout "$1"
-    then
+    if setxkbmap -layout "$1"; then
         notify-send "Set keyboard layout to $1"
     else
         error "Invalid keyboard layout"

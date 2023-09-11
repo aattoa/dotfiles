@@ -1,5 +1,8 @@
-xset r rate 200 &
-setxkbmap -layout us -option caps:swapescape &
+xset r rate 175 35
+xset s 1800 1800 -dpms
+setxkbmap -option caps:swapescape
+$MY_DOTFILES_REPO/scripts/configure-monitors
+$MY_DOTFILES_REPO/scripts/battery-sentry &
 exec unclutter --timeout 1 --start-hidden --ignore-scrolling --jitter 10 &
 exec slstatus &
 exec dunst &

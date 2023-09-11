@@ -1,2 +1,11 @@
+-- Main prompt
 :set prompt "λ "
+
+-- Continuation prompt
 :set prompt-cont "| "
+
+-- Enable multi line input
+:set +m
+
+-- Default language extensions
+:seti -XLambdaCase -XBlockArguments

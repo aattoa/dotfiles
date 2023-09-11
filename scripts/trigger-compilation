@@ -2,8 +2,7 @@
 
 triggerfile="$MY_DOTFILES_REPO/state/compilation-trigger" 
 
-if [ -e "$triggerfile" ]
-then
+if [ -e "$triggerfile" ]; then
     touch "$triggerfile"
 else
     notify-send "Error: trigger-compilation" "Trigger file not found"

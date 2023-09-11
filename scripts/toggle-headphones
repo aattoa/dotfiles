@@ -7,16 +7,14 @@ error () {
 
 connect_or_disconnect () {
     notification=$(notify-send --print-id "Attempting to $1...")
-    if bluetoothctl "$1" "$2"
-    then
+    if bluetoothctl "$1" "$2"; then
         notify-send --replace-id "$notification" "Successfully $1ed"
     else
         error "Unable to $1"
     fi
 }
 
-for deviceaddress in $(bluetoothctl devices | cut -d' ' -f2)
-do
+for deviceaddress in $(bluetoothctl devices | cut -d' ' -f2); do
     deviceinfo=$(bluetoothctl info "$deviceaddress")
     echo "$deviceinfo" | grep -q -x "\s*Paired: yes"         || continue
     echo "$deviceinfo" | grep -q -x "\s*Alias: myheadphones" || continue

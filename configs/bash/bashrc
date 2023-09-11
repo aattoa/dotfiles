@@ -1,7 +1,10 @@
 #!/bin/bash
 # shellcheck disable=SC1091 # shellcheck can not follow the sources
 
-# If not running interactively, don't do anything
+# Set dotfiles repo location, even for non-interactive shells
+export MY_DOTFILES_REPO=$HOME/misc/dotfiles
+
+# Stop here if the current shell is not interactive
 [[ $- != *i* ]] && return
 
 # Set dotfiles repo location

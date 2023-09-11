@@ -16,10 +16,6 @@ alias memcheck='valgrind --leak-check=full --show-leak-kinds=all -s'
 alias yt-dlp-audio='yt-dlp --extract-audio --audio-format mp3 --audio-quality 0'
 alias format-patch='git format-patch --stdout HEAD^'
 
-alias r='ctest --rerun-failed --output-on-failure'
-alias n='ninja'
-alias t='n && (ctest --progress || r)'
-
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'

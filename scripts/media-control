@@ -20,8 +20,7 @@ actioncyclefile="$MY_DOTFILES_REPO/state/media-action-cycle"
 if [ ! -f "$currentplayerfile" ] ||
    [ ! -f "$currentactionfile" ] ||
    [ ! -f "$playercyclefile" ]   ||
-   [ ! -f "$actioncyclefile" ]
-then
+   [ ! -f "$actioncyclefile" ]; then
     error "Required state files missing"
 fi
 
@@ -29,8 +28,7 @@ currentplayer=$(cat "$currentplayerfile")
 currentaction=$(cat "$currentactionfile")
 
 was_recently_modified () {
-    if [ -f "$1" ]
-    then
+    if [ -f "$1" ]; then
         currenttime="$(date +%s)"
         writetime="$(stat -c%Y "$1")"
         timedifference=$(("$currenttime" - "$writetime"))
@@ -59,8 +57,7 @@ control_current_player () {
 }
 
 try_modify_position () {
-    if control_current_player position "$1"
-    then
+    if control_current_player position "$1"; then
         true
     else
         simple_notify "Could not seek"
@@ -90,8 +87,7 @@ modify_volume () {
     volumetimestampfile="$MY_DOTFILES_REPO/state/timestamp-media-volume-modified"
     was_recently_modified "$volumetimestampfile" && return
     touch "$volumetimestampfile"
-    if control_current_player volume "0.1$1"
-    then
+    if control_current_player volume "0.1$1"; then
         simple_notify "$2"
     else
         simple_notify "Could not modify volume"
@@ -117,8 +113,7 @@ perform_current_action () {
 
 pause () {
     pausetimestampfile="$MY_DOTFILES_REPO/state/timestamp-media-paused"
-    if was_recently_modified "$pausetimestampfile"
-    then
+    if was_recently_modified "$pausetimestampfile"; then
         playerctl --all-players pause
     else
         control_current_player play-pause

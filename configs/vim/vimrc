@@ -1,30 +1,47 @@
-filetype off                          " Disable file type detection
+" Disable file type detection
+filetype off
 
-syntax enable                         " Enable syntax highting
+" Enable syntax highting
+syntax enable
 
-nnoremap \h :set hlsearch!<return>"   " Toggle search highlight
-nnoremap \n :set number!<return>"     " Toggle line numbers
+" Toggle search highlight
+nnoremap \h :set hlsearch!<return>
+" Toggle line numbers
+nnoremap \n :set number!<return>
 
-set incsearch                         " Interactive search highlight
-set ignorecase                        " Enable case insensitive search
+" Interactive search highlight
+set incsearch
+" Enable case insensitive search
+set ignorecase
 
-set number                            " Enable line numbers
+" Enable line numbers
+set number
 
-set encoding=utf-8                    " Enable unicode
+" Enable unicode
+set encoding=utf-8
 
-set smartindent                       " Automatically indent new lines
+" Automatically indent new lines
+set smartindent
 
-set foldmethod=syntax                 " Enable syntax-based code folding
-set foldlevelstart=30                 " Don't fold files by default
+" Enable syntax-based code folding
+set foldmethod=syntax
+" Don't fold files by default
+set foldlevelstart=30
 
-set nocompatible                      " Disable vi compatibility
-set noesckeys                         " Disable insert mode escape sequences
+" Disable vi compatibility
+set nocompatible
+" Disable insert mode escape sequences
+set noesckeys
 
-set undofile                          " Enable persistent undo
+" Enable persistent undo
+set undofile
 
-set tabstop=4                         " Tabs appear as 4 spaces
-set shiftwidth=4                      " Set indentation to 4 spaces
-set expandtab                         " Convert tabs to spaces
+" Tabs appear as 4 spaces
+set tabstop=4
+" Set indentation to 4 spaces
+set shiftwidth=4
+" Convert tabs to spaces
+set expandtab
 
 " Set swap, undo, and backup directories
 set directory=$XDG_CACHE_HOME/vim/swap

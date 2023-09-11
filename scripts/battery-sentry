@@ -1,0 +1,52 @@
+#!/bin/sh
+
+bat="/sys/class/power_supply/BAT0"
+
+# Parameter $1: Integer percentage
+less_than () {
+    [ "$(cat $bat/capacity)" -le "$1" ]
+}
+
+# Parameter $1: "normal" | "critical"
+# Parameter $2: Optional message string
+send_warning () {
+    notify-send --urgency="$1" "Battery: $(cat $bat/capacity)%" "$2"
+}
+
+# Parameter $1: File path to be examined, must exist
+seconds_since_touch () {
+    currenttime="$(date +%s)"
+    touchtime="$(stat -c%Y "$1")"
+    echo $(("$currenttime" - "$touchtime"))
+}
+
+# Parameter $1: Integer percentage
+# Parameter $2: "normal" | "critical"
+# Parameter $3: Optional message string
+warn () {
+    timestamp="$MY_DOTFILES_REPO/state/timestamp-battery-sentry-$1"
+    interval=900 # 15 minutes
+    if [ ! -f "$timestamp" ] || [ "$(seconds_since_touch "$timestamp")" -ge $interval ]; then
+        touch "$timestamp"
+        send_warning "$2" "$3"
+    fi
+}
+
+while true; do
+    if [ "$(cat $bat/status)" = "Discharging" ]
+    then
+        if less_than 10; then
+            suspendtime=30
+            warn 10 critical "Suspending in $suspendtime seconds..."
+            sleep $suspendtime
+            systemctl suspend
+        elif less_than 25; then
+            warn 25 critical
+        elif less_than 50; then
+            warn 50 normal
+        elif less_than 75; then
+            warn 75 normal
+        fi
+    fi
+    sleep 60
+done
