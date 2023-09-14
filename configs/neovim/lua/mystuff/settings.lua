@@ -3,6 +3,7 @@ vim.g.mapleader          = " "             -- Set the leader key
 vim.g.netrw_banner       = 0               -- Disable the Netrw help banner
 vim.g.netrw_list_hide    = "^\\.\\/$"      -- Disable current directory entry
 
+vim.opt.mouse            = ""              -- Disable the mouse
 vim.opt.guicursor        = ""              -- Disable cursor styling
 vim.opt.cursorline       = true            -- Highlight current line
 
@@ -29,3 +30,5 @@ vim.opt.pumheight        = 10              -- Limit autocompletion suggestions
 
 vim.opt.scrolloff        = 10              -- Vertical scrolloff
 vim.opt.sidescrolloff    = 20              -- Horizontal scrolloff
+
+vim.opt.shortmess:append "I"               -- Disable intro message
