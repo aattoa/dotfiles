@@ -1,5 +1,6 @@
 #!/bin/sh
 
+# $1: Error message
 error () {
     echo "Error: current-media-player: $1" >&2
     exit 1

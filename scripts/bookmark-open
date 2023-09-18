@@ -1,6 +1,6 @@
 #!/bin/sh
 
-
+# $1: String to examine
 looks_like_a_url () {
     case "$1" in
         "https://"*)
@@ -10,6 +10,7 @@ looks_like_a_url () {
     esac
 }
 
+# $1: Prompt string
 prompt_yesno () {
     case $(printf "yes\nno" | dmenu -i -p "$1") in
         "yes")

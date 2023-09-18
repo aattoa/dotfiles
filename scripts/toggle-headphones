@@ -1,16 +1,27 @@
 #!/bin/sh
 
+is_X_running () {
+    [ -n "$DISPLAY" ]
+}
+
+# $1: Error message
 error () {
-    notify-send "Error: toggle-headphones" "$1"
+    is_X_running && notify-send "Error: toggle-headphones" "$1"
     exit 1
 }
 
+# $1: "connect" | "disconnect"
+# $2: Device address
 connect_or_disconnect () {
-    notification=$(notify-send --print-id "Attempting to $1...")
-    if bluetoothctl "$1" "$2"; then
-        notify-send --replace-id "$notification" "Successfully $1ed"
+    if ! is_X_running; then
+        bluetoothctl "$1" "$2"
     else
-        error "Unable to $1"
+        notification=$(notify-send --print-id "Attempting to $1...")
+        if bluetoothctl "$1" "$2"; then
+            notify-send -t 2000 --replace-id "$notification" "Successfully $1ed"
+        else
+            error "Unable to $1"
+        fi
     fi
 }
 
@@ -20,9 +31,9 @@ for deviceaddress in $(bluetoothctl devices | cut -d' ' -f2); do
     echo "$deviceinfo" | grep -q -x "\s*Alias: myheadphones" || continue
     case "$(echo "$deviceinfo" | awk '/Connected/{print $2}')" in
         yes)
-            connect_or_disconnect "disconnect" "$deviceaddress";;
+            connect_or_disconnect disconnect "$deviceaddress";;
         no)
-            connect_or_disconnect "connect" "$deviceaddress";;
+            connect_or_disconnect connect "$deviceaddress";;
         *)
             error "Unable to interpret bluetoothctl output";;
     esac

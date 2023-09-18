@@ -6,4 +6,5 @@ if [ -e "$triggerfile" ]; then
     echo "$triggerfile" | entr -p -c -s "$*"
 else
     notify-send Error "Trigger file not found"
+    exit 1
 fi

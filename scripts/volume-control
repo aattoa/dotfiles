@@ -1,7 +1,8 @@
 #!/bin/sh
 
+# $1: Integer percentage followed by "%" followed by "+" or "-"
 control () {
-    amixer set Master "$1"
+    amixer -q set Master "$1"
 }
 
 case $1 in

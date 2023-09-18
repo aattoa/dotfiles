@@ -1,12 +1,14 @@
 #!/bin/sh
 
 
+# $1: Error message
 error () {
     notify-send "Error: media-control" "$1"
     spd-say "Media control error"
     exit 1
 }
 
+# $1: Short notification string
 simple_notify () {
     notify-send -t 2000 Notice "$1"
     spd-say --wait "$1"
@@ -27,6 +29,7 @@ fi
 currentplayer=$(cat "$currentplayerfile")
 currentaction=$(cat "$currentactionfile")
 
+# $1: File path to be examined
 was_recently_modified () {
     if [ -f "$1" ]; then
         currenttime="$(date +%s)"
@@ -52,10 +55,12 @@ rotate_player () {
     simple_notify "$currentplayer"
 }
 
+# $@: Commands to forward to the current player
 control_current_player () {
     playerctl --player="$currentplayer" "$@"
 }
 
+# $1: Integer seconds directly followed by + or -
 try_modify_position () {
     if control_current_player position "$1"; then
         true
@@ -65,6 +70,8 @@ try_modify_position () {
     fi
 }
 
+# $1: "-" | "+"
+# $2: Short action description
 seek () {
     lockfile="$MY_DOTFILES_REPO/state/lock-media-control-seek"
     [ -f "$lockfile" ] && return
@@ -83,6 +90,8 @@ seek () {
     rm "$lockfile"
 }
 
+# $1: "-" | "+"
+# $2: Short action description
 modify_volume () {
     volumetimestampfile="$MY_DOTFILES_REPO/state/timestamp-media-volume-modified"
     was_recently_modified "$volumetimestampfile" && return
