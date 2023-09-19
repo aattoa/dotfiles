@@ -1,6 +1,6 @@
  Makefile     |  2 +-
- config.def.h | 66 +++++++++++++++++++++++++++++++++++++++++-----------
- 2 files changed, 54 insertions(+), 14 deletions(-)
+ config.def.h | 67 ++++++++++++++++++++++++++++++++++++++++++----------
+ 2 files changed, 55 insertions(+), 14 deletions(-)
 
 diff --git a/Makefile b/Makefile
 index 77bcbc0..c05dbdd 100644
@@ -16,7 +16,7 @@ index 77bcbc0..c05dbdd 100644
  dist: clean
  	mkdir -p dwm-${VERSION}
 diff --git a/config.def.h b/config.def.h
-index 14d52c0..6f9b66a 100644
+index 14d52c0..670b990 100644
 --- a/config.def.h
 +++ b/config.def.h
 @@ -1,13 +1,17 @@
@@ -79,7 +79,7 @@ index 14d52c0..6f9b66a 100644
  	{ MODKEY,                       XK_space,  setlayout,      {0} },
  	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
  	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-@@ -97,6 +101,42 @@ static const Key keys[] = {
+@@ -97,6 +101,43 @@ static const Key keys[] = {
  	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
  	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
  	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
@@ -93,6 +93,7 @@ index 14d52c0..6f9b66a 100644
 +    { WINKEY,        XK_F6,                    COMMAND("toggle-headphones") },
 +    { WINKEY,        XK_Menu,                  COMMAND("rotate-keyboard-layout") },
 +    { WINKEY,        XK_Escape,                COMMAND("swap-caps-and-escape") },
++    { WINKEY,        XK_n,                     COMMAND("show-news") },
 +    { 0,             XF86XK_AudioNext,         COMMAND("media-control", "next") },
 +    { 0,             XF86XK_AudioPrev,         COMMAND("media-control", "previous") },
 +    { 0,             XF86XK_AudioPlay,         COMMAND("media-control", "play") },

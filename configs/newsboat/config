@@ -1,0 +1,30 @@
+# Vim keys
+bind-key j down
+bind-key k up
+bind-key G end
+bind-key g home
+bind-key n next-unread
+bind-key N prev-unread
+bind-key T toggle-article-read
+
+# Parallel downloads
+reload-threads 20
+
+# Custom URL handler
+external-url-viewer handle-urls
+
+# Disable command and search history
+history-limit 0
+
+# Keep the cursor somewhat centered
+scrolloff 10
+
+# Limit per-feed entries
+max-items 10
+
+# Directly stream media with mpv
+macro v set browser mpv ; open-in-browser ; set browser $BROWSER
+
+# Feed separators
+highlight feedlist "---.*---" green default bold
+highlight feedlist ".*0/0.." default default invis

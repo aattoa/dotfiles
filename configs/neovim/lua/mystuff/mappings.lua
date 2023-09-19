@@ -29,6 +29,9 @@ vim.keymap.set("n", "<C-s>", ":%s//g<Left><Left>")
 -- Normal mode on selected lines
 vim.keymap.set("v", "<C-n>", ":normal ")
 
+-- Extract URLs from current buffer
+vim.keymap.set("n", "<C-M-u>", ":call system(\"handle-urls\", join(getline(1,'$'), \"\\n\"))<return>")
+
 -- Tab controls
 vim.keymap.set("n", "<C-t>",   vim.cmd.tabnew)
 vim.keymap.set("n", "<C-q>",   vim.cmd.tabclose)

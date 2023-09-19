@@ -1,0 +1,85 @@
+#!/bin/sh
+
+# $1: URL
+is_youtube_video () {
+    case $1 in
+        "https://www.youtube.com/watch?v="*)
+            return 0;;
+        "https://www.youtube.com/v/"*"?version="*)
+            return 0;;
+        "https://www.youtu.be/"*)
+            return 0;;
+        *)
+            return 1;;
+    esac
+}
+
+# $1: URL
+is_media_file () {
+    case $1 in
+        *".mp4")
+            return 0;;
+        *".mp3")
+            return 0;;
+        *".mp3?dest-id="*)
+            return 0;;
+        *)
+            return 1;;
+    esac
+}
+
+# $1: Message
+notify () {
+    notify-send -t 2000 "handle-urls" "$1"
+}
+
+choose_strategy () {
+    read -r url
+    [ -n "$url" ] || exit 1
+
+    choices="browser\nclipboard"
+
+    if is_youtube_video "$url"; then
+        choices="$choices\nyt-dlp\nyt-dlp-audio\nmpv\nmpv-audio"
+    elif is_media_file "$url"; then
+        choices="$choices\nwget\nmpv\nmpv-audio"
+    fi
+
+    strategy="$(printf "%b" "$choices" | sort --unique | dmenu -i -p "How to handle URL?")"
+    printf "%s\n%s" "$url" "$strategy"
+}
+
+execute_strategy () {
+    read -r url
+    read -r strategy
+
+    cd "$HOME/misc/media/download" || exit 1
+
+    case $strategy in
+        browser)
+            [ -n "$BROWSER" ] || exit 1
+            $BROWSER "$url";;
+        clipboard)
+            notify "Copied to clipboard"
+            echo "$url" | xclip -selection clipboard;;
+        yt-dlp)
+            yt-dlp "$url";;
+        yt-dlp-audio)
+            yt-dlp --extract-audio --audio-format mp3 --audio-quality 0 "$url";;
+        wget)
+            wget --no-verbose --show-progress "$url";;
+        mpv)
+            mpv "$url";;
+        mpv-audio)
+            mpv --no-video "$url";;
+        *)
+            notify "No choice made, aborting"
+            exit 1;;
+    esac
+}
+
+while read -r line; do echo "$line"; done |
+    urlscan -n                            |
+    dmenu -i -l 5 -p "Which URL?"         |
+    choose_strategy                       |
+    execute_strategy
