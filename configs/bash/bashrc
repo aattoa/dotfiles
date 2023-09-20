@@ -7,9 +7,6 @@ export MY_DOTFILES_REPO=$HOME/misc/dotfiles
 # Stop here if the current shell is not interactive
 [[ $- != *i* ]] && return
 
-# Set dotfiles repo location
-export MY_DOTFILES_REPO=$HOME/misc/dotfiles
-
 # Stop here if the dotfiles repo was not found
 if [ ! -e "$MY_DOTFILES_REPO" ]
 then

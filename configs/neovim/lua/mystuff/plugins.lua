@@ -25,6 +25,7 @@ return require("packer").startup(function(use)
     -- Advanced syntax highlighting
     use("nvim-treesitter/nvim-treesitter", { run = ":TSUpdate" })
 
+    -- Easy comment/uncomment
     use {
         "numToStr/Comment.nvim",
         config = function() require("Comment").setup() end
@@ -52,6 +53,9 @@ return require("packer").startup(function(use)
         "folke/trouble.nvim",
         requires = { { "nvim-tree/nvim-web-devicons" } }
     }
+
+    -- Personal wiki
+    use "vimwiki/vimwiki"
 
     -- Preview colors in source code
     use "ap/vim-css-color"
