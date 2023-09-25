@@ -16,21 +16,24 @@ vim.keymap.set("n", "<leader><", "<C-^>")
 -- Language server protocol
 vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format)
 vim.keymap.set("n", "<leader>lr", vim.lsp.buf.references)
+vim.keymap.set("n", "<leader>ln", vim.lsp.buf.rename)
 
 -- Toggle search highlight
-vim.keymap.set("n", "<leader>h", ":set hlsearch!<return>")
+vim.keymap.set({ "n", "v" }, "<leader>h", ":set hlsearch!<return>")
 
 -- Toggle line numbers
-vim.keymap.set("n", "<leader>n", ":set number!<return>:set relativenumber!<return>")
+vim.keymap.set({ "n", "v" }, "<leader>n", ":set number!<return>:set relativenumber!<return>")
 
 -- Search and replace
 vim.keymap.set("n", "<C-s>", ":%s//g<Left><Left>")
+vim.keymap.set("v", "<C-s>", ":s//g<Left><Left>")
 
--- Normal mode on selected lines
-vim.keymap.set("v", "<C-n>", ":normal ")
+-- Count search results
+vim.keymap.set("n", "<C-n>", ":%s///gn<Left><Left><Left><Left>")
+vim.keymap.set("v", "<C-n>", ":s///gn<Left><Left><Left><Left>")
 
 -- Extract URLs from current buffer
-vim.keymap.set("n", "<C-M-u>", ":call system(\"handle-urls\", join(getline(1,'$'), \"\\n\"))<return>")
+vim.keymap.set("n", "<C-M-u>", ":call system(\"handle-urls\", join(getline(1, '$'), \"\\n\"))<return>")
 
 -- Tab controls
 vim.keymap.set("n", "<C-t>",   vim.cmd.tabnew)
@@ -56,15 +59,13 @@ vim.keymap.set("n", "<C-M-l>", ":vertical resize -2<return>")
 vim.keymap.set("v", "<", "<gv")
 vim.keymap.set("v", ">", ">gv")
 
--- System clipboard
-vim.keymap.set({ "n", "v" }, "<C-c>", "\"+y")
-vim.keymap.set({ "n", "v" }, "<C-p>", "\"+p")
-
--- Disable arrow keys
-vim.keymap.set({ "n", "v", "i" }, "<Up>",    "<Nop>")
-vim.keymap.set({ "n", "v", "i" }, "<Down>",  "<Nop>")
-vim.keymap.set({ "n", "v", "i" }, "<Left>",  "<Nop>")
-vim.keymap.set({ "n", "v", "i" }, "<Right>", "<Nop>")
+-- Emulate normal mode navigation in command mode
+vim.keymap.set("c", "<C-b>", "<S-Left>")
+vim.keymap.set("c", "<C-w>", "<S-Right>")
+vim.keymap.set("c", "<C-h>", "<Left>")
+vim.keymap.set("c", "<C-j>", "<Down>")
+vim.keymap.set("c", "<C-k>", "<Up>")
+vim.keymap.set("c", "<C-l>", "<Right>")
 
 ---@param movements table
 local function center_cursor_after_movements(movements)
