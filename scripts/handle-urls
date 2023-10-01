@@ -30,7 +30,7 @@ is_media_file () {
 
 # $1: Message
 notify () {
-    notify-send -t 2000 "handle-urls" "$1"
+    [ -n "$DISPLAY" ] && notify-send -t 2000 "handle-urls" "$1"
 }
 
 choose_strategy () {

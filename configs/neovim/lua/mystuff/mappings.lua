@@ -15,8 +15,24 @@ vim.keymap.set("n", "<Leader><", "<C-^>")
 
 -- Language server protocol
 vim.keymap.set("n", "<Leader>lf", vim.lsp.buf.format)
-vim.keymap.set("n", "<Leader>lr", vim.lsp.buf.references)
 vim.keymap.set("n", "<Leader>ln", vim.lsp.buf.rename)
+vim.keymap.set("n", "<Leader>la", vim.lsp.buf.code_action)
+
+-- Fuzzy finding with telescope
+local telescope = require("telescope.builtin")
+vim.keymap.set("n", "<Leader>f",  telescope.find_files)
+vim.keymap.set("n", "<Leader>/",  function () telescope.find_files({ cwd = "$HOME" }) end)
+vim.keymap.set("n", "<Leader>m",  function () telescope.man_pages({ sections = {"ALL"} }) end)
+vim.keymap.set("n", "<Leader>o",  telescope.oldfiles)
+vim.keymap.set("n", "<Leader>r",  telescope.live_grep)
+vim.keymap.set("n", "<Leader>lr", telescope.lsp_references)
+vim.keymap.set("n", "?",          telescope.help_tags)
+
+-- Extract URLs from current buffer
+vim.keymap.set("n", "<Leader>u", ":call system(\"handle-urls\", join(getline(1, '$'), \"\\n\"))<Return>")
+
+-- Toggle diagnostics window
+vim.keymap.set("n", "<Leader>d", vim.cmd.TroubleToggle)
 
 -- Toggle search highlight
 vim.keymap.set({ "n", "v" }, "<Leader>h", ":set hlsearch!<Return>")
@@ -35,9 +51,6 @@ vim.keymap.set("v", "<C-s>", ":s//g<Left><Left>")
 -- Count search results
 vim.keymap.set("n", "<C-n>", ":%s///gn<Left><Left><Left><Left>")
 vim.keymap.set("v", "<C-n>", ":s///gn<Left><Left><Left><Left>")
-
--- Extract URLs from current buffer
-vim.keymap.set("n", "<C-M-u>", ":call system(\"handle-urls\", join(getline(1, '$'), \"\\n\"))<Return>")
 
 -- Tab controls
 vim.keymap.set("n", "<C-t>",   vim.cmd.tabnew)

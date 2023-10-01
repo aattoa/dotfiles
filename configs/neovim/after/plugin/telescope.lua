@@ -1,5 +1,0 @@
-local telescope = require("telescope.builtin")
-vim.keymap.set("n", "<leader>ff", telescope.find_files)
-vim.keymap.set("n", "<leader>rr", telescope.live_grep)
-vim.keymap.set("n", "<leader>gg", telescope.git_files)
-vim.keymap.set("n", "?",          telescope.help_tags)

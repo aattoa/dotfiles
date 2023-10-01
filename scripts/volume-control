@@ -13,6 +13,6 @@ case $1 in
     down)
         control 5%-;;
     *)
-        notify-send "Error: volume-control" "Invalid argument"
+        [ -n "$DISPLAY" ] && notify-send "Error: volume-control" "Invalid argument"
         exit 1;;
 esac
