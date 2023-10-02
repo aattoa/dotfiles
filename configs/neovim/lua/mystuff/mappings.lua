@@ -29,48 +29,51 @@ vim.keymap.set("n", "<Leader>lr", telescope.lsp_references)
 vim.keymap.set("n", "?",          telescope.help_tags)
 
 -- Extract URLs from current buffer
-vim.keymap.set("n", "<Leader>u", ":call system(\"handle-urls\", join(getline(1, '$'), \"\\n\"))<Return>")
+vim.keymap.set("n", "<Leader>u", ":call system(\"handle-urls\", join(getline(1, '$'), \"\\n\"))<Return>", { silent = true })
 
 -- Toggle diagnostics window
 vim.keymap.set("n", "<Leader>d", vim.cmd.TroubleToggle)
 
--- Toggle search highlight
-vim.keymap.set({ "n", "v" }, "<Leader>h", ":set hlsearch!<Return>")
+-- Overload helper
+vim.keymap.set("i", "<C-Space>", vim.cmd.LspOverloadsSignature)
 
--- Toggle line numbers
-vim.keymap.set({ "n", "v" }, "<Leader>n", ":set number!<Return>:set relativenumber!<Return>")
+-- Toggle search highlight
+vim.keymap.set({ "n", "v" }, "<Leader>h", ":set hlsearch!<Return>", { silent = true })
+
+-- Toggle line number visibility
+vim.keymap.set({ "n", "v" }, "<Leader>n", ":set number!<Return>:set relativenumber!<Return>", { silent = true })
 
 -- System clipboard
 vim.keymap.set({ "n", "v" }, "<C-c>", "\"+")
 vim.keymap.set("i", "<C-c>", "<Esc>\"+yya")
 
 -- Search and replace
-vim.keymap.set("n", "<C-s>", ":%s//g<Left><Left>")
-vim.keymap.set("v", "<C-s>", ":s//g<Left><Left>")
+vim.keymap.set("n", "<C-s>", ":%substitute//g<Left><Left>")
+vim.keymap.set("v", "<C-s>", ":substitute//g<Left><Left>")
 
 -- Count search results
-vim.keymap.set("n", "<C-n>", ":%s///gn<Left><Left><Left><Left>")
-vim.keymap.set("v", "<C-n>", ":s///gn<Left><Left><Left><Left>")
+vim.keymap.set("n", "<C-n>", ":%substitute///gn<Left><Left><Left><Left>")
+vim.keymap.set("v", "<C-n>", ":substitute///gn<Left><Left><Left><Left>")
 
 -- Tab controls
 vim.keymap.set("n", "<C-t>",   vim.cmd.tabnew)
 vim.keymap.set("n", "<C-q>",   vim.cmd.tabclose)
 vim.keymap.set("n", "<Tab>",   vim.cmd.tabnext)
 vim.keymap.set("n", "<S-Tab>", vim.cmd.tabprevious)
-vim.keymap.set("n", "g<",      ":tabmove -1<Return>")
-vim.keymap.set("n", "g>",      ":tabmove +1<Return>")
+vim.keymap.set("n", "g<",      ":tabmove -1<Return>", { silent = true })
+vim.keymap.set("n", "g>",      ":tabmove +1<Return>", { silent = true })
 
 -- https://vim.fandom.com/wiki/Moving_lines_up_or_down
-vim.keymap.set("n", "<C-k>", ":m .-2<Return>==") -- Current line up
-vim.keymap.set("n", "<C-j>", ":m .+1<Return>==") -- Current line down
-vim.keymap.set("v", "<C-k>", ":m '<-2<CR>gv=gv") -- Selected lines up
-vim.keymap.set("v", "<C-j>", ":m '>+1<CR>gv=gv") -- Selected lines down
+vim.keymap.set("n", "<C-k>", ":move .-2<Return>==",     { silent = true }) -- Current line up
+vim.keymap.set("n", "<C-j>", ":move .+1<Return>==",     { silent = true }) -- Current line down
+vim.keymap.set("v", "<C-k>", ":move '<-2<Return>gv=gv", { silent = true }) -- Selected lines up
+vim.keymap.set("v", "<C-j>", ":move '>+1<Return>gv=gv", { silent = true }) -- Selected lines down
 
 -- Window resizing
-vim.keymap.set("n", "<C-M-k>", ":resize -1<Return>")
-vim.keymap.set("n", "<C-M-j>", ":resize +1<Return>")
-vim.keymap.set("n", "<C-M-h>", ":vertical resize +2<Return>")
-vim.keymap.set("n", "<C-M-l>", ":vertical resize -2<Return>")
+vim.keymap.set("n", "<C-M-k>", ":resize -1<Return>",          { silent = true })
+vim.keymap.set("n", "<C-M-j>", ":resize +1<Return>",          { silent = true })
+vim.keymap.set("n", "<C-M-h>", ":vertical resize +2<Return>", { silent = true })
+vim.keymap.set("n", "<C-M-l>", ":vertical resize -2<Return>", { silent = true })
 
 -- Stay in visual mode on indent/dedent
 vim.keymap.set("v", "<", "<gv")

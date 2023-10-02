@@ -31,22 +31,29 @@ return require("packer").startup(function(use)
         config = function() require("Comment").setup() end
     }
 
-    -- Easy LSP
+    -- Language server protocol
     use {
         "VonHeikemen/lsp-zero.nvim",
         branch = "v2.x",
         requires = {
             -- LSP Support
-            { "neovim/nvim-lspconfig" },             -- Required
-            { "williamboman/mason.nvim" },           -- Optional
-            { "williamboman/mason-lspconfig.nvim" }, -- Optional
+            { "neovim/nvim-lspconfig" },
+            { "williamboman/mason.nvim" },
+            { "williamboman/mason-lspconfig.nvim" },
 
             -- Autocompletion
-            { "hrsh7th/nvim-cmp" },     -- Required
-            { "hrsh7th/cmp-nvim-lsp" }, -- Required
-            { "L3MON4D3/LuaSnip" },     -- Required
+            { "hrsh7th/nvim-cmp" },
+            { "hrsh7th/cmp-nvim-lsp" },
+            { "hrsh7th/cmp-nvim-lua" },
+            { "hrsh7th/cmp-buffer" },
+            { "hrsh7th/cmp-path" },
+            { "saadparwaiz1/cmp_luasnip" },
+            { 'L3MON4D3/LuaSnip' },
         }
     }
+
+    -- Overload navigation
+    use "Issafalcon/lsp-overloads.nvim"
 
     -- Display LSP diagnostics in a separate pane
     use {
