@@ -15,6 +15,16 @@ is_youtube_video () {
 }
 
 # $1: URL
+is_odysee_video () {
+    case $1 in
+        "https://odysee.com/@"*"/"*":"*)
+            return 0;;
+        *)
+            return 1;;
+    esac
+}
+
+# $1: URL
 is_media_file () {
     case $1 in
         *".mp4")
@@ -22,6 +32,8 @@ is_media_file () {
         *".mp3")
             return 0;;
         *".mp3?dest-id="*)
+            return 0;;
+        *".mp3?updated="*)
             return 0;;
         *)
             return 1;;
@@ -33,22 +45,31 @@ notify () {
     [ -n "$DISPLAY" ] && notify-send -t 2000 "handle-urls" "$1"
 }
 
+# stdin 1: URL
 choose_strategy () {
     read -r url
     [ -n "$url" ] || exit 1
 
     choices="browser\nclipboard"
 
+    dlp="yt-dlp\nyt-dlp-audio"
+    mpv="mpv\nmpv-audio"
+    get="wget"
+
     if is_youtube_video "$url"; then
-        choices="$choices\nyt-dlp\nyt-dlp-audio\nmpv\nmpv-audio"
+        choices="$choices\n$dlp\n$mpv"
+    elif is_odysee_video "$url"; then
+        choices="$choices\n$mpv"
     elif is_media_file "$url"; then
-        choices="$choices\nwget\nmpv\nmpv-audio"
+        choices="$choices\n$get\n$mpv"
     fi
 
     strategy="$(printf "%b" "$choices" | sort --unique | dmenu -i -p "How to handle URL?")"
     printf "%s\n%s" "$url" "$strategy"
 }
 
+# stdin 1: URL
+# stdin 2: Strategy
 execute_strategy () {
     read -r url
     read -r strategy
@@ -78,8 +99,12 @@ execute_strategy () {
     esac
 }
 
-while read -r line; do echo "$line"; done |
-    urlscan -n                            |
-    dmenu -i -l 5 -p "Which URL?"         |
-    choose_strategy                       |
-    execute_strategy
+gather_lines () {
+    while read -r line; do echo "$line"; done
+}
+
+choose_url () {
+    urlscan -nd | grep -v "^mailto:*" | dmenu -i -l 5 -p "Which URL?"
+}
+
+gather_lines | choose_url | choose_strategy | execute_strategy

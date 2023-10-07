@@ -18,19 +18,20 @@ set shiftwidth=4                 " Set indentation to 4 spaces
 set expandtab                    " Convert tabs to spaces
 set scrolloff=10                 " Vertical scrolloff
 set sidescrolloff=20             " Horizontal scrolloff
-let g:netrw_banner=0             " Disable Netrw banner
+set shortmess+=I                 " Disable intro message
+set viminfo=                     " Disable viminfo
+let g:netrw_banner=0             " Disable Netrw help banner
 let g:netrw_list_hide="^\\.\\/$" " Disable current directory
 let g:mapleader=" "              " Set the leader key
-set shortmess+=I                 " Disable intro message
 
 " Explore with Netrw
-nnoremap <Leader>e :Explore<Return>
+nnoremap <silent> <Leader>e :Explore<Return>
 
 " Toggle search highlight
-nnoremap <Leader>h :set hlsearch!<Return>
+nnoremap <silent> <Leader>h :set hlsearch!<Return>
 
 " Toggle line number visibility
-nnoremap <Leader>n :set number!<Return>:set relativenumber!<Return>
+nnoremap <silent> <Leader>n :set number!<Return>:set relativenumber!<Return>
 
 " Stay in visual mode on indent/dedent
 vnoremap < <gv
@@ -45,24 +46,24 @@ nnoremap <C-n> :%substitute///gn<Left><Left><Left><Left>
 vnoremap <C-n> :substitute///gn<Left><Left><Left><Left>
 
 " Tab controls
-nnoremap <C-t>   :tabnew<Return>
-nnoremap <C-q>   :tabclose<Return>
-nnoremap <Tab>   :tabnext<Return>
-nnoremap <S-Tab> :tabprevious<Return>
-nnoremap g<      :tabmove -1<Return>
-nnoremap g>      :tabmove +1<Return>
+nnoremap <silent> <C-t>   :tabnew<Return>
+nnoremap <silent> <C-q>   :tabclose<Return>
+nnoremap <silent> <Tab>   :tabnext<Return>
+nnoremap <silent> <S-Tab> :tabprevious<Return>
+nnoremap <silent> g<      :tabmove -1<Return>
+nnoremap <silent> g>      :tabmove +1<Return>
 
 " https://vim.fandom.com/wiki/Moving_lines_up_or_down
-nnoremap <C-k> :move .-2<Return>==
-nnoremap <C-j> :move .+1<Return>==
-vnoremap <C-k> :move '<-2<Return>gv=gv
-vnoremap <C-j> :move '>+1<Return>gv=gv
+nnoremap <silent> <C-k> :move .-2<Return>==
+nnoremap <silent> <C-j> :move .+1<Return>==
+vnoremap <silent> <C-k> :move '<-2<Return>gv=gv
+vnoremap <silent> <C-j> :move '>+1<Return>gv=gv
 
 " Try to keep the cursor centered
-nnoremap G Gzz
-nnoremap n nzz
-nnoremap N Nzz
-nnoremap <C-d> <C-d>zz
-nnoremap <C-u> <C-u>zz
-nnoremap { {zz
-nnoremap } }zz
+noremap G Gzz
+noremap n nzz
+noremap N Nzz
+noremap <C-d> <C-d>zz
+noremap <C-u> <C-u>zz
+noremap { {zz
+noremap } }zz

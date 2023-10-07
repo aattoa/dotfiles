@@ -21,6 +21,10 @@ lsp.on_attach(function(client, bufnr)
         require('lsp-overloads').setup(client, {})
     end
     lsp.default_keymaps({ buffer = bufnr })
+    lsp.buffer_autoformat(client, bufnr, {
+        -- Do not automatically format lua files
+        filter = function(client_) return client_.name ~= "lua_ls" end
+    })
     vim.diagnostic.config({ virtual_text = true })
 end)
 

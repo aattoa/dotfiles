@@ -22,14 +22,14 @@ vim.keymap.set("n", "<Leader>la", vim.lsp.buf.code_action)
 local telescope = require("telescope.builtin")
 vim.keymap.set("n", "<Leader>f",  telescope.find_files)
 vim.keymap.set("n", "<Leader>/",  function () telescope.find_files({ cwd = "$HOME" }) end)
-vim.keymap.set("n", "<Leader>m",  function () telescope.man_pages({ sections = {"ALL"} }) end)
+vim.keymap.set("n", "<Leader>m",  function () telescope.man_pages({ sections = { "ALL" } }) end)
 vim.keymap.set("n", "<Leader>o",  telescope.oldfiles)
 vim.keymap.set("n", "<Leader>r",  telescope.live_grep)
 vim.keymap.set("n", "<Leader>lr", telescope.lsp_references)
 vim.keymap.set("n", "?",          telescope.help_tags)
 
 -- Extract URLs from current buffer
-vim.keymap.set("n", "<Leader>u", ":call system(\"handle-urls\", join(getline(1, '$'), \"\\n\"))<Return>", { silent = true })
+vim.keymap.set("n", "<Leader>u", ":call system(\"handle-urls\", join(getline(1, '$'), \"\\n\") .. \"\\n\")<Return>", { silent = true })
 
 -- Toggle diagnostics window
 vim.keymap.set("n", "<Leader>d", vim.cmd.TroubleToggle)
@@ -38,10 +38,10 @@ vim.keymap.set("n", "<Leader>d", vim.cmd.TroubleToggle)
 vim.keymap.set("i", "<C-Space>", vim.cmd.LspOverloadsSignature)
 
 -- Toggle search highlight
-vim.keymap.set({ "n", "v" }, "<Leader>h", ":set hlsearch!<Return>", { silent = true })
+vim.keymap.set("n", "<Leader>h", ":set hlsearch!<Return>", { silent = true })
 
 -- Toggle line number visibility
-vim.keymap.set({ "n", "v" }, "<Leader>n", ":set number!<Return>:set relativenumber!<Return>", { silent = true })
+vim.keymap.set("n", "<Leader>n", ":set number!<Return>:set relativenumber!<Return>", { silent = true })
 
 -- System clipboard
 vim.keymap.set({ "n", "v" }, "<C-c>", "\"+")
@@ -72,8 +72,8 @@ vim.keymap.set("v", "<C-j>", ":move '>+1<Return>gv=gv", { silent = true }) -- Se
 -- Window resizing
 vim.keymap.set("n", "<C-M-k>", ":resize -1<Return>",          { silent = true })
 vim.keymap.set("n", "<C-M-j>", ":resize +1<Return>",          { silent = true })
-vim.keymap.set("n", "<C-M-h>", ":vertical resize +2<Return>", { silent = true })
-vim.keymap.set("n", "<C-M-l>", ":vertical resize -2<Return>", { silent = true })
+vim.keymap.set("n", "<C-M-l>", ":vertical resize +2<Return>", { silent = true })
+vim.keymap.set("n", "<C-M-h>", ":vertical resize -2<Return>", { silent = true })
 
 -- Stay in visual mode on indent/dedent
 vim.keymap.set("v", "<", "<gv")

@@ -82,8 +82,8 @@ seek () {
             try_modify_position "$seconds$1" &&
                 simple_notify "$2 $seconds seconds";;
         Playing)
-            try_modify_position "2$1" &&
-                sleep 0.2;;
+            try_modify_position "4$1" &&
+                sleep 0.5;;
         *)
             simple_notify "Invalid player state";;
     esac
@@ -130,13 +130,19 @@ pause () {
     fi
 }
 
+display_current_track_info () {
+    notify-send -t 750 "$(control_current_player metadata title)" "$(control_current_player metadata artist)"
+}
+
 case $1 in
     play|pause)
         pause;;
     next)
-        control_current_player next;;
+        control_current_player next
+        display_current_track_info;;
     previous)
-        control_current_player previous;;
+        control_current_player previous
+        display_current_track_info;;
     forward)
         perform_current_action;;
     rewind)
