@@ -10,9 +10,6 @@
 -- Explore with Netrw
 vim.keymap.set("n", "<Leader>e", vim.cmd.Explore)
 
--- Switch to previously open buffer
-vim.keymap.set("n", "<Leader><", "<C-^>")
-
 -- Language server protocol
 vim.keymap.set("n", "<Leader>lf", vim.lsp.buf.format)
 vim.keymap.set("n", "<Leader>ln", vim.lsp.buf.rename)
@@ -26,6 +23,7 @@ vim.keymap.set("n", "<Leader>m",  function () telescope.man_pages({ sections = {
 vim.keymap.set("n", "<Leader>o",  telescope.oldfiles)
 vim.keymap.set("n", "<Leader>r",  telescope.live_grep)
 vim.keymap.set("n", "<Leader>lr", telescope.lsp_references)
+vim.keymap.set("n", "<Leader>ls", telescope.lsp_document_symbols)
 vim.keymap.set("n", "?",          telescope.help_tags)
 
 -- Extract URLs from current buffer
@@ -63,6 +61,10 @@ vim.keymap.set("n", "<S-Tab>", vim.cmd.tabprevious)
 vim.keymap.set("n", "g<",      ":tabmove -1<Return>", { silent = true })
 vim.keymap.set("n", "g>",      ":tabmove +1<Return>", { silent = true })
 
+-- Avoid clashes with Vimwiki bindings
+vim.keymap.set("n", "<Leader>wj", "<Plug>VimwikiNextLink", { remap = true }) -- Mapped to <Tab> by default
+vim.keymap.set("n", "<Leader>wk", "<Plug>VimwikiPrevLink", { remap = true }) -- Mapped to <S-Tab> by default
+
 -- https://vim.fandom.com/wiki/Moving_lines_up_or_down
 vim.keymap.set("n", "<C-k>", ":move .-2<Return>==",     { silent = true }) -- Current line up
 vim.keymap.set("n", "<C-j>", ":move .+1<Return>==",     { silent = true }) -- Current line down
@@ -78,6 +80,9 @@ vim.keymap.set("n", "<C-M-h>", ":vertical resize -2<Return>", { silent = true })
 -- Stay in visual mode on indent/dedent
 vim.keymap.set("v", "<", "<gv")
 vim.keymap.set("v", ">", ">gv")
+
+-- Make current file
+vim.keymap.set("n", "<Leader>a", ":silent make<Return>", { silent = true })
 
 -- Emulate normal mode navigation in command mode
 vim.keymap.set("c", "<C-b>", "<S-Left>")

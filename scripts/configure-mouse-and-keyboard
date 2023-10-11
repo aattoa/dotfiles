@@ -29,10 +29,10 @@ case $1 in
     toggle)
         if is_currently_default; then
             apply_custom
-            notify "Applied custom settings"
+            notify "Custom settings applied"
         else
             apply_default
-            notify "Applied default settings"
+            notify "Default settings restored"
         fi;;
     *)
         exit 1;;

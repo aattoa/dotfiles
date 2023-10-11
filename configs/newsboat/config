@@ -16,11 +16,11 @@ external-url-viewer handle-urls
 # Disable command and search history
 history-limit 0
 
+# Do not ask for confirmation on mark-feed-read
+confirm-mark-feed-read no
+
 # Keep the cursor somewhat centered
 scrolloff 10
-
-# Limit per-feed entries
-max-items 10
 
 # Directly stream media with mpv
 macro v set browser mpv ; open-in-browser ; set browser $BROWSER

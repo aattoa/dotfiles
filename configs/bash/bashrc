@@ -8,13 +8,11 @@ export MY_DOTFILES_REPO=$HOME/misc/dotfiles
 [[ $- != *i* ]] && return
 
 # Stop here if the dotfiles repo was not found
-if [ ! -e "$MY_DOTFILES_REPO" ]
-then
+if [ ! -d "$MY_DOTFILES_REPO" ]; then
     echo "dotfiles repo not found"
     return
 fi
 
+source "$MY_DOTFILES_REPO/configs/bash/aliases"
 source "$MY_DOTFILES_REPO/configs/bash/variables"
-source "$MY_DOTFILES_REPO/configs/bash/default-cli-arguments"
-source "$MY_DOTFILES_REPO/configs/bash/convenience-aliases"
-source "$MY_DOTFILES_REPO/configs/bash/utility-functions"
+source "$MY_DOTFILES_REPO/configs/bash/functions"

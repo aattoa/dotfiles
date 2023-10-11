@@ -1,1 +1,1 @@
-Symlink `~/.config/mpv/input.conf` to `./input.conf`
+Symlink `~/.config/mpv` to `.`

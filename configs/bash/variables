@@ -11,6 +11,9 @@ export PATH=$MY_DOTFILES_REPO/scripts:$PATH
 export HISTCONTROL=ignoredups
 export HISTIGNORE='q:exit'
 
+# No history file size limit
+export HISTSIZE=-1
+
 # Default editor and browser
 export EDITOR=nvim
 export BROWSER=firefox
@@ -38,4 +41,4 @@ export WINEPREFIX="$XDG_DATA_HOME/wineprefixes/default"
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 
 # shellcheck disable=1091
-source "$HOME/.ghcup/env"
+[ -e "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env"

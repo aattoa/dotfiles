@@ -7,7 +7,7 @@ is_youtube_video () {
             return 0;;
         "https://www.youtube.com/v/"*"?version="*)
             return 0;;
-        "https://www.youtu.be/"*)
+        "https://youtu.be/"*)
             return 0;;
         *)
             return 1;;

@@ -3,6 +3,12 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     desc     = "Briefly highlight yanked text"
 })
 
+vim.api.nvim_create_autocmd("FileType", {
+    pattern  = "markdown",
+    callback = function () vim.bo.makeprg = "pandoc % -o %<.pdf &" end,
+    desc     = "Make markdown files by converting them to PDF",
+})
+
 local packer_user_config = vim.api.nvim_create_augroup("packer_user_config", {})
 vim.api.nvim_create_autocmd("BufWritePost", {
     group   = packer_user_config,

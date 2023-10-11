@@ -2,22 +2,22 @@
 
 # Make and change directory (mkdir + cd)
 mc () {
-    if [ "$#" == "1" ]; then
+    if [ "$#" = "1" ]; then
         mkdir -p -- "$1"
-        cd -- "$1" || return
+        cd -- "$1" || exit
         echo "Created and moved to $(pwd)"
     else
-        echo "Exactly one argument must be passed to mc"
+        echo "mc: Expected exactly one argument"
     fi
 }
 
 # List working directory (pwd + ls)
 lwd () {
-    if [ "$#" == "0" ]; then
+    if [ "$#" = "0" ]; then
         echo "$(pwd):"
         ls
     else
-        echo "lwd takes no arguments"
+        echo "lwd: Unexpected arguments"
     fi
 }
 
