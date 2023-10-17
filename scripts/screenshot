@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ "$1" = "gui" ]; then
+    flameshot gui
+else
+    scrot
+    notify-send -t 200 "Screenshot taken"
+fi

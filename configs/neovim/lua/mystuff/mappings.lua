@@ -35,6 +35,9 @@ vim.keymap.set("n", "<Leader>d", vim.cmd.TroubleToggle)
 -- Overload helper
 vim.keymap.set("i", "<C-Space>", vim.cmd.LspOverloadsSignature)
 
+-- Toggle search case sensitivity
+vim.keymap.set("n", "<Leader>\\", ":set ignorecase!<Return>", { silent = true })
+
 -- Toggle search highlight
 vim.keymap.set("n", "<Leader>h", ":set hlsearch!<Return>", { silent = true })
 
@@ -92,12 +95,7 @@ vim.keymap.set("c", "<C-j>", "<Down>")
 vim.keymap.set("c", "<C-k>", "<Up>")
 vim.keymap.set("c", "<C-l>", "<Right>")
 
----@param movements table
-local function center_cursor_after_movements(movements)
-    for _, movement in ipairs(movements) do
-        vim.keymap.set({ "n", "v" }, movement, movement .. "zz")
-    end
+-- Center the cursor after movements
+for _, movement in ipairs({ "G", "n", "N", "<C-d>", "<C-u>", "{", "}" }) do
+    vim.keymap.set({ "n", "v" }, movement, movement .. "zz")
 end
-
--- Try to keep the cursor centered
-center_cursor_after_movements { "G", "n", "N", "<C-d>", "<C-u>", "{", "}" }

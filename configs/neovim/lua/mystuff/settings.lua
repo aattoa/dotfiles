@@ -1,6 +1,7 @@
 vim.g.mapleader          = " "             -- Set the leader key
 vim.g.netrw_banner       = 0               -- Disable the Netrw help banner
 vim.g.netrw_list_hide    = "^\\.\\/$"      -- Disable current directory entry
+vim.g.man_hardwrap       = false           -- Soft-wrap manual pages
 vim.opt.mouse            = ""              -- Disable the mouse
 vim.opt.guicursor        = ""              -- Disable cursor styling
 vim.opt.cursorline       = true            -- Highlight current line
@@ -11,8 +12,7 @@ vim.opt.expandtab        = true            -- Insert spaces in place of tabs
 vim.opt.shiftwidth       = 4               -- Indentation width
 vim.opt.smartindent      = true            -- Automatically indent new lines
 vim.opt.ignorecase       = true            -- Enable case insensitive search
-vim.opt.smartcase        = true            -- Use case sensitive search when search term is not all lowercase
-vim.opt.hlsearch         = true            -- Highlight search matches by default
+vim.opt.hlsearch         = true            -- Highlight search matches
 vim.opt.incsearch        = true            -- Interactive search highlight
 vim.opt.updatetime       = 100             -- Faster CursorHold events
 vim.opt.undofile         = true            -- Enable persistent undo

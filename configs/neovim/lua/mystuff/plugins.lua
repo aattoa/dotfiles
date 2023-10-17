@@ -1,10 +1,9 @@
 -- https://github.com/wbthomason/packer.nvim#bootstrapping
 local ensure_packer = function()
-    local fn = vim.fn
-    local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-    if fn.empty(fn.glob(install_path)) > 0 then
-        fn.system({ "git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path })
-        vim.cmd [[packadd packer.nvim]]
+    local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
+    if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
+        vim.fn.system({ "git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path })
+        vim.cmd.packadd("packer.nvim")
         return true
     end
     return false
@@ -28,7 +27,9 @@ return require("packer").startup(function(use)
     -- Easy comment/uncomment
     use {
         "numToStr/Comment.nvim",
-        config = function() require("Comment").setup() end
+        config = function()
+            require("Comment").setup()
+        end
     }
 
     -- Language server protocol
@@ -47,19 +48,20 @@ return require("packer").startup(function(use)
             { "hrsh7th/cmp-nvim-lua" },
             { "hrsh7th/cmp-buffer" },
             { "hrsh7th/cmp-path" },
-            { "saadparwaiz1/cmp_luasnip" },
-            { 'L3MON4D3/LuaSnip' },
+            { "hrsh7th/cmp-cmdline" },
         }
     }
-
-    -- Overload navigation
-    use "Issafalcon/lsp-overloads.nvim"
 
     -- Display LSP diagnostics in a separate pane
     use {
         "folke/trouble.nvim",
-        requires = { { "nvim-tree/nvim-web-devicons" } }
+        config = function ()
+            require("trouble").setup { icons = false }
+        end
     }
+
+    -- Overload navigation
+    use "Issafalcon/lsp-overloads.nvim"
 
     -- Personal wiki
     use "vimwiki/vimwiki"
@@ -70,7 +72,6 @@ return require("packer").startup(function(use)
     -- Colorscheme
     use "tiagovla/tokyodark.nvim"
 
-    -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins
     if packer_bootstrap then
         require("packer").sync()

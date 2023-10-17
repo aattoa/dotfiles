@@ -12,6 +12,8 @@ lsp.setup_nvim_cmp({
     mapping = lsp.defaults.cmp_mappings({
         ["<Tab>"]   = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
         ["<S-Tab>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+        ["<C-j>"]   = cmp.mapping.scroll_docs(1),
+        ["<C-k>"]   = cmp.mapping.scroll_docs(-1),
     }),
     preselect = cmp.PreselectMode.None,
 })
@@ -27,5 +29,19 @@ lsp.on_attach(function(client, bufnr)
     })
     vim.diagnostic.config({ virtual_text = true })
 end)
+
+cmp.setup.cmdline("/", {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = { { name = "buffer" } }
+})
+
+cmp.setup.cmdline(":", {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = {
+        { name = "cmdline" },
+        { name = "path"  },
+        { name = "buffer" },
+    }
+})
 
 lsp.setup()

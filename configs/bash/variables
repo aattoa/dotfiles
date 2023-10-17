@@ -16,7 +16,7 @@ export HISTSIZE=-1
 
 # Default editor and browser
 export EDITOR=nvim
-export BROWSER=firefox
+export BROWSER=librewolf
 
 # Miscellaneous app configuration
 export PYTHONSTARTUP="$MY_DOTFILES_REPO/configs/python/startup.py"
@@ -24,6 +24,7 @@ export LESSHISTFILE=/dev/null
 export SQLITE_HISTORY=/dev/null
 export WATCH_INTERVAL=0.1
 export MANPAGER="nvim +Man!"
+export MANWIDTH=999
 
 # XDG directories
 export XDG_CONFIG_HOME="$HOME/.config"

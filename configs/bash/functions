@@ -8,6 +8,7 @@ mc () {
         echo "Created and moved to $(pwd)"
     else
         echo "mc: Expected exactly one argument"
+        exit 1
     fi
 }
 
@@ -18,6 +19,7 @@ lwd () {
         ls
     else
         echo "lwd: Unexpected arguments"
+        exit 1
     fi
 }
 
