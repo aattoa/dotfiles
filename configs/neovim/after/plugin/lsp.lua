@@ -18,16 +18,29 @@ lsp.setup_nvim_cmp({
     preselect = cmp.PreselectMode.None,
 })
 
-lsp.on_attach(function(client, bufnr)
+lsp.on_attach(function(client, buffer)
     if client.server_capabilities.signatureHelpProvider then
-        require('lsp-overloads').setup(client, {})
+        require("lsp-overloads").setup(client, {})
     end
-    lsp.default_keymaps({ buffer = bufnr })
-    lsp.buffer_autoformat(client, bufnr, {
+    lsp.default_keymaps({ buffer = buffer })
+    lsp.buffer_autoformat(client, buffer, {
         -- Do not automatically format lua files
         filter = function(client_) return client_.name ~= "lua_ls" end
     })
     vim.diagnostic.config({ virtual_text = true })
+
+    if client.server_capabilities.documentHighlightProvider then
+        vim.api.nvim_create_autocmd("CursorHold", {
+            callback = vim.lsp.buf.document_highlight,
+            buffer   = buffer,
+            desc     = "Highlight references to the symbol under the cursor",
+        })
+        vim.api.nvim_create_autocmd("CursorMoved", {
+            callback = vim.lsp.buf.clear_references,
+            buffer   = buffer,
+            desc     = "Clear reference highlights when the cursor is moved",
+        })
+    end
 end)
 
 cmp.setup.cmdline("/", {

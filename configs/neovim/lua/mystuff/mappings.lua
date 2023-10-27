@@ -11,8 +11,7 @@
 vim.keymap.set("n", "<Leader>e", vim.cmd.Explore)
 
 -- Language server protocol
-vim.keymap.set("n", "<Leader>lf", vim.lsp.buf.format)
-vim.keymap.set("n", "<Leader>ln", vim.lsp.buf.rename)
+vim.keymap.set("n", "<Leader>lr", vim.lsp.buf.rename)
 vim.keymap.set("n", "<Leader>la", vim.lsp.buf.code_action)
 
 -- Fuzzy finding with telescope
@@ -22,7 +21,7 @@ vim.keymap.set("n", "<Leader>/",  function () telescope.find_files({ cwd = "$HOM
 vim.keymap.set("n", "<Leader>m",  function () telescope.man_pages({ sections = { "ALL" } }) end)
 vim.keymap.set("n", "<Leader>o",  telescope.oldfiles)
 vim.keymap.set("n", "<Leader>r",  telescope.live_grep)
-vim.keymap.set("n", "<Leader>lr", telescope.lsp_references)
+vim.keymap.set("n", "<Leader>lf", telescope.lsp_references)
 vim.keymap.set("n", "<Leader>ls", telescope.lsp_document_symbols)
 vim.keymap.set("n", "?",          telescope.help_tags)
 
@@ -36,7 +35,7 @@ vim.keymap.set("n", "<Leader>d", vim.cmd.TroubleToggle)
 vim.keymap.set("i", "<C-Space>", vim.cmd.LspOverloadsSignature)
 
 -- Toggle search case sensitivity
-vim.keymap.set("n", "<Leader>\\", ":set ignorecase!<Return>", { silent = true })
+vim.keymap.set("n", "<Leader>i", ":set ignorecase!<Return>", { silent = true })
 
 -- Toggle search highlight
 vim.keymap.set("n", "<Leader>h", ":set hlsearch!<Return>", { silent = true })

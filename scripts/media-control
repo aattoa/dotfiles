@@ -125,7 +125,12 @@ pause () {
     if was_recently_modified "$pausetimestampfile"; then
         playerctl --all-players pause
     else
-        control_current_player play-pause
+        if [ "$(control_current_player status)" = "Paused" ]; then
+            control_current_player position 5-
+            control_current_player play
+        else
+            control_current_player pause
+        fi
         touch "$pausetimestampfile"
     fi
 }

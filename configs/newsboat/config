@@ -25,6 +25,9 @@ scrolloff 10
 # Directly stream media with mpv
 macro v set browser mpv ; open-in-browser ; set browser $BROWSER
 
+# Directly stream podcast audio with mpv
+macro a set external-url-viewer handle-podcast-urls ; show-urls ; set external-url-viewer handle-urls
+
 # Feed separators
 highlight feedlist "---.*---" green default bold
 highlight feedlist ".*0/0.." default default invis
