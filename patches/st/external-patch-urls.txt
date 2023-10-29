@@ -1,3 +1,0 @@
-https://st.suckless.org/patches/scrollback/st-scrollback-0.8.5.diff
-https://st.suckless.org/patches/scrollback/st-scrollback-reflow-0.8.5.diff
-https://st.suckless.org/patches/anysize/st-anysize-0.8.4.diff
