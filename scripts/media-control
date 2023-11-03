@@ -1,157 +1,55 @@
 #!/bin/sh
 
-
 # $1: Error message
 error () {
     notify-send "Error: media-control" "$1"
-    spd-say "Media control error"
     exit 1
 }
 
-# $1: Short notification string
-simple_notify () {
-    notify-send -t 2000 Notice "$1"
-    spd-say --wait "$1"
-}
-
-currentplayerfile="$MY_DOTFILES_REPO/state/current-media-player"
-currentactionfile="$MY_DOTFILES_REPO/state/current-media-action"
-playercyclefile="$MY_DOTFILES_REPO/state/media-player-cycle"
-actioncyclefile="$MY_DOTFILES_REPO/state/media-action-cycle"
-
-if [ ! -f "$currentplayerfile" ] ||
-   [ ! -f "$currentactionfile" ] ||
-   [ ! -f "$playercyclefile" ]   ||
-   [ ! -f "$actioncyclefile" ]; then
-    error "Required state files missing"
-fi
-
-currentplayer=$(cat "$currentplayerfile")
-currentaction=$(cat "$currentactionfile")
-
-# $1: File path to be examined
-was_recently_modified () {
-    if [ -f "$1" ]; then
-        currenttime="$(date +%s)"
-        writetime="$(stat -c%Y "$1")"
-        timedifference=$(("$currenttime" - "$writetime"))
-        [ $timedifference -le 1 ]
-    else
-        false
-    fi
-}
-
-rotate_current_action () {
-    was_recently_modified "$currentactionfile" && return
-    currentaction=$(grep "$currentaction:" "$actioncyclefile" | cut -d: -f2)
-    echo "$currentaction" > "$currentactionfile"
-    simple_notify "$currentaction"
-}
-
-rotate_player () {
-    was_recently_modified "$currentplayerfile" && return
-    currentplayer=$(grep "$currentplayer:" "$playercyclefile" | cut -d: -f2)
-    echo "$currentplayer" > "$currentplayerfile"
-    simple_notify "$currentplayer"
-}
-
-# $@: Commands to forward to the current player
-control_current_player () {
-    playerctl --player="$currentplayer" "$@"
-}
-
-# $1: Integer seconds directly followed by + or -
-try_modify_position () {
-    if control_current_player position "$1"; then
-        true
-    else
-        simple_notify "Could not seek"
-        false
-    fi
+# $@: Arguments to forward to the player
+control () {
+    playerctl --player="$("$MY_DOTFILES_REPO/scripts/current-media-player")" "$@"
 }
 
 # $1: "-" | "+"
-# $2: Short action description
 seek () {
+    mkdir -p "$MY_DOTFILES_REPO/state"
     lockfile="$MY_DOTFILES_REPO/state/lock-media-control-seek"
     [ -f "$lockfile" ] && return
     touch "$lockfile"
-    case $(control_current_player status) in
+    case $(control status) in
         Paused)
-            seconds=30
-            try_modify_position "$seconds$1" &&
-                simple_notify "$2 $seconds seconds";;
+            control position "20$1"
+            paplay /usr/share/sounds/freedesktop/stereo/dialog-error.oga &;;
         Playing)
-            try_modify_position "4$1" &&
-                sleep 0.5;;
+            control position "5$1";;
         *)
-            simple_notify "Invalid player state";;
+            error "Invalid player state";;
     esac
+    sleep 0.5
     rm "$lockfile"
 }
 
-# $1: "-" | "+"
-# $2: Short action description
-modify_volume () {
-    volumetimestampfile="$MY_DOTFILES_REPO/state/timestamp-media-volume-modified"
-    was_recently_modified "$volumetimestampfile" && return
-    touch "$volumetimestampfile"
-    if control_current_player volume "0.1$1"; then
-        simple_notify "$2"
+toggle () {
+    if [ "$(control status)" = "Paused" ]; then
+        control position 5-
+        control play
     else
-        simple_notify "Could not modify volume"
+        control pause
     fi
-}
-
-perform_current_action () {
-    case $currentaction in
-        "rotate player")
-            rotate_player;;
-        "backward seek")
-            seek - Back;;
-        "forward seek")
-            seek + Skip;;
-        "decrease volume")
-            modify_volume - Minus;;
-        "increase volume")
-            modify_volume + Plus;;
-        *)
-            error "Invalid action state";;
-    esac
-}
-
-pause () {
-    pausetimestampfile="$MY_DOTFILES_REPO/state/timestamp-media-paused"
-    if was_recently_modified "$pausetimestampfile"; then
-        playerctl --all-players pause
-    else
-        if [ "$(control_current_player status)" = "Paused" ]; then
-            control_current_player position 5-
-            control_current_player play
-        else
-            control_current_player pause
-        fi
-        touch "$pausetimestampfile"
-    fi
-}
-
-display_current_track_info () {
-    notify-send -t 750 "$(control_current_player metadata title)" "$(control_current_player metadata artist)"
 }
 
 case $1 in
     play|pause)
-        pause;;
+        toggle;;
     next)
-        control_current_player next
-        display_current_track_info;;
+        control next;;
     previous)
-        control_current_player previous
-        display_current_track_info;;
+        control previous;;
     forward)
-        perform_current_action;;
+        seek +;;
     rewind)
-        rotate_current_action;;
+        seek -;;
     *)
         error "Invalid argument";;
 esac

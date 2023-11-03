@@ -1,9 +1,4 @@
 #!/bin/sh
 
-triggerfile="$MY_DOTFILES_REPO/state/compilation-trigger" 
-
-if [ -e "$triggerfile" ]; then
-    touch "$triggerfile"
-else
-    notify-send "Error: trigger-compilation" "Trigger file not found"
-fi
+mkdir -p "$MY_DOTFILES_REPO/state"
+touch "$MY_DOTFILES_REPO/state/compilation-trigger"

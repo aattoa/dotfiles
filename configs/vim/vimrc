@@ -1,6 +1,5 @@
 filetype off                     " Disable file type detection
 syntax enable                    " Enable syntax highting
-colorscheme retrobox             " Best default colorscheme
 set background=dark              " Enable dark mode
 set encoding=utf-8               " Enable unicode
 set nocompatible                 " Disable vi compatibility

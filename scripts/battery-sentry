@@ -1,5 +1,6 @@
 #!/bin/sh
 
+mkdir -p "$MY_DOTFILES_REPO/state"
 bat="/sys/class/power_supply/BAT0"
 
 # $1: Integer percentage
