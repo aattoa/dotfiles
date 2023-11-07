@@ -16,3 +16,5 @@ case $1 in
         [ -n "$DISPLAY" ] && notify-send "Error: volume-control" "Invalid argument"
         exit 1;;
 esac
+
+pkill -USR1 --exact cppstatus || pkill -USR1 --exact slstatus || true

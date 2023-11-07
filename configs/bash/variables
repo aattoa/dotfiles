@@ -5,7 +5,10 @@ PS1="$ "
 PS2="> "
 
 # Add custom scripts to PATH
-export PATH=$MY_DOTFILES_REPO/scripts:$PATH
+export PATH="$MY_DOTFILES_REPO/scripts:$PATH"
+
+# Add local binaries to PATH
+export PATH="$HOME/.local/bin:$PATH"
 
 # Disable logging of duplicate and exit commands
 export HISTCONTROL=ignoredups
@@ -18,6 +21,12 @@ export HISTSIZE=-1
 export EDITOR=nvim
 export BROWSER=librewolf
 
+# XDG directories
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_STATE_HOME="$HOME/.local/state"
+
 # Miscellaneous app configuration
 export PYTHONSTARTUP="$MY_DOTFILES_REPO/configs/python/startup.py"
 export LESSHISTFILE=/dev/null
@@ -25,12 +34,8 @@ export SQLITE_HISTORY=/dev/null
 export WATCH_INTERVAL=0.1
 export MANPAGER="nvim +Man!"
 export MANWIDTH=999
-
-# XDG directories
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_CACHE_HOME="$HOME/.cache"
-export XDG_DATA_HOME="$HOME/.local/share"
-export XDG_STATE_HOME="$HOME/.local/state"
+export GHCUP_INSTALL_BASE_PREFIX="$XDG_DATA_HOME"
+export GHCUP_USE_XDG_DIRS=yes
 
 # Config and state locations for apps that don't respect XDG
 export HISTFILE="$XDG_STATE_HOME/bash/history"
@@ -40,6 +45,3 @@ export CARGO_HOME="$XDG_DATA_HOME/cargo"
 export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 export WINEPREFIX="$XDG_DATA_HOME/wineprefixes/default"
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
-
-# shellcheck disable=1091
-[ -e "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env"

@@ -31,11 +31,24 @@ seek () {
 }
 
 toggle () {
-    if [ "$(control status)" = "Paused" ]; then
-        control position 5-
-        control play
+    mkdir -p "$MY_DOTFILES_REPO/state"
+    lockfile="$MY_DOTFILES_REPO/state/media-control-toggle-lock"
+    if [ -f "$lockfile" ]; then
+        playerctl --all-players pause &
+        bluetoothctl disconnect &
+        slock
     else
-        control pause
+        {
+            touch "$lockfile"
+            sleep 0.5
+            rm "$lockfile"
+        } &
+        if [ "$(control status)" = "Paused" ]; then
+            control position 5-
+            control play
+        else
+            control pause
+        fi
     fi
 }
 

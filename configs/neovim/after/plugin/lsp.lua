@@ -19,15 +19,16 @@ lsp.setup_nvim_cmp({
 })
 
 lsp.on_attach(function(client, buffer)
+    lsp.default_keymaps({ buffer = buffer })
+    vim.diagnostic.config({ virtual_text = true })
+
     if client.server_capabilities.signatureHelpProvider then
         require("lsp-overloads").setup(client, {})
     end
-    lsp.default_keymaps({ buffer = buffer })
-    lsp.buffer_autoformat(client, buffer, {
-        -- Do not automatically format lua files
-        filter = function(client_) return client_.name ~= "lua_ls" end
-    })
-    vim.diagnostic.config({ virtual_text = true })
+
+    if client.name == "clangd" then
+        lsp.buffer_autoformat(client, buffer)
+    end
 
     if client.server_capabilities.documentHighlightProvider then
         vim.api.nvim_create_autocmd("CursorHold", {
