@@ -83,6 +83,9 @@ vim.keymap.set("n", "<C-M-h>", ":vertical resize -2<Return>", { silent = true })
 vim.keymap.set("v", "<", "<gv")
 vim.keymap.set("v", ">", ">gv")
 
+-- Toggle between latin and greek alphabets
+vim.keymap.set("n", "<Leader>k", ALPHABET_TOGGLE)
+
 -- Make current file
 vim.keymap.set("n", "<Leader>a", ":silent make<Return>", { silent = true })
 

@@ -16,3 +16,4 @@ fi
 source "$MY_DOTFILES_REPO/configs/bash/aliases"
 source "$MY_DOTFILES_REPO/configs/bash/variables"
 source "$MY_DOTFILES_REPO/configs/bash/functions"
+source "$MY_DOTFILES_REPO/configs/bash/completions"

@@ -1,3 +1,4 @@
+require("mystuff.alphabet")
 require("mystuff.plugins")
 require("mystuff.settings")
 require("mystuff.mappings")

@@ -52,13 +52,25 @@ toggle () {
     fi
 }
 
+is_at_track_beginning () {
+    python -c "exit(10 < $(control position))"
+}
+
+previous () {
+    if is_at_track_beginning; then
+        control previous
+    else
+        control position 0
+    fi
+}
+
 case $1 in
     play|pause)
         toggle;;
     next)
         control next;;
     previous)
-        control previous;;
+        previous;;
     forward)
         seek +;;
     rewind)

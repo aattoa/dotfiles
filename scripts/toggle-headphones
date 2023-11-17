@@ -1,19 +1,15 @@
 #!/bin/sh
 
-is_X_running () {
-    [ -n "$DISPLAY" ]
-}
-
 # $1: Error message
 error () {
-    is_X_running && notify-send "Error: toggle-headphones" "$1"
+    [ -n "$DISPLAY" ] && notify-send "Error: toggle-headphones" "$1"
     exit 1
 }
 
 # $1: "connect" | "disconnect"
 # $2: Device address
 connect_or_disconnect () {
-    if ! is_X_running; then
+    if [ -z "$DISPLAY" ]; then
         bluetoothctl "$1" "$2"
     else
         notification=$(notify-send --print-id "Attempting to $1...")
