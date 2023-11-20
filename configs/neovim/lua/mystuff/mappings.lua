@@ -1,38 +1,15 @@
---[[
-    n: normal
-    i: insert
-    v: visual
-    x: visual block
-    t: terminal
-    c: command
-]]
+-- n: normal
+-- i: insert
+-- v: visual
+-- x: visual block
+-- t: terminal
+-- c: command
 
 -- Explore with Netrw
 vim.keymap.set("n", "<Leader>e", vim.cmd.Explore)
 
--- Language server protocol
-vim.keymap.set("n", "<Leader>lr", vim.lsp.buf.rename)
-vim.keymap.set("n", "<Leader>la", vim.lsp.buf.code_action)
-
--- Fuzzy finding with telescope
-local telescope = require("telescope.builtin")
-vim.keymap.set("n", "<Leader>f",  telescope.find_files)
-vim.keymap.set("n", "<Leader>/",  function () telescope.find_files({ cwd = "$HOME" }) end)
-vim.keymap.set("n", "<Leader>m",  function () telescope.man_pages({ sections = { "ALL" } }) end)
-vim.keymap.set("n", "<Leader>o",  telescope.oldfiles)
-vim.keymap.set("n", "<Leader>r",  telescope.live_grep)
-vim.keymap.set("n", "<Leader>lf", telescope.lsp_references)
-vim.keymap.set("n", "<Leader>ls", telescope.lsp_document_symbols)
-vim.keymap.set("n", "?",          telescope.help_tags)
-
 -- Extract URLs from current buffer
 vim.keymap.set("n", "<Leader>u", ":call system(\"handle-urls\", join(getline(1, '$'), \"\\n\") .. \"\\n\")<Return>", { silent = true })
-
--- Toggle diagnostics window
-vim.keymap.set("n", "<Leader>d", vim.cmd.TroubleToggle)
-
--- Overload helper
-vim.keymap.set("i", "<C-Space>", vim.cmd.LspOverloadsSignature)
 
 -- Toggle search case sensitivity
 vim.keymap.set("n", "<Leader>i", ":set ignorecase!<Return>", { silent = true })
@@ -45,7 +22,6 @@ vim.keymap.set("n", "<Leader>n", ":set number!<Return>:set relativenumber!<Retur
 
 -- System clipboard
 vim.keymap.set({ "n", "v" }, "<C-c>", "\"+")
-vim.keymap.set("i", "<C-c>", "<Esc>\"+yya")
 
 -- Search and replace
 vim.keymap.set("n", "<C-s>", ":%substitute//g<Left><Left>")
@@ -63,10 +39,6 @@ vim.keymap.set("n", "<S-Tab>", vim.cmd.tabprevious)
 vim.keymap.set("n", "g<",      ":tabmove -1<Return>", { silent = true })
 vim.keymap.set("n", "g>",      ":tabmove +1<Return>", { silent = true })
 
--- Avoid clashes with Vimwiki bindings
-vim.keymap.set("n", "<Leader>wj", "<Plug>VimwikiNextLink", { remap = true }) -- Mapped to <Tab> by default
-vim.keymap.set("n", "<Leader>wk", "<Plug>VimwikiPrevLink", { remap = true }) -- Mapped to <S-Tab> by default
-
 -- https://vim.fandom.com/wiki/Moving_lines_up_or_down
 vim.keymap.set("n", "<C-k>", ":move .-2<Return>==",     { silent = true }) -- Current line up
 vim.keymap.set("n", "<C-j>", ":move .+1<Return>==",     { silent = true }) -- Current line down
@@ -74,8 +46,8 @@ vim.keymap.set("v", "<C-k>", ":move '<-2<Return>gv=gv", { silent = true }) -- Se
 vim.keymap.set("v", "<C-j>", ":move '>+1<Return>gv=gv", { silent = true }) -- Selected lines down
 
 -- Window resizing
-vim.keymap.set("n", "<C-M-k>", ":resize -1<Return>",          { silent = true })
-vim.keymap.set("n", "<C-M-j>", ":resize +1<Return>",          { silent = true })
+vim.keymap.set("n", "<C-M-j>", ":resize -1<Return>",          { silent = true })
+vim.keymap.set("n", "<C-M-k>", ":resize +1<Return>",          { silent = true })
 vim.keymap.set("n", "<C-M-l>", ":vertical resize +2<Return>", { silent = true })
 vim.keymap.set("n", "<C-M-h>", ":vertical resize -2<Return>", { silent = true })
 
@@ -83,7 +55,7 @@ vim.keymap.set("n", "<C-M-h>", ":vertical resize -2<Return>", { silent = true })
 vim.keymap.set("v", "<", "<gv")
 vim.keymap.set("v", ">", ">gv")
 
--- Toggle between latin and greek alphabets
+-- Toggle between alphabets
 vim.keymap.set("n", "<Leader>k", ALPHABET_TOGGLE)
 
 -- Make current file
