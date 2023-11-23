@@ -62,9 +62,6 @@ return require("packer").startup(function (use)
     -- Personal wiki
     use "vimwiki/vimwiki"
 
-    -- Preview colors in source code
-    use "ap/vim-css-color"
-
     -- Colorscheme
     use "tiagovla/tokyodark.nvim"
 

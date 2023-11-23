@@ -20,6 +20,7 @@ function ALPHABET_LATIN ()
     print("Latin alphabet")
 end
 
+---@type boolean
 local is_latin = true
 
 function ALPHABET_TOGGLE ()

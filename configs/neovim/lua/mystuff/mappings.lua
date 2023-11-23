@@ -20,6 +20,9 @@ vim.keymap.set("n", "<Leader>h", ":set hlsearch!<Return>", { silent = true })
 -- Toggle line number visibility
 vim.keymap.set("n", "<Leader>n", ":set number!<Return>:set relativenumber!<Return>", { silent = true })
 
+-- Toggle between alphabets
+vim.keymap.set("i", "<C-a>", ALPHABET_TOGGLE)
+
 -- System clipboard
 vim.keymap.set({ "n", "v" }, "<C-c>", "\"+")
 
@@ -54,9 +57,6 @@ vim.keymap.set("n", "<C-M-h>", ":vertical resize -2<Return>", { silent = true })
 -- Stay in visual mode on indent/dedent
 vim.keymap.set("v", "<", "<gv")
 vim.keymap.set("v", ">", ">gv")
-
--- Toggle between alphabets
-vim.keymap.set("n", "<Leader>k", ALPHABET_TOGGLE)
 
 -- Make current file
 vim.keymap.set("n", "<Leader>a", ":silent make<Return>", { silent = true })

@@ -7,10 +7,10 @@ $if mode=vi
     Control-l: clear-screen
 $endif
 
-# Enable cycling through completions
+# Cycle through completions
 TAB: menu-complete
 
-# Enable case insensitive autocompletion
+# Case insensitive autocompletion
 set completion-ignore-case on
 
 # Partially complete and show possible completions on a single tab when ambiguous
