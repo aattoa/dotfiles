@@ -1,5 +1,5 @@
 require("mystuff.settings")
 require("mystuff.alphabet")
 require("mystuff.mappings")
-require("mystuff.plugins")
 require("mystuff.autocmd")
+require("mystuff.lazy")
