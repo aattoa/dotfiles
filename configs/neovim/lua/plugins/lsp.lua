@@ -3,6 +3,9 @@
 local function enable_format_on_save(client, buffer)
     vim.api.nvim_create_autocmd("BufWritePre", {
         callback = function ()
+            if client.name == "clangd" and vim.fn.findfile(".clang-format", ".;") == "" then
+                return -- Do not format with clangd when there is no clang-format file.
+            end
             vim.lsp.buf.format {
                 id    = client.id,
                 name  = client.name,
@@ -43,6 +46,20 @@ local function enable_highlight_cursor_references(client, buffer)
     })
 end
 
+local function configure_diagnostics()
+    vim.diagnostic.config {
+        virtual_text = {
+            format = function (diagnostic)
+                -- Avoid annoyingly verbose virtual text by displaying
+                -- only the diagnostic code instead of the full message.
+                return diagnostic.code
+            end,
+        },
+        float = { border = "rounded" },
+        severity_sort = true,
+    }
+end
+
 local function set_lsp_mappings()
     vim.keymap.set({ "n", "i" }, "<C-Space>",  vim.lsp.buf.signature_help)
     vim.keymap.set("n",          "<Leader>lr", vim.lsp.buf.rename)
@@ -59,6 +76,7 @@ end
 ---@param buffer integer
 local function default_on_attach(client, buffer)
     enable_highlight_cursor_references(client, buffer)
+    configure_diagnostics()
     set_lsp_mappings()
 end
 
@@ -112,5 +130,5 @@ return {
             end,
         }
     },
-    event = { "BufRead", "BufNew" },
+    event = { "BufReadPost", "BufNewFile" },
 }

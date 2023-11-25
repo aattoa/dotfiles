@@ -1,1 +1,1 @@
-require("mystuff")
+require("config")
