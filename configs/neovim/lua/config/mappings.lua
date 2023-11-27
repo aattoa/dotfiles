@@ -71,6 +71,6 @@ vim.keymap.set("c", "<C-k>", "<Up>")
 vim.keymap.set("c", "<C-l>", "<Right>")
 
 -- Center the cursor after movements
-for _, movement in ipairs({ "G", "n", "N", "<C-d>", "<C-u>", "{", "}" }) do
+for _, movement in ipairs { "G", "n", "N", "<C-d>", "<C-u>", "{", "}" } do
     vim.keymap.set({ "n", "v" }, movement, movement .. "zz")
 end

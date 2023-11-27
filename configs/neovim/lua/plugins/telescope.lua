@@ -1,6 +1,6 @@
 ---@return boolean
 local function is_git_dir()
-    return vim.fn.finddir(".git", ".;") ~= ""
+    return next(vim.fs.find(".git", { upward = true, stop = vim.loop.os_homedir() }))
 end
 
 local function git_files_or_fallback()
