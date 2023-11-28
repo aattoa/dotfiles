@@ -37,6 +37,9 @@ export MANWIDTH=999
 export GHCUP_INSTALL_BASE_PREFIX="$XDG_DATA_HOME"
 export GHCUP_USE_XDG_DIRS=yes
 
+GPG_TTY=$(tty)
+export GPG_TTY
+
 # Config and state locations for apps that don't respect XDG
 export HISTFILE="$XDG_STATE_HOME/bash/history"
 export INPUTRC="$MY_DOTFILES_REPO/configs/readline/inputrc"

@@ -1,16 +1,16 @@
 #!/bin/sh
 
-show_new_brightness() {
-    notify-send -t 250 "New brightness" "$(light)%"
+# $1: New brightness
+control() {
+    brightnessctl set "$1"
+    notify-send -t 250 "New brightness" "$(brightnessctl get)%"
 }
 
 case $1 in
 up)
-    light -A 10
-    show_new_brightness;;
+    control 10%+;;
 down)
-    light -U 10
-    show_new_brightness;;
+    control 10%-;;
 *)
     notify-send "Error: change-brightness" "Invalid argument"
     exit 1;;
