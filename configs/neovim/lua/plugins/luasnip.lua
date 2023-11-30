@@ -12,5 +12,9 @@ return {
     config = function ()
         map_jump("<C-j>",  1)
         map_jump("<C-k>", -1)
+        require("luasnip").setup {
+            update_events = { "TextChanged", "TextChangedI" },
+        }
+        require("config.snippets")
     end,
 }

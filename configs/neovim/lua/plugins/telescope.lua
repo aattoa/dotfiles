@@ -30,7 +30,7 @@ return {
         { "<Leader>r",  telescope("live_grep") },
         { "?",          telescope("help_tags") },
 
-        { "<Leader>sd", telescope("git_files",  { cwd = "$MY_DOTFILES_REPO", prompt_title = "Dotfiles" }) },
+        { "<Leader>sd", telescope("git_files",  { cwd = "$MY_DOTFILES_REPO", prompt_title = "Dotfiles", show_untracked = true }) },
         { "<Leader>sh", telescope("find_files", { cwd = "$HOME",             prompt_title = "Home directory" }) },
         { "<Leader>sm", telescope("man_pages",  { sections = { "ALL" },      prompt_title = "Manuals" }) },
 

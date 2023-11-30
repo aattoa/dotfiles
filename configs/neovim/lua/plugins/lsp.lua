@@ -20,6 +20,18 @@ end
 ---@type boolean
 local is_currently_cursor_held = false
 
+local function highlight_references()
+    vim.lsp.buf.document_highlight()
+    is_currently_cursor_held = true
+end
+
+local function clear_highlights()
+    if is_currently_cursor_held then
+        vim.lsp.buf.clear_references()
+        is_currently_cursor_held = false
+    end
+end
+
 ---@param client table
 ---@param buffer integer
 local function enable_highlight_cursor_references(client, buffer)
@@ -27,22 +39,14 @@ local function enable_highlight_cursor_references(client, buffer)
         return
     end
     vim.api.nvim_create_autocmd("CursorHold", {
-        callback = function ()
-            vim.lsp.buf.document_highlight()
-            is_currently_cursor_held = true
-        end,
-        buffer = buffer,
-        desc   = "Highlight references to the symbol under the cursor",
+        callback = highlight_references,
+        buffer   = buffer,
+        desc     = "Highlight references to the symbol under the cursor",
     })
-    vim.api.nvim_create_autocmd("CursorMoved", {
-        callback = function ()
-            if is_currently_cursor_held then
-                vim.lsp.buf.clear_references()
-                is_currently_cursor_held = false
-            end
-        end,
-        buffer = buffer,
-        desc   = "Clear reference highlights when the cursor is moved",
+    vim.api.nvim_create_autocmd({ "CursorMoved", "InsertEnter" }, {
+        callback = clear_highlights,
+        buffer   = buffer,
+        desc     = "Clear reference highlights when the cursor is moved",
     })
 end
 
@@ -85,6 +89,12 @@ return {
             cmd          = { "clangd", "--clang-tidy" },
             capabilities = capabilities,
         }
+
+        lspconfig.rust_analyzer.setup {
+            on_attach    = on_attach { enable_format_on_save },
+            capabilities = capabilities,
+        }
+
         lspconfig.lua_ls.setup {
             on_attach = on_attach {},
             settings = {
@@ -97,7 +107,7 @@ return {
             capabilities = capabilities,
         }
 
-        for _, server in ipairs { "rust_analyzer", "pylsp", "bashls", "cmake" } do
+        for _, server in ipairs { "hls", "pylsp", "bashls", "cmake" } do
             lspconfig[server].setup {
                 on_attach    = on_attach {},
                 capabilities = capabilities,
@@ -119,10 +129,8 @@ return {
             severity_sort = true,
         }
 
-        vim.lsp.handlers["textDocument/hover"]
-            = vim.lsp.with(vim.lsp.handlers.hover, { border = lsp_popup_border })
-        vim.lsp.handlers["textDocument/signatureHelp"]
-            = vim.lsp.with(vim.lsp.handlers.signature_help, { border = lsp_popup_border })
+        vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = lsp_popup_border })
+        vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = lsp_popup_border })
     end,
     event = { "BufReadPost", "BufNewFile" },
 }

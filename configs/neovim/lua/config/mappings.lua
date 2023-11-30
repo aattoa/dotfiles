@@ -7,6 +7,7 @@
 
 -- Explore with Netrw
 vim.keymap.set("n", "<Leader>e", vim.cmd.Explore)
+vim.keymap.set("n", "<Leader>E", vim.cmd.Texplore)
 
 -- Extract URLs from current buffer
 vim.keymap.set("n", "<Leader>u", "<Cmd>call system(\"handle-urls\", join(getline(1, '$'), \"\\n\") .. \"\\n\")<Return>")
