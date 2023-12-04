@@ -17,8 +17,8 @@ ls.add_snippets("rust", {
         name = "Test",
         dscr = "Unit test",
     }, {
-        ls.text_node({ "#[test]", "fn test_" }),
-        ls.insert_node(1, "name"),
+        ls.text_node({ "#[test]", "fn " }),
+        ls.insert_node(1, "test-name"),
         ls.text_node({ "() {", "\t" }),
         ls.insert_node(2),
         ls.text_node({ "", "}" }),

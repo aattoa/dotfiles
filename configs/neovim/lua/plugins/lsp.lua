@@ -64,8 +64,7 @@ local function set_lsp_mappings(buffer)
 end
 
 ---@param callbacks table
----@return function
-local function on_attach(callbacks)
+local function make_on_attach_callback(callbacks)
     ---@param client table
     ---@param buffer integer
     return function (client, buffer)
@@ -77,41 +76,52 @@ local function on_attach(callbacks)
     end
 end
 
+---@class ServerSetupArguments
+---@field command table|nil
+---@field settings table|nil
+---@field on_attach_callbacks table|nil
+
+---@param server string
+---@param args ServerSetupArguments|nil
+local function setup_server(server, args)
+    require("lspconfig")[server].setup {
+        on_attach    = make_on_attach_callback(args and args.on_attach_callbacks or {}),
+        capabilities = require("cmp_nvim_lsp").default_capabilities(),
+        cmd          = args and args.command,
+        settings     = args and args.settings,
+    }
+end
+
 return {
     "neovim/nvim-lspconfig",
     dependencies = { "hrsh7th/nvim-cmp" },
     config = function ()
-        local lspconfig    = require("lspconfig")
-        local capabilities = require("cmp_nvim_lsp").default_capabilities()
+        setup_server("clangd", {
+            on_attach_callbacks = { enable_format_on_save },
+            command             = { "clangd", "--clang-tidy" },
+        })
 
-        lspconfig.clangd.setup {
-            on_attach    = on_attach { enable_format_on_save },
-            cmd          = { "clangd", "--clang-tidy" },
-            capabilities = capabilities,
-        }
+        setup_server("rust_analyzer", {
+            on_attach_callbacks = { enable_format_on_save },
+            settings = {
+                ["rust-analyzer"] = {
+                    checkOnSave = { command = "clippy" },
+                },
+            },
+        })
 
-        lspconfig.rust_analyzer.setup {
-            on_attach    = on_attach { enable_format_on_save },
-            capabilities = capabilities,
-        }
-
-        lspconfig.lua_ls.setup {
-            on_attach = on_attach {},
+        setup_server("lua_ls", {
             settings = {
                 Lua = {
                     runtime     = { version = "LuaJIT" },
                     diagnostics = { globals = { "vim" } },
                     workspace   = { library = { vim.env.VIMRUNTIME } },
-                }
+                },
             },
-            capabilities = capabilities,
-        }
+        })
 
         for _, server in ipairs { "hls", "pylsp", "bashls", "cmake" } do
-            lspconfig[server].setup {
-                on_attach    = on_attach {},
-                capabilities = capabilities,
-            }
+            setup_server(server)
         end
 
         ---@type string

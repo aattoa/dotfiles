@@ -13,7 +13,7 @@ ls.add_snippets("haskell", {
         ls.text_node({ "", "" }),
         util.simple_dynamic_node(4, 1),
         ls.text_node(" = "),
-        ls.insert_node(3, "definition"),
+        ls.insert_node(3, "undefined"),
         ls.insert_node(0),
     }),
 })
