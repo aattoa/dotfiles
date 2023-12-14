@@ -7,7 +7,7 @@ local function git_files_or_fallback()
     if is_git_dir() then
         require("telescope.builtin").git_files { show_untracked = true }
     else
-        require("telescope.builtin").find_files()
+        require("telescope.builtin").find_files {}
     end
 end
 
@@ -30,9 +30,9 @@ return {
         { "<Leader>r",  telescope("live_grep") },
         { "?",          telescope("help_tags") },
 
-        { "<Leader>sd", telescope("git_files",  { cwd = "$MY_DOTFILES_REPO", prompt_title = "Dotfiles", show_untracked = true }) },
-        { "<Leader>sh", telescope("find_files", { cwd = "$HOME",             prompt_title = "Home directory" }) },
-        { "<Leader>sm", telescope("man_pages",  { sections = { "ALL" },      prompt_title = "Manuals" }) },
+        { "<Leader>sd", telescope("git_files",  { cwd = "$MY_DOTFILES_REPO",    prompt_title = "Dotfiles", show_untracked = true }) },
+        { "<Leader>sh", telescope("find_files", { cwd = "$HOME", hidden = true, prompt_title = "Home directory" }) },
+        { "<Leader>sm", telescope("man_pages",  { sections = { "ALL" },         prompt_title = "Manuals" }) },
 
         { "<Leader>lf", telescope("lsp_references") },
         { "<Leader>ls", telescope("lsp_document_symbols") },

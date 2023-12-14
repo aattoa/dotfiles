@@ -13,14 +13,27 @@ return {
                     keymaps = {
                         ["af"] = "@function.outer",
                         ["if"] = "@function.inner",
+
                         ["aa"] = "@parameter.outer",
                         ["ia"] = "@parameter.inner",
+
+                        ["ac"] = "@class.outer",
+                        ["ic"] = "@class.inner",
+
+                        ["ai"] = "@call.outer",
+                        ["ii"] = "@call.inner",
+
+                        ["ar"] = "@return.outer",
+                        ["ir"] = "@return.inner",
+
+                        ["al"] = "@loop.outer",
+                        ["il"] = "@loop.inner",
                     },
                     enable                         = true,
                     lookahead                      = true,
                     include_surrounding_whitespace = false,
-                }
-            }
+                },
+            },
         }
     end,
     event = "VeryLazy",

@@ -2,27 +2,15 @@
 
 # Make and change directory (mkdir + cd)
 mc () {
-    if [ "$#" = "1" ]; then
+    if [ "$#" != "1" ]; then
+        echo "mc: Expected exactly one argument"
+        exit 1
+    elif [ -d "$1" ]; then
+        cd -- "$1" || exit
+        echo "Moved to existing $(pwd)"
+    else
         mkdir -p -- "$1"
         cd -- "$1" || exit
         echo "Created and moved to $(pwd)"
-    else
-        echo "mc: Expected exactly one argument"
-        exit 1
     fi
-}
-
-# List working directory (pwd + ls)
-lwd () {
-    if [ "$#" = "0" ]; then
-        echo "$(pwd):"
-        ls
-    else
-        echo "lwd: Unexpected arguments"
-        exit 1
-    fi
-}
-
-run-tests-on-compilation-trigger () {
-    on-compilation-trigger "cmake --build . && (ctest --progress || ctest --rerun-failed --output-on-failure)"
 }

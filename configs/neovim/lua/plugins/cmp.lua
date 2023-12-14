@@ -24,12 +24,13 @@ return {
                 { name = "path" },
             },
             mapping = cmp.mapping.preset.insert {
-                ["<Tab>"]    = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-                ["<S-Tab>"]  = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-                ["<Return>"] = cmp.mapping.confirm({ select = false }),
-                ["<C-j>"]    = cmp.mapping.scroll_docs(1),
-                ["<C-k>"]    = cmp.mapping.scroll_docs(-1),
-                ["<C-c>"]    = cmp.mapping.abort(),
+                ["<Tab>"]     = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+                ["<S-Tab>"]   = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+                ["<Return>"]  = cmp.mapping.confirm({ select = false }),
+                ["<C-Space>"] = cmp.mapping.complete(),
+                ["<C-j>"]     = cmp.mapping.scroll_docs(1),
+                ["<C-k>"]     = cmp.mapping.scroll_docs(-1),
+                ["<C-c>"]     = cmp.mapping.abort(),
             },
             snippet = {
                 expand = function (args)

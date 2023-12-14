@@ -8,6 +8,6 @@ return {
         vim.keymap.set("n", "<Leader>wj", "<Plug>VimwikiNextLink", { remap = true }) -- Mapped to <Tab> by default
         vim.keymap.set("n", "<Leader>wk", "<Plug>VimwikiPrevLink", { remap = true }) -- Mapped to <S-Tab> by default
     end,
-    event = { "BufReadPre *.md" },
+    event = { "BufReadPre *.md", "BufNewFile *md" },
     keys  = { "<Leader>ww" },
 }

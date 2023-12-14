@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# $1: Message
+error () {
+    echo "Error: run-tests: $1"
+    exit 1
+}
+
+# $1: Directory
+run_tests () {
+    if [ -f "$1/CMakeCache.txt" ]; then
+        cmake --build "$1" && (ctest --test-dir "$1" --progress || ctest --test-dir "$1" --rerun-failed --output-on-failure)
+    elif [ -f "$1/Cargo.toml" ]; then
+        cargo test --manifest-path "$1/Cargo.toml"
+    else
+        error "Could not run tests in $1"
+    fi
+}
+
+case "$#" in
+    "0")
+        run_tests .;;
+    "1")
+        run_tests "$1";;
+    *)
+        error "Invalid argument count";;
+esac
