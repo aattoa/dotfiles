@@ -90,7 +90,7 @@ execute_strategy () {
         wget)
             wget --no-verbose --show-progress "$url";;
         mpv)
-            mpv "$url";;
+            mpv --video-sync=audio "$url";;
         mpv-audio)
             mpv --no-video "$url";;
         *)

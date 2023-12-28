@@ -1,0 +1,44 @@
+#!/bin/sh
+
+# $1: Error message
+error () {
+    if [ -n "$DISPLAY" ]; then
+        notify-send "Error: toggle-headphones" "$1"
+    else
+        echo "$1" 1>&2
+    fi
+    exit 1
+}
+
+# $1: "connect" | "disconnect"
+# $2: Device address
+connect_or_disconnect () {
+    if [ -z "$DISPLAY" ]; then
+        bluetoothctl "$1" "$2"
+    else
+        notification=$(notify-send --print-id "Attempting to ${1}...")
+        if bluetoothctl "$1" "$2"; then
+            notify-send -t 2000 --replace-id "$notification" "Successfully ${1}ed"
+        else
+            error "Unable to $1"
+        fi
+    fi
+}
+
+find_device () {
+    for deviceaddress in $(bluetoothctl devices | cut -d' ' -f2); do
+        deviceinfo=$(bluetoothctl info "$deviceaddress")
+        echo "$deviceinfo" | grep -q -x "\s*Paired: yes"         || continue
+        echo "$deviceinfo" | grep -q -x "\s*Alias: myheadphones" || continue
+        echo "$deviceaddress"
+        return
+    done
+    error "No headphones available"
+}
+
+case $1 in
+    connect|disconnect)
+        connect_or_disconnect "$1" "$(find_device)";;
+    *)
+        error "Invalid argument";
+esac

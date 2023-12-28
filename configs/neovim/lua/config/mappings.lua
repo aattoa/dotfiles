@@ -35,6 +35,9 @@ vim.keymap.set("n", "<Leader>n", cmd "set number!" .. cmd "set relativenumber!")
 vim.keymap.set("n", "<Leader>j", "<C-o>zz")
 vim.keymap.set("n", "<Leader>k", "<C-i>zz")
 
+-- Easier alternate file access
+vim.keymap.set("n", "<C-l>", "<C-^>")
+
 -- Toggle between alphabets
 vim.keymap.set("n", "<Leader>a", ALPHABET_TOGGLE)
 vim.keymap.set("i", "<C-a>",     ALPHABET_TOGGLE)
@@ -50,13 +53,18 @@ vim.keymap.set("v", "<C-s>", ":substitute//g<Left><Left>")
 vim.keymap.set("n", "<C-n>", ":%substitute///gn<Left><Left><Left><Left>")
 vim.keymap.set("v", "<C-n>", ":substitute///gn<Left><Left><Left><Left>")
 
--- Tab contros
+-- Tab controls
 vim.keymap.set("n", "<C-t>",   cmd "tabnew")
 vim.keymap.set("n", "<C-q>",   cmd "tabclose")
 vim.keymap.set("n", "<Tab>",   cmd "tabnext")
 vim.keymap.set("n", "<S-Tab>", cmd "tabprevious")
 vim.keymap.set("n", "g<",      cmd "tabmove -1")
 vim.keymap.set("n", "g>",      cmd "tabmove +1")
+
+for i = 1, 9 do
+    vim.keymap.set("n", "<Leader>" .. i, i .. "gt")
+end
+vim.keymap.set("n", "<Leader>0", function () vim.cmd(":tabnext " .. vim.g.lasttab) end)
 
 -- https://vim.fandom.com/wiki/Moving_lines_up_or_down
 vim.keymap.set("n", "<C-k>", ":move .-2<Return>==",     { silent = true }) -- Current line up
@@ -76,14 +84,6 @@ vim.keymap.set("v", ">", ">gv")
 
 -- Make current file
 vim.keymap.set("n", "<Leader>m", cmd "silent make")
-
--- Emulate normal mode navigation in command mode
-vim.keymap.set("c", "<C-b>", "<S-Left>")
-vim.keymap.set("c", "<C-w>", "<S-Right>")
-vim.keymap.set("c", "<C-h>", "<Left>")
-vim.keymap.set("c", "<C-j>", "<Down>")
-vim.keymap.set("c", "<C-k>", "<Up>")
-vim.keymap.set("c", "<C-l>", "<Right>")
 
 -- Center the cursor after movements
 for _, movement in ipairs { "G", "n", "N", "<C-d>", "<C-u>", "{", "}" } do

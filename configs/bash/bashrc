@@ -1,5 +1,4 @@
 #!/bin/bash
-# shellcheck disable=SC1091 # shellcheck can not follow the sources
 
 # Set dotfiles repo location, even for non-interactive shells
 export MY_DOTFILES_REPO=$HOME/misc/dotfiles

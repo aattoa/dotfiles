@@ -23,7 +23,7 @@ confirm-mark-feed-read no
 scrolloff 10
 
 # Directly stream media with mpv
-macro v set browser mpv ; open-in-browser ; set browser $BROWSER
+macro v set browser "mpv --video-sync=audio" ; open-in-browser ; set browser $BROWSER
 
 # Directly stream podcast audio with mpv
 macro a set external-url-viewer handle-podcast-urls ; show-urls ; set external-url-viewer handle-urls
