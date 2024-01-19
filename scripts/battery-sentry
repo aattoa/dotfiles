@@ -33,8 +33,7 @@ warn () {
     fi
 }
 
-if [ "$(cat $bat/status)" = "Discharging" ]
-then
+if [ "$(cat $bat/status)" = "Discharging" ]; then
     if less_than 10; then
         suspendtime=30
         warn 10 critical "Suspending in $suspendtime seconds..."

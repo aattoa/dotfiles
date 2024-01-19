@@ -15,6 +15,6 @@ if [ -z "$primary" ] || [ -z "$secondary" ]; then
     exit 1
 fi
 
-if xrandr --listmonitors | grep -q -F "$primary"; then
+if xrandr --listmonitors | grep --quiet --fixed-strings "$primary"; then
     xrandr --output "$secondary" --off
 fi

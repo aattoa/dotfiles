@@ -7,11 +7,11 @@ control() {
 }
 
 case $1 in
-up)
-    control 5%+;;
-down)
-    control 5%-;;
-*)
-    notify-send "Error: change-brightness" "Invalid argument"
-    exit 1;;
+    up)
+        control 5%+;;
+    down)
+        control 5%-;;
+    *)
+        notify-send "Error: change-brightness" "Invalid argument"
+        exit 1;;
 esac

@@ -8,7 +8,7 @@ apply_default () {
 
 apply_custom () {
     xset r rate 175 60
-    setxkbmap -layout us -option caps:swapescape
+    setxkbmap -layout "us" -option caps:swapescape
     exec unclutter --timeout 1 --jitter 10 --start-hidden --ignore-scrolling &
 }
 

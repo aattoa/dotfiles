@@ -35,12 +35,11 @@ vim.keymap.set("n", "<Leader>n", cmd "set number!" .. cmd "set relativenumber!")
 vim.keymap.set("n", "<Leader>j", "<C-o>zz")
 vim.keymap.set("n", "<Leader>k", "<C-i>zz")
 
+-- Toggle between alphabets
+vim.keymap.set("i", "<C-a>", require("config.alphabet").toggle)
+
 -- Easier alternate file access
 vim.keymap.set("n", "<C-l>", "<C-^>")
-
--- Toggle between alphabets
-vim.keymap.set("n", "<Leader>a", ALPHABET_TOGGLE)
-vim.keymap.set("i", "<C-a>",     ALPHABET_TOGGLE)
 
 -- System clipboard
 vim.keymap.set({ "n", "v" }, "<C-c>", "\"+")

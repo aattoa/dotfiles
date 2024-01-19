@@ -1,6 +1,5 @@
 #!/bin/sh
 
-
 selection=$(xclip -o -r)
 if [ -n "$selection" ]; then
     notify-send -t 1000 "Current selection:" "$selection"

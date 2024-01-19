@@ -3,7 +3,7 @@
 # FIXME: Swap-off works by resetting all setxkbmap options,
 #        which would also interfere with unrelated options.
 
-if setxkbmap -query | grep -q -F "caps:swapescape"; then
+if setxkbmap -query | grep --quiet --fixed-strings "caps:swapescape"; then
     setxkbmap -option
     notify-send -t 2000 "Caps/Escape swap off"
 else

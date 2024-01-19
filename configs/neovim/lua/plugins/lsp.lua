@@ -96,7 +96,7 @@ return {
     config = function ()
         setup_server("clangd", {
             on_attach_callbacks = { enable_format_on_save },
-            command             = { "clangd", "--clang-tidy" },
+            command             = { "clangd", "--clang-tidy", "--header-insertion=never", "--completion-style=detailed" },
         })
 
         setup_server("rust_analyzer", {

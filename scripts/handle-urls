@@ -90,7 +90,7 @@ execute_strategy () {
         wget)
             wget --no-verbose --show-progress "$url";;
         mpv)
-            mpv --video-sync=audio "$url";;
+            mpv "$url";;
         mpv-audio)
             mpv --no-video "$url";;
         *)
@@ -104,7 +104,7 @@ gather_lines () {
 }
 
 choose_url () {
-    urlscan -nd | grep -v "^mailto:*" | dmenu -i -l 5 -p "Which URL?"
+    urlscan --dedupe --no-browser | grep --invert-match "^mailto:*" | dmenu -i -l 5 -p "Which URL?"
 }
 
 gather_lines | choose_url | choose_strategy | execute_strategy

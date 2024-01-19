@@ -40,7 +40,7 @@ toggle () {
     else
         {
             touch "$lockfile"
-            sleep 0.5
+            sleep 1
             rm "$lockfile"
         } &
         if [ "$(control status)" = "Paused" ]; then

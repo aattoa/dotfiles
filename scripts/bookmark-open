@@ -56,8 +56,7 @@ if [ -z "$bookmarkchoice" ]; then
 fi
 
 if looks_like_a_url "$bookmarkchoice" && prompt_yesno "Open in browser?"; then
-    if [ -n "$BROWSER" ]
-    then
+    if [ -n "$BROWSER" ]; then
         $BROWSER "$bookmarkchoice"
     else
         notify-send Error "\$BROWSER is not defined"
