@@ -10,7 +10,6 @@ set ignorecase                   " Enable case insensitive search
 set relativenumber               " Enable relative line numbers
 set number                       " Absolute line number for current line
 set nowrap                       " Do not wrap long lines
-set cursorline                   " Highlight current line
 set smartindent                  " Automatically indent new lines
 set tabstop=4                    " Tabs appear as 4 spaces
 set shiftwidth=4                 " Set indentation to 4 spaces
@@ -21,6 +20,7 @@ set shortmess+=I                 " Disable intro message
 set viminfo=                     " Disable viminfo
 let g:netrw_banner=0             " Disable Netrw help banner
 let g:netrw_list_hide="^\\.\\/$" " Disable current directory
+let g:netrw_cursor=0             " Disable cursorline in Netrw
 let g:mapleader=" "              " Set the leader key
 
 " Explore with Netrw

@@ -22,4 +22,4 @@ vim.opt.pumheight        = 10              -- Limit autocompletion suggestions
 vim.opt.scrolloff        = 10              -- Vertical scrolloff
 vim.opt.sidescrolloff    = 30              -- Horizontal scrolloff
 
-vim.opt.shortmess:append "I"               -- Disable intro message
+vim.opt.shortmess:append("I")              -- Disable intro message

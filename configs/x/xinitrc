@@ -3,4 +3,4 @@ $MY_DOTFILES_REPO/scripts/configure-monitors
 xset s 1800 1800 -dpms
 exec slstatus &
 exec dunst &
-exec dwm 2> .dwm-log.txt
+exec dwm

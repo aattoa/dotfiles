@@ -20,7 +20,7 @@ if [ -z "$bookmarkfile" ]; then
     exit 1
 fi
 
-if grep -q -F -x "$selection" "$bookmarks/$bookmarkfile"; then
+if grep --quiet --fixed-strings --line-regexp "$selection" "$bookmarks/$bookmarkfile"; then
     notify-send Notice "Already bookmarked"
 else
     echo "$selection" >> "$bookmarks/$bookmarkfile"

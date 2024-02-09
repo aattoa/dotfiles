@@ -14,7 +14,7 @@ return {
     },
     config = function ()
         local cmp = require("cmp")
-        cmp.setup {
+        cmp.setup({
             sources = {
                 { name = "luasnip" },
                 { name = "nvim_lsp" },
@@ -24,11 +24,11 @@ return {
                 { name = "path" },
             },
             mapping = cmp.mapping.preset.insert {
-                ["<Tab>"]     = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert },
-                ["<S-Tab>"]   = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert },
-                ["<Return>"]  = cmp.mapping.confirm { select = false },
-                ["<C-l>"]     = cmp.mapping.complete { config = { sources = {{ name = "nvim_lsp" }} } },
-                ["<C-s>"]     = cmp.mapping.complete { config = { sources = {{ name = "luasnip" }} } },
+                ["<Tab>"]     = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+                ["<S-Tab>"]   = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+                ["<Return>"]  = cmp.mapping.confirm({ select = false }),
+                ["<C-l>"]     = cmp.mapping.complete({ config = { sources = {{ name = "nvim_lsp" }} } }),
+                ["<C-s>"]     = cmp.mapping.complete({ config = { sources = {{ name = "luasnip" }} } }),
                 ["<C-Space>"] = cmp.mapping.complete(),
                 ["<C-j>"]     = cmp.mapping.scroll_docs(1),
                 ["<C-k>"]     = cmp.mapping.scroll_docs(-1),
@@ -44,7 +44,7 @@ return {
                 documentation = cmp.config.window.bordered(),
             },
             preselect = cmp.PreselectMode.None,
-        }
+        })
         cmp.setup.cmdline("/", {
             mapping = cmp.mapping.preset.cmdline(),
             sources = {{ name = "buffer" }}

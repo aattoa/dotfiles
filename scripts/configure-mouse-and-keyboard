@@ -3,7 +3,7 @@
 apply_default () {
     xset r rate 660 30
     setxkbmap -layout "fi" -option
-    pkill unclutter
+    pkill --exact unclutter
 }
 
 apply_custom () {
@@ -13,7 +13,7 @@ apply_custom () {
 }
 
 is_currently_default () {
-    [ "$(pgrep --count unclutter)" = "0" ]
+    [ "$(pgrep --exact --count unclutter)" = "0" ]
 }
 
 # $1: Message
