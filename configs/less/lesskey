@@ -1,0 +1,6 @@
+# Better horizontal navigation
+h noaction 3\e(
+l noaction 3\e)
+
+# Since h is now taken
+? help

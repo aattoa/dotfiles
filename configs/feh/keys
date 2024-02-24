@@ -1,0 +1,7 @@
+next_img j Right
+prev_img k Left
+jump_fwd J
+jump_back K
+jump_first g
+jump_last G
+delete x
