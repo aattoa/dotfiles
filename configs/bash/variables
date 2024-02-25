@@ -34,8 +34,6 @@ export SQLITE_HISTORY=/dev/null
 export WATCH_INTERVAL=0.1
 export MANPAGER="nvim +Man!"
 export MANWIDTH=999
-export GHCUP_INSTALL_BASE_PREFIX="$XDG_DATA_HOME"
-export GHCUP_USE_XDG_DIRS=yes
 
 GPG_TTY=$(tty)
 export GPG_TTY
@@ -44,7 +42,10 @@ export GPG_TTY
 export HISTFILE="$XDG_STATE_HOME/bash/history"
 export INPUTRC="$MY_DOTFILES_REPO/configs/readline/inputrc"
 export XINITRC="$MY_DOTFILES_REPO/configs/x/xinitrc"
+export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
+export WINEPREFIX="$XDG_DATA_HOME/wineprefixes/default"
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
 export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
-export WINEPREFIX="$XDG_DATA_HOME/wineprefixes/default"
-export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
+export GHCUP_INSTALL_BASE_PREFIX="$XDG_DATA_HOME"
+export GHCUP_USE_XDG_DIRS=yes
+export CUDA_CACHE_PATH="$XDG_CACHE_HOME/nv"

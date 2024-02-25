@@ -9,7 +9,7 @@ mc () {
         cd -- "$1" || exit
         echo "Moved to existing $(pwd)"
     else
-        mkdir -p -- "$1"
+        mkdir --parents -- "$1"
         cd -- "$1" || exit
         echo "Created and moved to $(pwd)"
     fi

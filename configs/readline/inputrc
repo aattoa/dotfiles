@@ -21,6 +21,12 @@ set show-all-if-ambiguous on
 # Color files by type
 set colored-stats on
 
+# Directly print completions without going through a pager
+set page-completions off
+
+# Confirm before showing 200+ completions
+set completion-query-items 200
+
 # Color common prefix on completion ambiguity
 set colored-completion-prefix on
 set menu-complete-display-prefix on

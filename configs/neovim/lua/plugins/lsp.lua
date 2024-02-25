@@ -90,7 +90,7 @@ return {
         setup_server("rust_analyzer", {
             on_attach_callbacks = { enable_format_on_save },
         })
-        for _, server in ipairs({ "lua_ls", "hls", "pylsp", "bashls", "cmake" }) do
+        for _, server in ipairs({ "lua_ls", "hls", "pylsp", "cmake" }) do
             setup_server(server)
         end
 

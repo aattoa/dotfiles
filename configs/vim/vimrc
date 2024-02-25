@@ -5,6 +5,7 @@ set encoding=utf-8               " Enable unicode
 set nocompatible                 " Disable vi compatibility
 set ttimeout                     " Insert mode escape sequence timeout
 set ttimeoutlen=100              " Short insert mode escape sequence timeout
+set hlsearch                     " Highlight search matches
 set incsearch                    " Interactive search highlight
 set ignorecase                   " Enable case insensitive search
 set relativenumber               " Enable relative line numbers
@@ -24,13 +25,13 @@ let g:netrw_cursor=0             " Disable cursorline in Netrw
 let g:mapleader=" "              " Set the leader key
 
 " Explore with Netrw
-nnoremap <silent> <Leader>e :Explore<Return>
+nnoremap <Leader>e <Cmd>Explore<Return>
 
 " Toggle search highlight
-nnoremap <silent> <Leader>h :set hlsearch!<Return>
+nnoremap <Leader>h <Cmd>set hlsearch!<Return>
 
 " Toggle line number visibility
-nnoremap <silent> <Leader>n :set number!<Return>:set relativenumber!<Return>
+nnoremap <Leader>n <Cmd>set number!<Return><Cmd>set relativenumber!<Return>
 
 " Stay in visual mode on indent/dedent
 vnoremap < <gv
@@ -44,19 +45,37 @@ vnoremap <C-s> :substitute//g<Left><Left>
 nnoremap <C-n> :%substitute///gn<Left><Left><Left><Left>
 vnoremap <C-n> :substitute///gn<Left><Left><Left><Left>
 
+" Clear current search highlight
+nnoremap <Return> <Cmd>nohlsearch<Return>
+
 " Tab controls
-nnoremap <silent> <C-t>   :tabnew<Return>
-nnoremap <silent> <C-q>   :tabclose<Return>
-nnoremap <silent> <Tab>   :tabnext<Return>
-nnoremap <silent> <S-Tab> :tabprevious<Return>
-nnoremap <silent> g<      :tabmove -1<Return>
-nnoremap <silent> g>      :tabmove +1<Return>
+nnoremap <C-t>   <Cmd>tabnew<Return>
+nnoremap <C-q>   <Cmd>tabclose<Return>
+nnoremap <Tab>   <Cmd>tabnext<Return>
+nnoremap <S-Tab> <Cmd>tabprevious<Return>
+nnoremap g<      <Cmd>tabmove -1<Return>
+nnoremap g>      <Cmd>tabmove +1<Return>
+
+nnoremap <Leader>1 1gt
+nnoremap <Leader>2 2gt
+nnoremap <Leader>3 3gt
+nnoremap <Leader>4 4gt
+nnoremap <Leader>5 5gt
+nnoremap <Leader>6 6gt
+nnoremap <Leader>7 7gt
+nnoremap <Leader>8 8gt
+nnoremap <Leader>9 9gt
 
 " https://vim.fandom.com/wiki/Moving_lines_up_or_down
 nnoremap <silent> <C-k> :move .-2<Return>==
 nnoremap <silent> <C-j> :move .+1<Return>==
 vnoremap <silent> <C-k> :move '<-2<Return>gv=gv
 vnoremap <silent> <C-j> :move '>+1<Return>gv=gv
+
+" Write and quit
+nnoremap <Leader>w <Cmd>w<Return>
+nnoremap <Leader>q <Cmd>q<Return>
+nnoremap <Leader>x <Cmd>x<Return>
 
 " Try to keep the cursor centered
 noremap G Gzz

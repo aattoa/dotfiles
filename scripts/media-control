@@ -13,14 +13,13 @@ control () {
 
 # $1: "-" | "+"
 seek () {
-    mkdir -p "$MY_DOTFILES_REPO/state"
+    mkdir --parents "$MY_DOTFILES_REPO/state"
     lockfile="$MY_DOTFILES_REPO/state/lock-media-control-seek"
     [ -f "$lockfile" ] && return
     touch "$lockfile"
     case $(control status) in
         Paused)
-            control position "20$1"
-            paplay /usr/share/sounds/freedesktop/stereo/dialog-error.oga &;;
+            control position "20$1";;
         Playing)
             control position "5$1";;
         *)
@@ -31,7 +30,7 @@ seek () {
 }
 
 toggle () {
-    mkdir -p "$MY_DOTFILES_REPO/state"
+    mkdir --parents "$MY_DOTFILES_REPO/state"
     lockfile="$MY_DOTFILES_REPO/state/media-control-toggle-lock"
     if [ -f "$lockfile" ]; then
         playerctl --all-players pause &

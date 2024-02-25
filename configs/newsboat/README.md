@@ -1,1 +1,1 @@
-Symlink `~/.config/newsboat/config` to `./config`
+Symlink `$XDG_CONFIG_HOME/newsboat/config` to `./config`

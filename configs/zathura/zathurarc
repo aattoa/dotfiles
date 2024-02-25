@@ -1,16 +1,22 @@
 # Use system clipboard
 set selection-clipboard clipboard
 
+# Search while typing
+set incremental-search
+
 # Better navigation bindings
 map u scroll half-up
 map d scroll half-down
-map g goto top
 
 # Easier zoom
 map <C-k> zoom in
 map <C-j> zoom out
 
-# Tokyonight color theme
+# <C-r> to switch between light and dark theme
+set recolor-lightcolor "#1a1b26"
+set recolor-darkcolor "#c0caf5"
+
+# Tokyonight theme
 set notification-error-bg "#f7768e"
 set notification-error-fg "#c0caf5"
 set notification-warning-bg "#e0af68"
@@ -38,10 +44,3 @@ set default-fg "#c0caf5"
 set render-loading true
 set render-loading-fg "#1a1b26"
 set render-loading-bg "#c0caf5"
-
-# <C-r> to switch between light and dark theme
-set recolor-lightcolor "#1a1b26"
-set recolor-darkcolor "#c0caf5"
-
-# Dark theme by default
-set recolor true

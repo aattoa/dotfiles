@@ -21,5 +21,6 @@ vim.opt.wrap             = false           -- Do not wrap long lines
 vim.opt.pumheight        = 10              -- Limit autocompletion suggestions
 vim.opt.scrolloff        = 10              -- Vertical scrolloff
 vim.opt.sidescrolloff    = 30              -- Horizontal scrolloff
+vim.opt.foldlevelstart   = 999             -- Start with all folds open
 
 vim.opt.shortmess:append("I")              -- Disable intro message

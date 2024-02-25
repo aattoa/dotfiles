@@ -1,1 +1,1 @@
-Symlink `~/.config/dunst/dunstrc` to `./dunstrc`
+Symlink `$XDG_CONFIG_HOME/dunst/dunstrc` to `./dunstrc`

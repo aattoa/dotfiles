@@ -10,8 +10,14 @@ local function cmd(command)
     return "<Cmd>" .. command .. "<Return>"
 end
 
-local function extract_urls()
-    vim.fn.system("handle-urls", vim.fn.join(vim.fn.getline(1, "$"), "\n") .. "\n")
+---@return string
+local function buffer_string()
+    local lines = vim.fn.getline(1, "$")
+    return vim.fn.join(lines, "\n") .. "\n"
+end
+
+local function handle_urls()
+    vim.fn.system("handle-urls", buffer_string())
 end
 
 -- Explore with Netrw
@@ -19,8 +25,8 @@ vim.keymap.set("n", "<Leader>e",     cmd("Explore"))
 vim.keymap.set("n", "<Leader>E",     cmd("Sexplore"))
 vim.keymap.set("n", "<Leader><C-e>", cmd("Texplore"))
 
--- Extract URLs from current buffer
-vim.keymap.set("n", "<Leader>u", extract_urls)
+-- Handle the URLs in the current buffer
+vim.keymap.set("n", "<Leader>u", handle_urls)
 
 -- Toggle search case sensitivity
 vim.keymap.set("n", "<Leader>i", cmd("set ignorecase!"))
@@ -86,6 +92,11 @@ vim.keymap.set("v", ">", ">gv")
 
 -- Make current file
 vim.keymap.set("n", "<Leader>m", cmd("silent make"))
+
+-- Write and quit
+vim.keymap.set("n", "<Leader>w", cmd("w"))
+vim.keymap.set("n", "<Leader>q", cmd("q"))
+vim.keymap.set("n", "<Leader>x", cmd("x"))
 
 -- Start scrolling from insert mode
 for _, scroll in ipairs({ "<C-e>", "<C-y>", "<C-d>", "<C-u>" }) do

@@ -1,6 +1,6 @@
 #!/bin/sh
 
 triggerfile="$MY_DOTFILES_REPO/state/compilation-trigger" 
-mkdir -p "$MY_DOTFILES_REPO/state"
+mkdir --parents "$MY_DOTFILES_REPO/state"
 [ -f "$triggerfile" ] || touch "$triggerfile"
 echo "$triggerfile" | entr -p -c -s "$*"
