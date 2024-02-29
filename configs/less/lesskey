@@ -1,12 +1,12 @@
 # Better horizontal navigation
-h noaction 3\e(
-l noaction 3\e)
+h noaction 2\e(
+l noaction 2\e)
 
 # 3x faster navigation with shift held down
 J noaction 3d
 K noaction 3u
-H noaction 9\e(
-L noaction 9\e)
+H noaction 6\e(
+L noaction 6\e)
 
 # Since h is now taken
 ? help

@@ -3,7 +3,7 @@
 # $1: New brightness
 control() {
     brightnessctl set "$1"
-    notify-send -t 250 "New brightness" "$(brightnessctl get)%"
+    notify-send --expire-time=250 "New brightness" "$(brightnessctl get)%"
 }
 
 case $1 in

@@ -11,7 +11,7 @@ ls.add_snippets("haskell", {
         ls.text_node(" :: "),
         ls.insert_node(2, "type"),
         ls.text_node({ "", "" }),
-        util.simple_dynamic_node(4, 1),
+        util.reference_node(4, 1),
         ls.text_node(" = "),
         ls.insert_node(3, "undefined"),
         ls.insert_node(0),

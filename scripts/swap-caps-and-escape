@@ -5,8 +5,8 @@
 
 if setxkbmap -query | grep --quiet --fixed-strings "caps:swapescape"; then
     setxkbmap -option
-    notify-send -t 2000 "Caps/Escape swap off"
+    notify-send --expire-time=2000 "Caps/Escape swap off"
 else
     setxkbmap -option caps:swapescape
-    notify-send -t 2000 "Caps/Escape swap on"
+    notify-send --expire-time=2000 "Caps/Escape swap on"
 fi

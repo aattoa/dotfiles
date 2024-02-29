@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# $1: Message
+notify () {
+    [ -n "$DISPLAY" ] && notify-send --expire-time=2000 toggle-network "$1"
+}
+
+nm-online --quiet --exit
+
+case $? in
+    0)
+        nmcli networking off && rfkill block wlan && notify "Networking off";;
+    1)
+        nmcli networking on && rfkill unblock wlan && notify "Networking on";;
+    *)
+        notify "Error: nm-online failed"
+        exit 1;;
+esac

@@ -3,6 +3,6 @@
 if [ "$1" = "gui" ]; then
     flameshot gui
 else
-    scrot
-    notify-send -t 200 "Screenshot taken"
+    flameshot full --path "$HOME/misc/screenshots/uncategorized/"
+    notify-send --expire-time=300 "Screenshot taken"
 fi

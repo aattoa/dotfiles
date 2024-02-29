@@ -97,7 +97,7 @@ return {
         ---@type string
         local lsp_popup_border = "rounded"
 
-        vim.diagnostic.config {
+        vim.diagnostic.config({
             virtual_text = {
                 format = function (diagnostic)
                     -- Avoid annoyingly verbose virtual text by displaying
@@ -107,7 +107,7 @@ return {
             },
             float = { border = lsp_popup_border },
             severity_sort = true,
-        }
+        })
 
         vim.lsp.handlers["textDocument/hover"]         = vim.lsp.with(vim.lsp.handlers.hover,          { border = lsp_popup_border })
         vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = lsp_popup_border })

@@ -2,7 +2,7 @@
 
 # $1: Message
 error () {
-    [ -n "$DISPLAY" ] && notify-send -t 2000 "Error: handle-podcast-urls" "$1"
+    [ -n "$DISPLAY" ] && notify-send --expire-time=2000 "Error: handle-podcast-urls" "$1"
     exit 1
 }
 

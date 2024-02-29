@@ -12,7 +12,7 @@ ls.add_snippets("python", {
         ls.text_node({ "():", "\t" }),
         ls.insert_node(2, "pass"),
         ls.text_node({ "", "", "if __name__ == \"__main__\":", "\t" }),
-        util.simple_dynamic_node(3, 1),
+        util.reference_node(3, 1),
         ls.text_node("()"),
         ls.insert_node(0),
     }),

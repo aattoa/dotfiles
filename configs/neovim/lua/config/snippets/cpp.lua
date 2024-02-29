@@ -11,11 +11,11 @@ ls.add_snippets("cpp", {
         ls.text_node(" = "),
         ls.insert_node(2, "0"),
         ls.text_node("; "),
-        util.simple_dynamic_node(5, 1),
+        util.reference_node(5, 1),
         ls.text_node(" != "),
         ls.insert_node(3),
         ls.text_node("; ++"),
-        util.simple_dynamic_node(6, 1),
+        util.reference_node(6, 1),
         ls.text_node({") {", "\t" }),
         ls.insert_node(4),
         ls.text_node({ "", "}" }),
@@ -37,7 +37,7 @@ ls.add_snippets("cpp", {
             "\t}",
             "\tauto format(",
         }),
-        util.simple_dynamic_node(5, 2),
+        util.reference_node(5, 2),
         ls.text_node(" const& "),
         ls.insert_node(3),
         ls.text_node({
@@ -45,11 +45,7 @@ ls.add_snippets("cpp", {
             "\t\treturn std::format_to(context.out(), \"",
         }),
         ls.insert_node(4),
-        ls.text_node({
-            "\");",
-            "\t}",
-            "};"
-        }),
+        ls.text_node({ "\");", "\t}", "};" }),
         ls.insert_node(0),
     }),
 })

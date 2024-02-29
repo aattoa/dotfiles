@@ -42,7 +42,7 @@ is_media_file () {
 
 # $1: Message
 notify () {
-    [ -n "$DISPLAY" ] && notify-send -t 2000 "handle-urls" "$1"
+    [ -n "$DISPLAY" ] && notify-send --expire-time=2000 "handle-urls" "$1"
 }
 
 # stdin 1: URL
