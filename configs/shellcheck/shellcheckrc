@@ -1,0 +1,14 @@
+# Enable all checks by default
+enable=all
+
+# Can not follow source
+disable=SC1091
+
+# Variable referenced but not assigned
+disable=SC2154
+
+# Masked return value
+disable=SC2312
+
+# Do not suggest shell-specific features
+disable=SC2292

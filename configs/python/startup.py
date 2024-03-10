@@ -1,10 +1,14 @@
+# pylint: disable=missing-docstring, too-few-public-methods, invalid-repr-returned
+
 import readline
+import sys
 
 # Disable readline history
 readline.write_history_file = lambda *_: None
 
-# Enable quit on Q
-class __my_startup_quitter_implementation__:
-    def __repr__(self):
-        exit(0)
-q = __my_startup_quitter_implementation__()
+class MyStartupQuitterImplementation:
+    def __repr__(self) -> str:
+        sys.exit()
+
+# Exit the REPL with q<Return>
+q = MyStartupQuitterImplementation()

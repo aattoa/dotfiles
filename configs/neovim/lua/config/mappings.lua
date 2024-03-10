@@ -54,10 +54,6 @@ vim.keymap.set({ "n", "v" }, "<C-c>", "\"+")
 vim.keymap.set("n", "<C-s>", ":%substitute//g<Left><Left>")
 vim.keymap.set("v", "<C-s>", ":substitute//g<Left><Left>")
 
--- Count search results
-vim.keymap.set("n", "<C-n>", ":%substitute///gn<Left><Left><Left><Left>")
-vim.keymap.set("v", "<C-n>", ":substitute///gn<Left><Left><Left><Left>")
-
 -- Clear current search highlight
 vim.keymap.set("n", "<Return>", cmd("nohlsearch"))
 
@@ -72,7 +68,7 @@ vim.keymap.set("n", "g>",      cmd("tabmove +1"))
 for i = 1, 9 do
     vim.keymap.set("n", "<Leader>" .. i, i .. "gt")
 end
-vim.keymap.set("n", "<Leader>0", function () vim.cmd(":tabnext " .. vim.g.lasttab) end)
+vim.keymap.set("n", "<Leader>0", "g<Tab>")
 
 -- https://vim.fandom.com/wiki/Moving_lines_up_or_down
 vim.keymap.set("n", "<C-k>", ":move .-2<Return>==",     { silent = true }) -- Current line up

@@ -8,15 +8,15 @@ error () {
 
 # $@: Arguments to forward to the player
 control () {
-    playerctl --player="$("$MY_DOTFILES_REPO/scripts/current-media-player")" "$@"
+    playerctl --player="$("${MY_DOTFILES_REPO}/scripts/current-media-player")" "$@"
 }
 
 # $1: "-" | "+"
 seek () {
-    mkdir --parents "$MY_DOTFILES_REPO/state"
-    lockfile="$MY_DOTFILES_REPO/state/lock-media-control-seek"
-    [ -f "$lockfile" ] && return
-    touch "$lockfile"
+    mkdir --parents "${MY_DOTFILES_REPO}/state"
+    lockfile="${MY_DOTFILES_REPO}/state/lock-media-control-seek"
+    [ -f "${lockfile}" ] && return
+    touch "${lockfile}"
     case $(control status) in
         Paused)
             control position "20$1";;
@@ -26,21 +26,21 @@ seek () {
             error "Invalid player state";;
     esac
     sleep 0.5
-    rm "$lockfile"
+    rm "${lockfile}"
 }
 
 toggle () {
-    mkdir --parents "$MY_DOTFILES_REPO/state"
-    lockfile="$MY_DOTFILES_REPO/state/media-control-toggle-lock"
-    if [ -f "$lockfile" ]; then
+    mkdir --parents "${MY_DOTFILES_REPO}/state"
+    lockfile="${MY_DOTFILES_REPO}/state/media-control-toggle-lock"
+    if [ -f "${lockfile}" ]; then
         playerctl --all-players pause &
         bluetoothctl disconnect &
         slock
     else
         {
-            touch "$lockfile"
+            touch "${lockfile}"
             sleep 1
-            rm "$lockfile"
+            rm "${lockfile}"
         } &
         if [ "$(control status)" = "Paused" ]; then
             control position 5-
@@ -51,8 +51,15 @@ toggle () {
     fi
 }
 
+show_current_track_title () {
+    [ -z "${DISPLAY}" ] && return
+    if title=$(control metadata title); then
+        notify-send --replace-id=999999999 --expire-time=750 "Now playing" "${title}"
+    fi
+}
+
 is_at_track_beginning () {
-    python -c "exit(10 < $(control position))"
+    [ "$(control position | cut -d. -f1)" -lt 10 ]
 }
 
 previous () {
@@ -61,13 +68,19 @@ previous () {
     else
         control position 0
     fi
+    show_current_track_title
+}
+
+next () {
+    control next
+    show_current_track_title
 }
 
 case $1 in
     play|pause)
         toggle;;
     next)
-        control next;;
+        next;;
     previous)
         previous;;
     forward)

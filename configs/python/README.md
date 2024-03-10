@@ -1,1 +1,1 @@
-The environment variable `PYTHONSTARTUP` should point to `./startup.py`
+Invoke python with `-i ./startup.py`

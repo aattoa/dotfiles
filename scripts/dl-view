@@ -19,10 +19,10 @@ download () {
 # $1: URL
 run () {
     path="/tmp/dl-view-$(date +%s)"
-    if download "$1" "$path"; then
+    if download "$1" "${path}"; then
         # Wildcards match the file extension
-        mpv "$path."*
-        rm "$path."*
+        mpv "${path}"*
+        rm "${path}"*
     else
         error "Could not download media"
     fi

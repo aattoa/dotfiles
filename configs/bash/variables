@@ -5,7 +5,7 @@ PS1="$ "
 PS2="> "
 
 # Add scripts and local binaries to PATH
-export PATH="$MY_DOTFILES_REPO/scripts:$HOME/.local/bin:$PATH"
+export PATH="${MY_DOTFILES_REPO}/scripts:${HOME}/.local/bin:${PATH}"
 
 # Disable logging of duplicate and exit commands
 export HISTCONTROL=ignoredups
@@ -19,31 +19,30 @@ export EDITOR=nvim
 export BROWSER=librewolf
 
 # XDG directories
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_CACHE_HOME="$HOME/.cache"
-export XDG_DATA_HOME="$HOME/.local/share"
-export XDG_STATE_HOME="$HOME/.local/state"
+export XDG_CONFIG_HOME="${HOME}/.config"
+export XDG_CACHE_HOME="${HOME}/.cache"
+export XDG_DATA_HOME="${HOME}/.local/share"
+export XDG_STATE_HOME="${HOME}/.local/state"
 
 # Miscellaneous configuration
-export PYTHONSTARTUP="$MY_DOTFILES_REPO/configs/python/startup.py"
 export LESSHISTFILE=/dev/null
 export SQLITE_HISTORY=/dev/null
 export WATCH_INTERVAL=0.1
 export MANPAGER="less --color=d+r --color=u+b"
 export MANROFFOPT="-P -c"
-export LESS="--incsearch --ignore-case --chop-long-lines --use-color --RAW-CONTROL-CHARS"
+export LESS="--incsearch --ignore-case --jump-target=.3 --chop-long-lines --clear-screen --use-color --RAW-CONTROL-CHARS"
 
 GPG_TTY=$(tty)
 export GPG_TTY
 
 # Config and state locations for apps that don't respect XDG
-export HISTFILE="$XDG_STATE_HOME/bash/history"
-export INPUTRC="$MY_DOTFILES_REPO/configs/readline/inputrc"
-export XINITRC="$MY_DOTFILES_REPO/configs/x/xinitrc"
-export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
-export WINEPREFIX="$XDG_DATA_HOME/wineprefixes/default"
-export CARGO_HOME="$XDG_DATA_HOME/cargo"
-export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
-export GHCUP_INSTALL_BASE_PREFIX="$XDG_DATA_HOME"
+export HISTFILE="${XDG_STATE_HOME}/bash/history"
+export INPUTRC="${MY_DOTFILES_REPO}/configs/readline/inputrc"
+export XINITRC="${MY_DOTFILES_REPO}/configs/x/xinitrc"
+export XAUTHORITY="${XDG_RUNTIME_DIR}/Xauthority"
+export WINEPREFIX="${XDG_DATA_HOME}/wineprefixes/default"
+export CARGO_HOME="${XDG_DATA_HOME}/cargo"
+export RUSTUP_HOME="${XDG_DATA_HOME}/rustup"
+export GHCUP_INSTALL_BASE_PREFIX="${XDG_DATA_HOME}"
 export GHCUP_USE_XDG_DIRS=yes
-export CUDA_CACHE_PATH="$XDG_CACHE_HOME/nv"
+export CUDA_CACHE_PATH="${XDG_CACHE_HOME}/nv"

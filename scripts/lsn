@@ -7,7 +7,7 @@ listen () {
 
 case $# in
     0)
-        listen "$HOME/misc/media/music/all";;
+        listen "${HOME}/misc/media/music/all";;
     1)
         [ -e "$1" ] && listen "$1";;
     *)

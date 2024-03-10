@@ -23,7 +23,7 @@ return {
                 { name = "buffer" },
                 { name = "path" },
             },
-            mapping = cmp.mapping.preset.insert {
+            mapping = cmp.mapping.preset.insert({
                 ["<Tab>"]     = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
                 ["<S-Tab>"]   = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
                 ["<Return>"]  = cmp.mapping.confirm({ select = false }),
@@ -33,7 +33,7 @@ return {
                 ["<C-j>"]     = cmp.mapping.scroll_docs(1),
                 ["<C-k>"]     = cmp.mapping.scroll_docs(-1),
                 ["<C-c>"]     = cmp.mapping.abort(),
-            },
+            }),
             snippet = {
                 expand = function (args)
                     require("luasnip").lsp_expand(args.body)
@@ -55,7 +55,7 @@ return {
                 { name = "cmdline" },
                 { name = "path"  },
                 { name = "buffer" },
-            }
+            },
         })
     end,
     event = { "InsertEnter", "CmdlineEnter" },

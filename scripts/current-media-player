@@ -1,14 +1,14 @@
 #!/bin/sh
 
-statefile="$MY_DOTFILES_REPO/state/current-media-player"
-mkdir --parents "$MY_DOTFILES_REPO/state"
-[ -f "$statefile" ] || echo mpv > "$statefile"
+statefile="${MY_DOTFILES_REPO}/state/current-media-player"
+mkdir --parents "${MY_DOTFILES_REPO}/state"
+[ -f "${statefile}" ] || echo mpv > "${statefile}"
 
 case $# in
     0)
-        cat "$statefile";;
+        cat "${statefile}";;
     1)
-        echo "$1" > "$statefile";;
+        echo "$1" > "${statefile}";;
     *)
         echo "Too many arguments" >&2
         exit 1;;

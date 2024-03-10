@@ -1,8 +1,6 @@
-filetype off                     " Disable file type detection
-syntax enable                    " Enable syntax highting
-set background=dark              " Enable dark mode
-set encoding=utf-8               " Enable unicode
-set nocompatible                 " Disable vi compatibility
+set nocompatible                 " Disable vi compatibility. Keep at the top.
+set background=dark              " Dark mode
+set encoding=utf-8               " Unicode
 set ttimeout                     " Insert mode escape sequence timeout
 set ttimeoutlen=100              " Short insert mode escape sequence timeout
 set hlsearch                     " Highlight search matches
@@ -17,15 +15,20 @@ set shiftwidth=4                 " Set indentation to 4 spaces
 set expandtab                    " Convert tabs to spaces
 set scrolloff=10                 " Vertical scrolloff
 set sidescrolloff=20             " Horizontal scrolloff
+set wildmenu                     " Show command line completions list
 set shortmess+=I                 " Disable intro message
 set viminfo=                     " Disable viminfo
 let g:netrw_banner=0             " Disable Netrw help banner
 let g:netrw_list_hide="^\\.\\/$" " Disable current directory
 let g:netrw_cursor=0             " Disable cursorline in Netrw
 let g:mapleader=" "              " Set the leader key
+filetype off                     " Disable file type detection
+syntax enable                    " Enable syntax highting
 
 " Explore with Netrw
-nnoremap <Leader>e <Cmd>Explore<Return>
+nnoremap <Leader>e     <Cmd>Explore<Return>
+nnoremap <Leader>E     <Cmd>Sexplore<Return>
+nnoremap <Leader><C-e> <Cmd>Texplore<Return>
 
 " Toggle search highlight
 nnoremap <Leader>h <Cmd>set hlsearch!<Return>
@@ -33,29 +36,24 @@ nnoremap <Leader>h <Cmd>set hlsearch!<Return>
 " Toggle line number visibility
 nnoremap <Leader>n <Cmd>set number!<Return><Cmd>set relativenumber!<Return>
 
-" Stay in visual mode on indent/dedent
-vnoremap < <gv
-vnoremap > >gv
+" Jumplist navigation
+nnoremap <Leader>j <C-o>zz
+nnoremap <Leader>k <C-i>zz
 
 " Search and replace
 nnoremap <C-s> :%substitute//g<Left><Left>
 vnoremap <C-s> :substitute//g<Left><Left>
 
-" Count search results
-nnoremap <C-n> :%substitute///gn<Left><Left><Left><Left>
-vnoremap <C-n> :substitute///gn<Left><Left><Left><Left>
-
 " Clear current search highlight
 nnoremap <Return> <Cmd>nohlsearch<Return>
 
 " Tab controls
-nnoremap <C-t>   <Cmd>tabnew<Return>
-nnoremap <C-q>   <Cmd>tabclose<Return>
-nnoremap <Tab>   <Cmd>tabnext<Return>
-nnoremap <S-Tab> <Cmd>tabprevious<Return>
-nnoremap g<      <Cmd>tabmove -1<Return>
-nnoremap g>      <Cmd>tabmove +1<Return>
-
+nnoremap <C-t>     <Cmd>tabnew<Return>
+nnoremap <C-q>     <Cmd>tabclose<Return>
+nnoremap <Tab>     <Cmd>tabnext<Return>
+nnoremap <S-Tab>   <Cmd>tabprevious<Return>
+nnoremap g<        <Cmd>tabmove -1<Return>
+nnoremap g>        <Cmd>tabmove +1<Return>
 nnoremap <Leader>1 1gt
 nnoremap <Leader>2 2gt
 nnoremap <Leader>3 3gt
@@ -65,6 +63,7 @@ nnoremap <Leader>6 6gt
 nnoremap <Leader>7 7gt
 nnoremap <Leader>8 8gt
 nnoremap <Leader>9 9gt
+nnoremap <Leader>0 g<Tab>
 
 " https://vim.fandom.com/wiki/Moving_lines_up_or_down
 nnoremap <silent> <C-k> :move .-2<Return>==
@@ -72,16 +71,37 @@ nnoremap <silent> <C-j> :move .+1<Return>==
 vnoremap <silent> <C-k> :move '<-2<Return>gv=gv
 vnoremap <silent> <C-j> :move '>+1<Return>gv=gv
 
+" Stay in visual mode on indent/dedent
+vnoremap < <gv
+vnoremap > >gv
+
 " Write and quit
 nnoremap <Leader>w <Cmd>w<Return>
 nnoremap <Leader>q <Cmd>q<Return>
 nnoremap <Leader>x <Cmd>x<Return>
 
-" Try to keep the cursor centered
-noremap G Gzz
-noremap n nzz
-noremap N Nzz
-noremap <C-d> <C-d>zz
-noremap <C-u> <C-u>zz
-noremap { {zz
-noremap } }zz
+" Try to keep the cursor centered (in normal mode)
+nnoremap G Gzz
+nnoremap n nzz
+nnoremap N Nzz
+nnoremap { {zz
+nnoremap } }zz
+nnoremap <C-d> <C-d>zz
+nnoremap <C-u> <C-u>zz
+
+" Try to keep the cursor centered (in visual mode)
+vnoremap G Gzz
+vnoremap n nzz
+vnoremap N Nzz
+vnoremap { {zz
+vnoremap } }zz
+vnoremap <C-d> <C-d>zz
+vnoremap <C-u> <C-u>zz
+
+function s:ApplyHelpBufferOptions()
+    nnoremap <buffer> J 3j
+    nnoremap <buffer> K 3k
+    setlocal scrolloff=999
+endfunction
+
+autocmd FileType help call s:ApplyHelpBufferOptions()

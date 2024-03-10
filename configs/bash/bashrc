@@ -1,18 +1,18 @@
 #!/bin/bash
 
 # Set dotfiles repo location, even for non-interactive shells
-export MY_DOTFILES_REPO=$HOME/misc/dotfiles
+export MY_DOTFILES_REPO=${HOME}/misc/dotfiles
 
 # Stop here if the current shell is not interactive
 [[ $- != *i* ]] && return
 
 # Stop here if the dotfiles repo was not found
-if [ ! -d "$MY_DOTFILES_REPO" ]; then
+if [ ! -d "${MY_DOTFILES_REPO}" ]; then
     echo "dotfiles repo not found"
     return
 fi
 
-source "$MY_DOTFILES_REPO/configs/bash/aliases"
-source "$MY_DOTFILES_REPO/configs/bash/variables"
-source "$MY_DOTFILES_REPO/configs/bash/functions"
-source "$MY_DOTFILES_REPO/configs/bash/completions"
+source "${MY_DOTFILES_REPO}/configs/bash/aliases"
+source "${MY_DOTFILES_REPO}/configs/bash/variables"
+source "${MY_DOTFILES_REPO}/configs/bash/functions"
+source "${MY_DOTFILES_REPO}/configs/bash/completions"

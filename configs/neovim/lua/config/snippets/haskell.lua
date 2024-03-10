@@ -4,7 +4,6 @@ local util = require("config.snippets.util")
 ls.add_snippets("haskell", {
     ls.snippet({
         trig = "def",
-        name = "Definition",
         dscr = "Top level definition",
     }, {
         ls.insert_node(1, "name"),

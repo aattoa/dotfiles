@@ -18,7 +18,7 @@ ls.add_snippets("markdown", {
     }, {
         ls.text_node("```"),
         ls.insert_node(1),
-        ls.text_node( { "", "```" }),
+        ls.text_node({ "", "```" }),
         ls.insert_node(0),
     }),
 })

@@ -18,7 +18,7 @@ is_currently_default () {
 
 # $1: Message
 notify () {
-    [ -n "$DISPLAY" ] && notify-send --expire-time=2000 "configure-mouse-and-keyboard" "$1"
+    [ -n "${DISPLAY}" ] && notify-send --expire-time=2000 "configure-mouse-and-keyboard" "$1"
 }
 
 case $1 in

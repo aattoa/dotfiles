@@ -2,7 +2,7 @@
 
 # $1: Message
 notify () {
-    [ -n "$DISPLAY" ] && notify-send --expire-time=2000 toggle-network "$1"
+    [ -n "${DISPLAY}" ] && notify-send --expire-time=2000 toggle-network "$1"
 }
 
 nm-online --quiet --exit

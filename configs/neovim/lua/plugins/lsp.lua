@@ -35,7 +35,7 @@ end
 
 ---@param client table
 ---@param buffer integer
-local function set_lsp_mappings(client, buffer)
+local function set_lsp_keymap(client, buffer)
     vim.keymap.set("n", "<C-Space>",  vim.lsp.buf.signature_help, { buffer = buffer })
     vim.keymap.set("n", "<Leader>lr", vim.lsp.buf.rename,         { buffer = buffer })
     vim.keymap.set("n", "<Leader>la", vim.lsp.buf.code_action,    { buffer = buffer })
@@ -47,7 +47,7 @@ local function set_lsp_mappings(client, buffer)
     vim.keymap.set("n", "[[",         vim.diagnostic.goto_prev,   { buffer = buffer })
 
     if client.name == "clangd" then
-        vim.keymap.set("n", "<Leader>ss", "<Cmd>ClangdSwitchSourceHeader<Return>")
+        vim.keymap.set("n", "<Leader>ss", "<Cmd>ClangdSwitchSourceHeader<Return>", { buffer = buffer })
     end
 end
 
@@ -59,7 +59,7 @@ local function make_on_attach_callback(callbacks)
         for _, callback in ipairs(callbacks) do
             callback(client, buffer)
         end
-        set_lsp_mappings(client, buffer)
+        set_lsp_keymap(client, buffer)
         enable_highlight_cursor_references(client, buffer)
     end
 end

@@ -1,8 +1,13 @@
 #!/bin/sh
 
+# $1: Message
+notify () {
+    notify-send "bookmark-open" "$1"
+}
+
 # $1: String to examine
 looks_like_a_url () {
-    case "$1" in
+    case $1 in
         "https://"*)
             return 0;;
         *)
@@ -18,7 +23,7 @@ prompt_yesno () {
         "no")
             return 1;;
         "")
-            notify-send Error "No choice made, aborting"
+            notify "Error: No choice made, aborting"
             exit 1;;
         *)
             prompt_yesno "$1";;
@@ -26,43 +31,43 @@ prompt_yesno () {
 }
 
 
-bookmarks="$HOME/misc/bookmarks"
-if [ ! -e "$bookmarks" ]; then
-    notify-send Error "Bookmarks directory not found"
+bookmarks="${HOME}/misc/bookmarks"
+if [ ! -e "${bookmarks}" ]; then
+    notify "Error: Bookmarks directory not found"
     exit 1
 fi
 
-filechoices=$(echo "[all]" && find "$bookmarks" -type f -exec basename {} \;)
-bookmarkfile=$(echo "$filechoices" | dmenu -i -p "Which bookmark file?")
+filechoices=$(echo "[all]" && find "${bookmarks}" -type f -printf "%f\\n")
+bookmarkfile=$(echo "${filechoices}" | dmenu -i -p "Which bookmark file?")
 
-if [ -z "$bookmarkfile" ]; then
-    notify-send Notice "No bookmark file selected"
+if [ -z "${bookmarkfile}" ]; then
+    notify "No bookmark file selected"
     exit 1
 fi
 
-if [ "$bookmarkfile" = "[all]" ]; then
-    bookmarklist=$(cat "$bookmarks"/*)
-elif [ -e "$bookmarks/$bookmarkfile" ]; then
-    bookmarklist=$(cat "$bookmarks/$bookmarkfile")
+if [ "${bookmarkfile}" = "[all]" ]; then
+    bookmarklist=$(cat "${bookmarks}"/*)
+elif [ -e "${bookmarks}/${bookmarkfile}" ]; then
+    bookmarklist=$(cat "${bookmarks}/${bookmarkfile}")
 else
-    notify-send Error "Bookmark file \"$bookmarkfile\" does not exist"
+    notify "Error: Bookmark file \"${bookmarkfile}\" does not exist"
     exit 1
 fi
 
-bookmarkchoice=$(echo "$bookmarklist" | dmenu -i -l 5)
-if [ -z "$bookmarkchoice" ]; then
-    notify-send Notice "No bookmark selected"
+bookmarkchoice=$(echo "${bookmarklist}" | dmenu -i -l 5)
+if [ -z "${bookmarkchoice}" ]; then
+    notify "No bookmark selected"
     exit 1
 fi
 
-if looks_like_a_url "$bookmarkchoice" && prompt_yesno "Open in browser?"; then
-    if [ -n "$BROWSER" ]; then
-        $BROWSER "$bookmarkchoice"
+if looks_like_a_url "${bookmarkchoice}" && prompt_yesno "Open in browser?"; then
+    if [ -n "${BROWSER}" ]; then
+        "${BROWSER}" "${bookmarkchoice}"
     else
-        notify-send Error "\$BROWSER is not defined"
+        notify "Error: \$BROWSER is not defined"
         exit 1
     fi
 else
-    printf %s "$bookmarkchoice" | xclip -selection clipboard
-    notify-send Success "Copied bookmark to clipboard"
+    printf %s "${bookmarkchoice}" | xclip -selection clipboard
+    notify "Copied bookmark to clipboard"
 fi
