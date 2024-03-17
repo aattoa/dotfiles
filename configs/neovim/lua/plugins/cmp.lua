@@ -40,7 +40,7 @@ return {
                 end,
             },
             window = {
-                completion    = cmp.config.window.bordered(),
+                completion    = cmp.config.window.bordered({ scrolloff = 2 }),
                 documentation = cmp.config.window.bordered(),
             },
             preselect = cmp.PreselectMode.None,

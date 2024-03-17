@@ -1,0 +1,96 @@
+#!/bin/sh
+
+# $1: URL
+is_youtube_video () {
+    case $1 in
+        "https://www.youtube.com/watch?v="*)       true;;
+        "https://www.youtube.com/v/"*"?version="*) true;;
+        "https://youtu.be/"*)                      true;;
+        *)                                         false;;
+    esac
+}
+
+# $1: URL
+is_odysee_video () {
+    case $1 in
+        "https://odysee.com/@"*"/"*":"*) true;;
+        *)                               false;;
+    esac
+}
+
+# $1: URL
+is_media_file () {
+    case $1 in
+        *".mp4")           true;;
+        *".mp3")           true;;
+        *".mp3?dest-id="*) true;;
+        *".mp3?updated="*) true;;
+        *)                 false;;
+    esac
+}
+
+# $1: Message
+notify () {
+    if [ -n "${DISPLAY}" ]; then
+        notify-send --expire-time=2000 "handle-url" "$1"
+    else
+        echo "handle-url: $1"
+    fi
+}
+
+# $1: URL
+# stdout: Strategy
+choose_strategy () {
+    choices="browser\nclipboard"
+
+    dlp="yt-dlp\nyt-dlp-audio"
+    mpv="mpv\nmpv-audio"
+    get="wget"
+
+    if is_youtube_video "$1"; then
+        choices="${choices}\n${dlp}\n${mpv}"
+    elif is_odysee_video "$1"; then
+        choices="${choices}\n${mpv}"
+    elif is_media_file "$1"; then
+        choices="${choices}\n${get}\n${mpv}"
+    fi
+
+    printf "%b" "${choices}" | sort --unique | dmenu -i -p "How to handle URL?"
+}
+
+# $1: URL
+# $2: Strategy
+execute_strategy () {
+    cd "${HOME}/misc/media/download" || exit 1
+
+    case $2 in
+        browser)
+            [ -n "${BROWSER}" ] || exit 1
+            ${BROWSER} "$1";;
+        clipboard)
+            notify "Copied to clipboard"
+            echo "$1" | xclip -selection clipboard;;
+        yt-dlp)
+            yt-dlp --format-sort "res:720" --sponsorblock-remove=default --sponsorblock-mark=default "$1";;
+        yt-dlp-audio)
+            yt-dlp --extract-audio --audio-format mp3 --audio-quality 0 "$1";;
+        wget)
+            wget --no-verbose --show-progress "$1";;
+        mpv)
+            mpv "$1";;
+        mpv-audio)
+            mpv --no-video "$1";;
+        *)
+            notify "No choice made, aborting"
+            exit 1;;
+    esac
+}
+
+case $1 in
+    "https://"*)
+        strategy=$(choose_strategy "$1")
+        execute_strategy "$1" "${strategy}";;
+    *)
+        notify "Invalid argument"
+        exit 1;;
+esac

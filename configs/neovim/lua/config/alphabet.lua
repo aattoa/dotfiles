@@ -1,6 +1,6 @@
 local M = {}
 
----@param callback function
+---@param callback fun(character: string): nil
 local function for_each_character(callback)
     for character in ("abcdefghijklmnopqrstuvwxyz"):gmatch(".") do
         callback(string.upper(character))
@@ -8,23 +8,18 @@ local function for_each_character(callback)
     end
 end
 
----@param message string
-local function notify(message)
-    vim.notify(message, vim.log.levels.INFO)
-end
-
 M.greek = function ()
     for_each_character(function (character)
         vim.keymap.set("i", character, "<C-k>*" .. character)
     end)
-    notify("Greek alphabet")
+    vim.notify("Greek alphabet")
 end
 
 M.latin = function ()
     for_each_character(function (character)
         vim.keymap.del("i", character)
     end)
-    notify("Latin alphabet")
+    vim.notify("Latin alphabet")
 end
 
 ---@type boolean

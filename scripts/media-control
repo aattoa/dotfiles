@@ -8,7 +8,7 @@ error () {
 
 # $@: Arguments to forward to the player
 control () {
-    playerctl --player="$("${MY_DOTFILES_REPO}/scripts/current-media-player")" "$@"
+    playerctl --player="$(current-media-player)" "$@"
 }
 
 # $1: "-" | "+"
@@ -59,7 +59,7 @@ show_current_track_title () {
 }
 
 is_at_track_beginning () {
-    [ "$(control position | cut -d. -f1)" -lt 10 ]
+    [ "$(control position | cut --delimiter=. --fields=1)" -lt 10 ]
 }
 
 previous () {

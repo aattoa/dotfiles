@@ -11,6 +11,9 @@ bind-key J next-unread
 bind-key K prev-unread
 bind-key T toggle-article-read
 
+# Use less instead of the internal pager
+pager less
+
 # Parallel downloads
 reload-threads 20
 
@@ -22,6 +25,9 @@ history-limit 0
 
 # Do not ask for confirmation on mark-feed-read
 confirm-mark-feed-read no
+
+# Do not search in other feeds when there are no unread articles in the current feed
+goto-next-feed no
 
 # Keep the cursor somewhat centered
 scrolloff 10

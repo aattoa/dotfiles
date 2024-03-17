@@ -22,4 +22,4 @@ case $1 in
         error "Invalid argument";;
 esac
 
-"${MY_DOTFILES_REPO}/scripts/update-status-bar"
+update-status-bar

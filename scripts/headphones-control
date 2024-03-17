@@ -29,34 +29,45 @@ connect_or_disconnect () {
     fi
 }
 
-get_index () {
-    cat "${indexfile}"
+# $1: Index
+get_info () {
+    bluetoothctl devices Paired | sed --quiet "${1}p"
+}
+
+# $1: Index
+get_address () {
+    get_info "$1" | cut --delimiter=" " --fields=2
+}
+
+# $1: Index
+get_name () {
+    get_info "$1" | cut --delimiter=" " --fields=3-
 }
 
 # $1: Index
 rotate_index () {
     case $1 in
-        1) echo 2;;
-        2) echo 1;;
-        *) error "Invalid device index";;
+        "$(bluetoothctl devices Paired | wc --lines)")
+            echo 1;;
+        *)
+            echo $(($1 + 1));;
     esac
 }
 
 # $1: New index
 update_index () {
-    [ -n "${DISPLAY}" ] && notify-send --expire-time=2000 "headphones-control" "New headphones index: $1"
     echo "$1" > "${indexfile}"
+    [ -n "${DISPLAY}" ] || return
+    notify-send --replace-id=999999999 --expire-time=2000 "headphones-control" "$(get_name "$1")"
 }
 
-get_address () {
-    bluetoothctl devices Paired | cut -d' ' -f2 | sed --quiet "$(get_index)p"
-}
+index=$(cat "${indexfile}")
 
 case $1 in
     connect|disconnect)
-        connect_or_disconnect "$1" "$(get_address)";;
+        connect_or_disconnect "$1" "$(get_address "${index}")";;
     rotate)
-        update_index "$(rotate_index "$(get_index)")";;
+        update_index "$(rotate_index "${index}")";;
     *)
         error "Invalid argument";;
 esac

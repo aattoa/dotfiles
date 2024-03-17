@@ -2,10 +2,10 @@
 
 # $1: Message
 notify () {
-    notify-send "bookmark-add" "$1"
+    notify-send --expire-time=2000 "bookmark-add" "$1"
 }
 
-selection=$(xclip -o -r)
+selection=$(xclip -out -rmlastnl)
 if [ -n "${selection}" ]; then
     notify "Current selection: ${selection}"
 else

@@ -1,5 +1,5 @@
-$MY_DOTFILES_REPO/scripts/configure-mouse-and-keyboard custom
-$MY_DOTFILES_REPO/scripts/configure-monitors
+configure-mouse-and-keyboard custom
+configure-monitors
 xset s 1800 1800 -dpms
 exec slstatus &
 exec dunst &

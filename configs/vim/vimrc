@@ -14,7 +14,9 @@ set tabstop=4                    " Tabs appear as 4 spaces
 set shiftwidth=4                 " Set indentation to 4 spaces
 set expandtab                    " Convert tabs to spaces
 set scrolloff=10                 " Vertical scrolloff
-set sidescrolloff=20             " Horizontal scrolloff
+set sidescrolloff=30             " Horizontal scrolloff
+set virtualedit=block            " Allow going past the end of line in visual block mode
+set splitkeep=topline            " Do not scroll when resizing horizontal splits
 set wildmenu                     " Show command line completions list
 set shortmess+=I                 " Disable intro message
 set viminfo=                     " Disable viminfo
@@ -45,7 +47,7 @@ nnoremap <C-s> :%substitute//g<Left><Left>
 vnoremap <C-s> :substitute//g<Left><Left>
 
 " Clear current search highlight
-nnoremap <Return> <Cmd>nohlsearch<Return>
+nnoremap <Esc> <Cmd>nohlsearch<Return>
 
 " Tab controls
 nnoremap <C-t>     <Cmd>tabnew<Return>
@@ -65,37 +67,44 @@ nnoremap <Leader>8 8gt
 nnoremap <Leader>9 9gt
 nnoremap <Leader>0 g<Tab>
 
-" https://vim.fandom.com/wiki/Moving_lines_up_or_down
-nnoremap <silent> <C-k> :move .-2<Return>==
-nnoremap <silent> <C-j> :move .+1<Return>==
+" Move selected lines up and down
 vnoremap <silent> <C-k> :move '<-2<Return>gv=gv
 vnoremap <silent> <C-j> :move '>+1<Return>gv=gv
+
+" Window resizing
+nnoremap <C-j> <Cmd>resize -1<Return>
+nnoremap <C-k> <Cmd>resize +1<Return>
+nnoremap <C-h> <Cmd>vertical resize -2<Return>
+nnoremap <C-l> <Cmd>vertical resize +2<Return>
 
 " Stay in visual mode on indent/dedent
 vnoremap < <gv
 vnoremap > >gv
 
 " Write and quit
-nnoremap <Leader>w <Cmd>w<Return>
-nnoremap <Leader>q <Cmd>q<Return>
-nnoremap <Leader>x <Cmd>x<Return>
+nnoremap <Leader>w <Cmd>write<Return>
+nnoremap <Leader>q <Cmd>quit<Return>
 
-" Try to keep the cursor centered (in normal mode)
+" Scroll in insert mode
+inoremap <C-e> <Esc><C-e>gi
+inoremap <C-y> <Esc><C-y>gi
+
+" Do not save paragraph jumps to the jumplist
+nnoremap { <Cmd>execute "keepjumps normal!" . v:count1 . "{zz"<Return>
+vnoremap { <Cmd>execute "keepjumps normal!" . v:count1 . "{zz"<Return>
+nnoremap } <Cmd>execute "keepjumps normal!" . v:count1 . "}zz"<Return>
+vnoremap } <Cmd>execute "keepjumps normal!" . v:count1 . "}zz"<Return>
+
+" Try to keep the cursor centered
 nnoremap G Gzz
-nnoremap n nzz
-nnoremap N Nzz
-nnoremap { {zz
-nnoremap } }zz
-nnoremap <C-d> <C-d>zz
-nnoremap <C-u> <C-u>zz
-
-" Try to keep the cursor centered (in visual mode)
 vnoremap G Gzz
+nnoremap n nzz
 vnoremap n nzz
+nnoremap N Nzz
 vnoremap N Nzz
-vnoremap { {zz
-vnoremap } }zz
+nnoremap <C-d> <C-d>zz
 vnoremap <C-d> <C-d>zz
+nnoremap <C-u> <C-u>zz
 vnoremap <C-u> <C-u>zz
 
 function s:ApplyHelpBufferOptions()

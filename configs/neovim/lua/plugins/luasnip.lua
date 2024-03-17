@@ -2,8 +2,8 @@
 ---@param index integer
 local function map_jump(keys, index)
     vim.keymap.set({ "i", "s" }, keys, function ()
-        local snip = require("luasnip")
-        if snip.jumpable(index) then snip.jump(index) end
+        local ls = require("luasnip")
+        if ls.jumpable(index) then ls.jump(index) end
     end)
 end
 

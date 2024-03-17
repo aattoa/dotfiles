@@ -10,9 +10,9 @@ gather_lines () {
     while read -r line; do echo "${line}"; done
 }
 
-urls="$(gather_lines | urlscan --dedupe --no-browser | grep --fixed-strings ".mp3")"
+urls=$(gather_lines | urlscan --dedupe --no-browser | grep --fixed-strings ".mp3")
 
-case "$(echo "${urls}" | wc -l)" in
+case $(echo "${urls}" | wc --lines) in
     1)
         mpv --no-audio-display "${urls}";;
     0)

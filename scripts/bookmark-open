@@ -2,16 +2,14 @@
 
 # $1: Message
 notify () {
-    notify-send "bookmark-open" "$1"
+    notify-send --expire-time=2000 "bookmark-open" "$1"
 }
 
 # $1: String to examine
 looks_like_a_url () {
     case $1 in
-        "https://"*)
-            return 0;;
-        *)
-            return 1;;
+        "https://"*) true;;
+        *)           false;;
     esac
 }
 
@@ -19,9 +17,9 @@ looks_like_a_url () {
 prompt_yesno () {
     case $(printf "yes\nno" | dmenu -i -p "$1") in
         "yes")
-            return 0;;
+            true;;
         "no")
-            return 1;;
+            false;;
         "")
             notify "Error: No choice made, aborting"
             exit 1;;

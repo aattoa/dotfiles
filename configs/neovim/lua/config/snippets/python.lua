@@ -4,7 +4,6 @@ local util = require("config.snippets.util")
 ls.add_snippets("python", {
     ls.snippet({
         trig = "main",
-        name = "Main function",
         dscr = "Module entry point",
     }, {
         ls.text_node("def "),

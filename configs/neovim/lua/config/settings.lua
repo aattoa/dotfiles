@@ -1,6 +1,7 @@
 vim.g.mapleader          = " "             -- Set the leader key
 vim.g.netrw_banner       = 0               -- Disable the Netrw help banner
 vim.g.netrw_list_hide    = "^\\.\\/$"      -- Disable current directory entry
+vim.g.editorconfig       = false           -- Disable unnecessary default plugin
 vim.g.man_hardwrap       = false           -- Soft-wrap manual pages
 vim.opt.mouse            = ""              -- Disable the mouse
 vim.opt.guicursor        = ""              -- Disable cursor styling
@@ -15,12 +16,17 @@ vim.opt.smartindent      = true            -- Automatically indent new lines
 vim.opt.ignorecase       = true            -- Enable case insensitive search
 vim.opt.hlsearch         = true            -- Highlight search matches
 vim.opt.incsearch        = true            -- Interactive search highlight
-vim.opt.updatetime       = 50              -- Faster CursorHold events
+vim.opt.updatetime       = 100             -- Faster CursorHold events
 vim.opt.undofile         = true            -- Enable persistent undo
-vim.opt.wrap             = false           -- Do not wrap long lines
-vim.opt.pumheight        = 10              -- Limit autocompletion suggestions
+vim.opt.pumheight        = 10              -- Maximum popup menu height
 vim.opt.scrolloff        = 10              -- Vertical scrolloff
 vim.opt.sidescrolloff    = 30              -- Horizontal scrolloff
 vim.opt.foldlevelstart   = 999             -- Start with all folds open
+vim.opt.virtualedit      = "block"         -- Allow going past the end of line in visual block mode
+vim.opt.splitkeep        = "topline"       -- Do not scroll when resizing horizontal splits
+vim.opt.wrap             = false           -- Do not wrap long lines
+vim.opt.linebreak        = true            -- Do not split words when wrapping long lines (for documentation windows)
+vim.opt.conceallevel     = 2               -- Do not render markdown syntax
 
+vim.opt.matchpairs:append("<:>")           -- Jump between matching angle brackets
 vim.opt.shortmess:append("I")              -- Disable intro message
