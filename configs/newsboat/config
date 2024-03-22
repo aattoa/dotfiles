@@ -15,7 +15,7 @@ bind-key T toggle-article-read
 pager less
 
 # Parallel downloads
-reload-threads 20
+reload-threads 6
 
 # Custom URL handler
 external-url-viewer handle-urls

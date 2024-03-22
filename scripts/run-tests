@@ -23,5 +23,5 @@ case $# in
     1)
         run_tests "$1";;
     *)
-        error "Invalid argument count";;
+        error "Too many arguments";;
 esac

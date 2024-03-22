@@ -16,4 +16,3 @@ ls.add_snippets("python", {
         ls.insert_node(0),
     }),
 })
-

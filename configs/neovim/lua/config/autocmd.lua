@@ -3,44 +3,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     desc     = "Briefly highlight yanked text",
 })
 
-vim.api.nvim_create_autocmd("FileType", {
-    pattern  = "markdown",
-    callback = function () vim.bo.makeprg = "pandoc % -o %<.pdf &" end,
-    desc     = "Make markdown files by converting them to PDF",
-})
-
-vim.api.nvim_create_autocmd("FileType", {
-    pattern  = { "help", "man" },
-    callback = function (event)
-        vim.keymap.set("n", "J", "3j",                 { buffer = event.buf })
-        vim.keymap.set("n", "K", "3k",                 { buffer = event.buf })
-        vim.keymap.set("n", "q", "<Cmd>close<Return>", { buffer = event.buf })
-        vim.wo.cursorline = false
-        vim.wo.scrolloff  = 999 -- Keep the cursor centered.
-    end,
-    desc = "Set documentation options and mappings",
-})
-
-vim.api.nvim_create_autocmd("FileType", {
-    pattern  = "qf",
-    callback = function (event)
-        vim.api.nvim_create_autocmd("WinEnter", {
-            callback = function ()
-                if #vim.api.nvim_list_wins() == 1 then
-                    vim.cmd.quit()
-                end
-            end,
-            buffer = event.buf,
-            desc   = "Close the quickfix window if no other windows are open",
-        })
-        vim.keymap.set("n", "<Return>", "<Return>zz",         { buffer = event.buf })
-        vim.keymap.set("n", "q",        "<Cmd>close<Return>", { buffer = event.buf })
-        vim.keymap.set("n", "j",        "j<Return>zz<C-W>p",  { buffer = event.buf })
-        vim.keymap.set("n", "k",        "k<Return>zz<C-W>p",  { buffer = event.buf })
-    end,
-    desc = "Set quickfix options and mappings",
-})
-
 vim.api.nvim_create_autocmd("DiagnosticChanged", {
     callback = function () vim.diagnostic.setqflist({ open = false }) end,
     desc     = "Keep the quickfix list up to date",
@@ -63,16 +25,59 @@ vim.api.nvim_create_autocmd("LspAttach", {
     callback = function (event)
         local config = require("config.lsp")
         local client = vim.lsp.get_client_by_id(event.data.client_id) ---@type lsp.Client
-        local buffer = event.buf ---@type integer
 
-        config.set_mappings(client, buffer)
-        config.enable_format_on_write(client, buffer)
-        config.enable_highlight_cursor_references(client, buffer)
+        config.set_mappings(client, event.buf)
+        config.enable_format_on_write(client, event.buf)
+        config.enable_highlight_cursor_references(client, event.buf)
 
-        local references = vim.lsp.handlers["textDocument/references"]
-        vim.lsp.handlers["textDocument/references"] = vim.lsp.with(references, {
-            loclist = true, -- Use location list instead of quickfix list
+        vim.lsp.handlers["textDocument/references"] = vim.lsp.with(vim.lsp.handlers["textDocument/references"], {
+            loclist = true, -- Use loclist instead of qflist to keep references separate from diagnostics.
         })
     end,
     desc = "Apply LSP configuration",
 })
+
+---@param buffer integer
+local function quit_if_last_window(buffer)
+    vim.api.nvim_create_autocmd("WinEnter", {
+        callback = function ()
+            if #vim.api.nvim_list_wins() == 1 then
+                vim.cmd.quit()
+            end
+        end,
+        buffer = buffer,
+        desc   = "Quit if last window",
+    })
+end
+
+---@param filetypes string[]
+---@param callback fun(buffer: integer): nil
+local function filetype(filetypes, callback)
+    vim.api.nvim_create_autocmd("FileType", {
+        pattern  = filetypes,
+        callback = function (event) callback(event.buf) end,
+        desc     = "Set local options for " .. table.concat(filetypes, ", "),
+    })
+end
+
+filetype({ "help", "man" }, function (buffer)
+    quit_if_last_window(buffer)
+    vim.wo.cursorline = false
+    vim.keymap.set("n", "j",  "<C-e>",     { buffer = buffer })
+    vim.keymap.set("n", "J", "3<C-e>",     { buffer = buffer })
+    vim.keymap.set("n", "k",  "<C-y>",     { buffer = buffer })
+    vim.keymap.set("n", "K", "3<C-y>",     { buffer = buffer })
+    vim.keymap.set("n", "q", vim.cmd.quit, { buffer = buffer })
+end)
+
+filetype({ "qf" }, function (buffer)
+    quit_if_last_window(buffer)
+    vim.keymap.set("n", "j", "j<Return>zz<C-W>p", { buffer = buffer })
+    vim.keymap.set("n", "k", "k<Return>zz<C-W>p", { buffer = buffer })
+    vim.keymap.set("n", "q", vim.cmd.quit,        { buffer = buffer })
+end)
+
+filetype({ "markdown" }, function (buffer)
+    -- Make markdown files by converting them to PDF
+    vim.bo[buffer].makeprg = "pandoc % -o %<.pdf &"
+end)

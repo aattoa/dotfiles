@@ -2,7 +2,7 @@ local ls = require("luasnip")
 
 ls.add_snippets("sh", {
     ls.snippet({
-        trig = "echo-err",
+        trig = "err",
         dscr = "Echo to stderr",
     }, {
         ls.text_node("echo \""),
@@ -14,14 +14,14 @@ ls.add_snippets("sh", {
         trig = "case",
         dscr = "Case statement",
     }, {
-        ls.text_node("case \"$("),
+        ls.text_node("case $("),
         ls.insert_node(1, "command"),
-        ls.text_node({ ")\" in", "\t\"" }),
+        ls.text_node({ ") in", "\t" }),
         ls.insert_node(2),
-        ls.text_node({ "\")", "\t\t" }),
-        ls.insert_node(3, "echo"),
+        ls.text_node({ ")", "\t\t" }),
+        ls.insert_node(3),
         ls.text_node({ ";;", "\t*)", "\t\t" }),
-        ls.insert_node(4, "echo"),
+        ls.insert_node(4),
         ls.text_node({ ";;", "esac" }),
         ls.insert_node(0),
     }),

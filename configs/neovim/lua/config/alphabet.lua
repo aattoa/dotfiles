@@ -3,8 +3,8 @@ local M = {}
 ---@param callback fun(character: string): nil
 local function for_each_character(callback)
     for character in ("abcdefghijklmnopqrstuvwxyz"):gmatch(".") do
-        callback(string.upper(character))
-        callback(character)
+        callback(character:upper())
+        callback(character:lower())
     end
 end
 

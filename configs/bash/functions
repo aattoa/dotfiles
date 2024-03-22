@@ -2,8 +2,8 @@
 
 # Make and change directory (mkdir + cd)
 mc () {
-    if [ "$#" != "1" ]; then
-        echo "mc: Expected exactly one argument" 1>&2
+    if [ $# != 1 ]; then
+        echo "mc: Expected an argument, but got $#" 1>&2
         return 1
     elif [ -d "$1" ]; then
         cd -- "$1" || exit

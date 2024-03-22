@@ -20,6 +20,7 @@ set splitkeep=topline            " Do not scroll when resizing horizontal splits
 set wildmenu                     " Show command line completions list
 set shortmess+=I                 " Disable intro message
 set viminfo=                     " Disable viminfo
+set nomodeline                   " Disable unnecessary feature
 let g:netrw_banner=0             " Disable Netrw help banner
 let g:netrw_list_hide="^\\.\\/$" " Disable current directory
 let g:netrw_cursor=0             " Disable cursorline in Netrw
@@ -86,8 +87,8 @@ nnoremap <Leader>w <Cmd>write<Return>
 nnoremap <Leader>q <Cmd>quit<Return>
 
 " Scroll in insert mode
-inoremap <C-e> <Esc><C-e>gi
-inoremap <C-y> <Esc><C-y>gi
+inoremap <C-e> <C-o><C-e>
+inoremap <C-y> <C-o><C-y>
 
 " Do not save paragraph jumps to the jumplist
 nnoremap { <Cmd>execute "keepjumps normal!" . v:count1 . "{zz"<Return>
@@ -108,9 +109,11 @@ nnoremap <C-u> <C-u>zz
 vnoremap <C-u> <C-u>zz
 
 function s:ApplyHelpBufferOptions()
-    nnoremap <buffer> J 3j
-    nnoremap <buffer> K 3k
-    setlocal scrolloff=999
+    nnoremap j  <C-e>
+    nnoremap J 3<C-e>
+    nnoremap k  <C-y>
+    nnoremap K 3<C-y>
+    nnoremap q <Cmd>quit<Return>
 endfunction
 
 autocmd FileType help call s:ApplyHelpBufferOptions()

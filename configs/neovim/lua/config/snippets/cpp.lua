@@ -3,7 +3,7 @@ local util = require("config.snippets.util")
 
 ls.add_snippets("cpp", {
     ls.snippet({
-        trig = "for index",
+        trig = "for",
         dscr = "Classic index-based for-loop",
     }, {
         ls.text_node("for (std::size_t "),

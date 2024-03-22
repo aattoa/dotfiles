@@ -1,7 +1,0 @@
-require("config.snippets.cpp")
-require("config.snippets.rust")
-require("config.snippets.haskell")
-require("config.snippets.lua")
-require("config.snippets.python")
-require("config.snippets.shell")
-require("config.snippets.markdown")

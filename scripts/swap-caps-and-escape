@@ -1,12 +1,12 @@
 #!/bin/sh
 
-# FIXME: Swap-off works by resetting all setxkbmap options,
-#        which would also interfere with unrelated options.
+# $1: Message
+notify () {
+    notify-send --expire-time=1000 "$1"
+}
 
 if setxkbmap -query | grep --quiet --fixed-strings "caps:swapescape"; then
-    setxkbmap -option
-    notify-send --expire-time=2000 "Caps/Escape swap off"
+    setxkbmap -option && notify "Swap off"
 else
-    setxkbmap -option caps:swapescape
-    notify-send --expire-time=2000 "Caps/Escape swap on"
+    setxkbmap -option caps:swapescape && notify "Swap on"
 fi

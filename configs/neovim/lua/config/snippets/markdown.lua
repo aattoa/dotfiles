@@ -12,13 +12,4 @@ ls.add_snippets("markdown", {
         ls.text_node(")"),
         ls.insert_node(0),
     }),
-
-    ls.snippet({
-        trig = "code",
-    }, {
-        ls.text_node("```"),
-        ls.insert_node(1),
-        ls.text_node({ "", "```" }),
-        ls.insert_node(0),
-    }),
 })

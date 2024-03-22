@@ -1,5 +1,6 @@
 local M = {}
 
+---@type table<string, table>
 M.server_settings = {
     haskell = {
         plugin = {
@@ -21,6 +22,7 @@ M.server_settings = {
     },
 }
 
+---@type table<string, string[]>
 M.server_commands = {
     clangd = {
         "clangd",
@@ -38,12 +40,8 @@ M.set_mappings = function (client, buffer)
     vim.keymap.set("n", "<Leader>lf", vim.lsp.buf.references,     { buffer = buffer })
     vim.keymap.set("n", "<Leader>lr", vim.lsp.buf.rename,         { buffer = buffer })
     vim.keymap.set("n", "<Leader>la", vim.lsp.buf.code_action,    { buffer = buffer })
-    vim.keymap.set("n", "<Leader>ld", vim.diagnostic.open_float,  { buffer = buffer })
-    vim.keymap.set("n", "]]",         vim.diagnostic.goto_next,   { buffer = buffer })
-    vim.keymap.set("n", "[[",         vim.diagnostic.goto_prev,   { buffer = buffer })
-    vim.keymap.set("n", "K",          vim.lsp.buf.hover,          { buffer = buffer })
     vim.keymap.set("n", "gd",         vim.lsp.buf.definition,     { buffer = buffer })
-    vim.keymap.set("n", "gD",         vim.lsp.buf.declaration,    { buffer = buffer })
+    vim.keymap.set("n", "K",          vim.lsp.buf.hover,          { buffer = buffer })
 
     if client.name == "clangd" then
         vim.keymap.set("n", "<Leader>ss", "<Cmd>ClangdSwitchSourceHeader<Return>", { buffer = buffer })

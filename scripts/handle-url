@@ -86,11 +86,9 @@ execute_strategy () {
     esac
 }
 
-case $1 in
-    "https://"*)
-        strategy=$(choose_strategy "$1")
-        execute_strategy "$1" "${strategy}";;
-    *)
-        notify "Invalid argument"
-        exit 1;;
-esac
+if [ $# = 1 ]; then
+    strategy=$(choose_strategy "$1")
+    execute_strategy "$1" "${strategy}"
+else
+    notify "Error: Expected an argument, but got $#"
+fi

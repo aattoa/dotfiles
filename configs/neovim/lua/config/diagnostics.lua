@@ -17,7 +17,7 @@ end
 
 ---@param diagnostic Diagnostic
 ---@return string
-local function format_diagnostic(diagnostic)
+local function format_virtual_text(diagnostic)
     if type(diagnostic.code) == "string" then
         return diagnostic.code
     end
@@ -35,7 +35,10 @@ local function format_diagnostic(diagnostic)
 end
 
 vim.diagnostic.config({
-    virtual_text  = { format = format_diagnostic },
+    virtual_text  = { format = format_virtual_text },
     float         = { border = "rounded" },
     severity_sort = true,
 })
+
+vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
+vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
