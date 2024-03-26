@@ -1,28 +1,18 @@
 local ls = require("luasnip")
+local fmt = require("luasnip.extras.fmt").fmt
 
 ls.add_snippets("sh", {
-    ls.snippet({
-        trig = "err",
-        dscr = "Echo to stderr",
-    }, {
-        ls.text_node("echo \""),
+    ls.snippet("err", fmt("echo \"{}\" 1>&2", {
         ls.insert_node(1),
-        ls.text_node("\" 1>&2"),
-        ls.insert_node(0),
-    }),
-    ls.snippet({
-        trig = "case",
-        dscr = "Case statement",
-    }, {
-        ls.text_node("case $("),
-        ls.insert_node(1, "command"),
-        ls.text_node({ ") in", "\t" }),
+    })),
+    ls.snippet("case", fmt("case {} in\n\t{})\n\t\t{};;\n\t*)\n\t\t{};;\nesac", {
+        ls.insert_node(1),
         ls.insert_node(2),
-        ls.text_node({ ")", "\t\t" }),
         ls.insert_node(3),
-        ls.text_node({ ";;", "\t*)", "\t\t" }),
         ls.insert_node(4),
-        ls.text_node({ ";;", "esac" }),
-        ls.insert_node(0),
-    }),
+    })),
+    ls.snippet("fn", fmt("{} () {{\n\t{}\n}}", {
+        ls.insert_node(1, "function-name"),
+        ls.insert_node(2),
+    })),
 })

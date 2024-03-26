@@ -1,12 +1,13 @@
 return {
     "L3MON4D3/LuaSnip",
+    keys = {
+        { "<C-j>", function () require("luasnip").expand_or_jump() end, mode = { "i", "s" } },
+        { "<C-k>", function () require("luasnip").jump(-1) end,         mode = { "i", "s" } },
+    },
     config = function ()
-        local ls = require("luasnip")
-        ls.setup({ update_events = { "TextChanged", "TextChangedI" } })
-
-        vim.keymap.set({ "i", "s" }, "<C-j>", ls.expand_or_jump)
-        vim.keymap.set({ "i", "s" }, "<C-k>", function () ls.jump(-1) end)
-
+        require("luasnip").setup({
+            update_events = { "TextChanged", "TextChangedI" },
+        })
         require("config.snippets.cpp")
         require("config.snippets.rust")
         require("config.snippets.haskell")
@@ -14,5 +15,4 @@ return {
         require("config.snippets.shell")
         require("config.snippets.markdown")
     end,
-    event = "InsertEnter",
 }
