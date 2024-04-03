@@ -1,16 +1,23 @@
 #!/bin/sh
 
-# $1: Path
-listen () {
-    mpv "$1" --no-audio-display --shuffle --loop-playlist --volume=80
+# $1: Directory
+choose_track () {
+    find "$1" -type f -printf "%P\n"                                          \
+        | nl --number-separator=" " --number-width=1 --starting-line-number=0 \
+        | dmenu -i -l 10                                                      \
+        | cut --delimiter=" " --fields=1
 }
 
-case $# in
-    0)
-        listen "${HOME}/misc/media/music/all";;
-    1)
-        [ -e "$1" ] && listen "$1";;
-    *)
-        echo "Too many arguments" >&2
-        exit 1;;
-esac
+musicpath=${HOME}/misc/media/music/all
+mpvargs="--no-audio-display --shuffle --loop-playlist --volume=80"
+
+if [ "$1" != find ]; then
+    path=${1:-${musicpath}}
+    # shellcheck disable=2086 # Intentional word splitting
+    mpv ${mpvargs} "${path}"
+else
+    path=${2:-${musicpath}}
+    index=$(choose_track "${path}") || exit 1
+    # shellcheck disable=2086 # Intentional word splitting
+    find "${path}" -type f -print0 | xargs -0 mpv ${mpvargs} --playlist-start="${index}"
+fi

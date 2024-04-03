@@ -8,79 +8,105 @@ local function reference_node(jump_index, reference_index)
 end
 
 local function custom_snippets()
-    local ls  = require("luasnip")
-    local fmt = require("luasnip.extras.fmt").fmt
+    local ls = require("luasnip")
+    local format = require("luasnip.extras.fmt").fmt
+    local repeat_node = require("luasnip.extras").rep
     return {
+        all = {
+            ls.snippet("date", {
+                ls.function_node(function () return os.date("%F") end),
+            }),
+            ls.snippet("time", {
+                ls.function_node(function () return os.date("%T") end),
+            }),
+        },
         haskell = {
-            ls.snippet("def", fmt("{} :: {}\n{} = {}", {
+            ls.snippet("fn", format("{} :: {}\n{} = {}", {
                 ls.insert_node(1, "name"),
                 ls.insert_node(2, "type"),
-                reference_node(4, 1),
+                repeat_node(1),
                 ls.insert_node(3, "undefined"),
             })),
         },
         python = {
-            ls.snippet("main", fmt("def {}():\n\t{}\n\nif __name__ == \"__main__\":\n\t{}()", {
+            ls.snippet("main", format("def {}():\n\t{}\n\nif __name__ == \"__main__\":\n\t{}()", {
                 ls.insert_node(1, "main"),
                 ls.insert_node(2, "pass"),
-                reference_node(3, 1),
+                repeat_node(1),
             })),
         },
         rust = {
-            ls.snippet("derive", fmt("#[derive({})]", {
-                ls.insert_node(1, "traits"),
+            ls.snippet("derive", format("#[derive({})]", {
+                ls.insert_node(1, "Debug"),
             })),
-            ls.snippet("test", fmt("#[test]\nfn {}() {{\n\t{}\n}}", {
+            ls.snippet("test", format("#[test]\nfn {}() {{\n\t{}\n}}", {
                 ls.insert_node(1, "test-name"),
                 ls.insert_node(2),
             })),
-            ls.snippet("tests", fmt("#[cfg(test)]\nmod tests {{\n\tuse super::*;\n\n\t{}\n}}", {
+            ls.snippet("tests", format("#[cfg(test)]\nmod tests {{\n\tuse super::*;\n\n\t{}\n}}", {
                 ls.insert_node(1),
             })),
         },
         cpp = {
-            ls.snippet("for", fmt("for (std::size_t {} = {}; {} != {}; ++{}) {{\n\t{}\n}}", {
+            ls.snippet("for", format("for (std::size_t {} = {}; {} != {}; ++{}) {{\n\t{}\n}}", {
                 ls.insert_node(1, "i"),
                 ls.insert_node(2, "0"),
-                reference_node(5, 1),
+                repeat_node(1),
                 ls.insert_node(3),
-                reference_node(6, 1),
+                repeat_node(1),
                 ls.insert_node(4),
             })),
-            ls.snippet("formatter", fmt(
+            ls.snippet("formatter", format(
 [[template <{}>
 struct std::formatter<{}> {{
-    constexpr auto parse(auto& context) {{
+    static constexpr auto parse(auto& context) {{
         return context.begin();
     }}
-    auto format({} const& {}, auto& context) const {{
-        return std::format_to(context.out(), "{}");
+    static auto format({} const& {}, auto& context) const {{
+        return std::format_to(context.out(), "{}", {});
     }}
 }};]], {
                 ls.insert_node(1),
                 ls.insert_node(2),
-                reference_node(5, 2),
+                repeat_node(2),
+                ls.insert_node(3),
+                ls.insert_node(4),
+                ls.insert_node(5),
+            })),
+            ls.snippet("fn", format("auto {}({}) -> {} {{\n\t{}\n}}", {
+                ls.insert_node(1, "function-name"),
+                ls.insert_node(2),
                 ls.insert_node(3),
                 ls.insert_node(4),
             })),
-        },
-        sh = {
-            ls.snippet("err", fmt("echo \"{}\" 1>&2", {
+            ls.snippet("mv", format("std::move({})", {
                 ls.insert_node(1),
             })),
-            ls.snippet("case", fmt("case {} in\n\t{})\n\t\t{};;\n\t*)\n\t\t{};;\nesac", {
+            ls.snippet("to", format("std::ranges::to<{}>()", {
+                ls.insert_node(1, "std::vector"),
+            })),
+        },
+        sh = {
+            ls.snippet("err", format("echo \"{}\" 1>&2", {
+                ls.insert_node(1),
+            })),
+            ls.snippet("case", format("case {} in\n\t{})\n\t\t{};;\n\t*)\n\t\t{};;\nesac", {
                 ls.insert_node(1),
                 ls.insert_node(2),
                 ls.insert_node(3),
                 ls.insert_node(4),
             })),
-            ls.snippet("fn", fmt("{} () {{\n\t{}\n}}", {
+            ls.snippet("fn", format("{} () {{\n\t{}\n}}", {
                 ls.insert_node(1, "function-name"),
+                ls.insert_node(2),
+            })),
+            ls.snippet("if", format("if {}; then\n\t{}\nfi", {
+                ls.insert_node(1),
                 ls.insert_node(2),
             })),
         },
         markdown = {
-            ls.snippet("link", fmt("[{}]({})", {
+            ls.snippet("link", format("[{}]({})", {
                 ls.insert_node(1),
                 reference_node(2, 1),
             })),
@@ -89,6 +115,7 @@ struct std::formatter<{}> {{
 end
 
 return {
+    -- TODO: neovim 0.10: Use `vim.snippet`
     "L3MON4D3/LuaSnip",
     keys = {
         { "<C-j>", function () require("luasnip").expand_or_jump() end, mode = { "i", "s" } },

@@ -1,3 +1,4 @@
 editMode: Vi
-completionType: MenuCompletion
+completionPaging: False
+completionPromptLimit: 200
 historyDuplicates: IgnoreConsecutive

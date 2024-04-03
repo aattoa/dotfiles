@@ -61,8 +61,7 @@ local function filetype(filetypes, callback)
 end
 
 filetype({ "help", "man" }, function (buffer)
-    quit_if_last_window(buffer)
-    vim.wo.cursorline = false
+    vim.opt_local.cursorline = false
     vim.keymap.set("n", "j",  "<C-e>",     { buffer = buffer })
     vim.keymap.set("n", "J", "3<C-e>",     { buffer = buffer })
     vim.keymap.set("n", "k",  "<C-y>",     { buffer = buffer })
@@ -72,12 +71,21 @@ end)
 
 filetype({ "qf" }, function (buffer)
     quit_if_last_window(buffer)
-    vim.keymap.set("n", "j", "j<Return>zz<C-W>p", { buffer = buffer })
-    vim.keymap.set("n", "k", "k<Return>zz<C-W>p", { buffer = buffer })
+    vim.keymap.set("n", "j", "j<Return>zz<C-w>p", { buffer = buffer })
+    vim.keymap.set("n", "k", "k<Return>zz<C-w>p", { buffer = buffer })
     vim.keymap.set("n", "q", vim.cmd.quit,        { buffer = buffer })
 end)
 
 filetype({ "markdown" }, function (buffer)
     -- Make markdown files by converting them to PDF
     vim.bo[buffer].makeprg = "pandoc % -o %<.pdf &"
+end)
+
+filetype({ "cpp" }, function ()
+    -- TODO: neovim 0.10: Use `vim.keymap.set` for abbreviations
+    vim.cmd("inoreabbrev <buffer> f: std::filesystem:")
+    vim.cmd("inoreabbrev <buffer> c: std::chrono:")
+    vim.cmd("inoreabbrev <buffer> r: std::ranges:")
+    vim.cmd("inoreabbrev <buffer> v: std::views:")
+    vim.cmd("inoreabbrev <buffer> -- //")
 end)

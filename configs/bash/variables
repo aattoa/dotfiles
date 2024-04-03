@@ -14,9 +14,10 @@ export HISTIGNORE=q:exit
 # No history file size limit
 export HISTSIZE=-1
 
-# Default editor and browser
-export EDITOR=nvim
-export BROWSER=librewolf
+# Default programs
+export EDITOR=/usr/bin/nvim
+export SUDO_EDITOR=/usr/bin/vim
+export BROWSER=/usr/bin/qutebrowser
 
 # XDG directories
 export XDG_CONFIG_HOME=${HOME}/.config
@@ -28,8 +29,8 @@ export XDG_STATE_HOME=${HOME}/.local/state
 export LESSHISTFILE=/dev/null
 export SQLITE_HISTORY=/dev/null
 export WATCH_INTERVAL=0.5
-export MANPAGER="less --color=d+r --color=u+b"
 export MANROFFOPT="-P -c"
+export MANPAGER="less --color=d+r --color=u+b"
 export LESS="--incsearch --ignore-case --jump-target=.3 --chop-long-lines --clear-screen --use-color --RAW-CONTROL-CHARS"
 
 GPG_TTY=$(tty)

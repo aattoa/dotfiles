@@ -82,9 +82,6 @@ return {
         vim.keymap.set({ "n", "v" }, "[]", "<Nop>")
         vim.keymap.set({ "n", "v" }, "][", "<Nop>")
 
-        -- Disable semantic highlighting of comments
-        vim.api.nvim_set_hl(0, "@lsp.type.comment", {})
-
         -- Make TODO comments stand out
         vim.api.nvim_set_hl(0, "@comment.todo", { fg = "DarkOrange", underline = true, bold = true })
 

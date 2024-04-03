@@ -30,6 +30,7 @@ vim.opt.wrap             = false           -- Do not wrap long lines
 vim.opt.linebreak        = true            -- Do not split words when wrapping long lines (for documentation windows)
 vim.opt.conceallevel     = 2               -- Do not render markdown syntax
 
-vim.opt.completeopt:append("noselect")     -- Do not automatically select completion entry
+vim.opt.completeopt:append("noselect")     -- Do not preselect completion entries
 vim.opt.matchpairs:append("<:>")           -- Jump between matching angle brackets
 vim.opt.shortmess:append("I")              -- Disable intro message
+vim.opt.path:append("**")                  -- Recursively find in subdirectories

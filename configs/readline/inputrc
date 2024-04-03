@@ -9,8 +9,11 @@ $if mode=vi
     Control-l: clear-screen
 $endif
 
-# Cycle through completions
+# Cycle forward through completions
 TAB: menu-complete
+
+# Cycle backward through completions (shift-tab)
+"\e[Z": menu-complete-backward
 
 # Case insensitive autocompletion
 set completion-ignore-case on

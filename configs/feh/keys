@@ -1,7 +1,13 @@
-next_img   j Right
-prev_img   k Left
-jump_fwd   J
-jump_back  K
-jump_first g
-jump_last  G
-delete     x
+next_img     j Right
+prev_img     k Left
+jump_fwd     J
+jump_back    K
+jump_first   g
+jump_last    G
+delete       x
+zoom_out     C-j
+zoom_in      C-k
+scroll_left  C-H
+scroll_right C-L
+scroll_down  C-J
+scroll_up    C-K

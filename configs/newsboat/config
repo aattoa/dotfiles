@@ -1,8 +1,8 @@
 # Vim keys
 bind-key j down
 bind-key k up
-bind-key h prev-feed
-bind-key l next-feed
+bind-key h quit
+bind-key l open
 bind-key G end
 bind-key g home
 bind-key n next-unread
@@ -15,7 +15,10 @@ bind-key T toggle-article-read
 pager less
 
 # Parallel downloads
-reload-threads 6
+reload-threads 10
+
+# Populate query feeds on startup
+prepopulate-query-feeds yes
 
 # Custom URL handler
 external-url-viewer handle-urls

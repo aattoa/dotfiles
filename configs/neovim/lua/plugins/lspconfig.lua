@@ -13,9 +13,9 @@ return {
     config = function ()
         setup_server("clangd")
         setup_server("rust_analyzer")
-        setup_server("lua_ls")
         setup_server("hls")
         setup_server("pylsp")
+        setup_server("lua_ls")
         setup_server("gdscript")
     end,
     lazy = false,

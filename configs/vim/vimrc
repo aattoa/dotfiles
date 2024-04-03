@@ -8,7 +8,6 @@ set incsearch                    " Interactive search highlight
 set ignorecase                   " Enable case insensitive search
 set relativenumber               " Enable relative line numbers
 set number                       " Absolute line number for current line
-set nowrap                       " Do not wrap long lines
 set smartindent                  " Automatically indent new lines
 set tabstop=4                    " Tabs appear as 4 spaces
 set shiftwidth=4                 " Set indentation to 4 spaces
@@ -16,8 +15,11 @@ set expandtab                    " Convert tabs to spaces
 set scrolloff=10                 " Vertical scrolloff
 set sidescrolloff=30             " Horizontal scrolloff
 set virtualedit=block            " Allow going past the end of line in visual block mode
-set splitkeep=topline            " Do not scroll when resizing horizontal splits
 set wildmenu                     " Show command line completions list
+set path+=**                     " Recursively find in subdirectories
+set nowrap                       " Do not wrap long lines
+set splitkeep=topline            " Do not scroll when resizing horizontal splits
+set nostartofline                " Do not move the the cursor to the start of the line on vertical movements
 set shortmess+=I                 " Disable intro message
 set viminfo=                     " Disable viminfo
 set nomodeline                   " Disable unnecessary feature
@@ -32,6 +34,9 @@ syntax enable                    " Enable syntax highting
 nnoremap <Leader>e     <Cmd>Explore<Return>
 nnoremap <Leader>E     <Cmd>Sexplore<Return>
 nnoremap <Leader><C-e> <Cmd>Texplore<Return>
+
+" Find files
+nnoremap <Leader>f :find<Space>
 
 " Toggle search highlight
 nnoremap <Leader>h <Cmd>set hlsearch!<Return>
@@ -90,6 +95,9 @@ nnoremap <Leader>q <Cmd>quit<Return>
 inoremap <C-e> <C-o><C-e>
 inoremap <C-y> <C-o><C-y>
 
+" Center the cursor in insert mode
+inoremap <C-z> <C-o>zz
+
 " Do not save paragraph jumps to the jumplist
 nnoremap { <Cmd>execute "keepjumps normal!" . v:count1 . "{zz"<Return>
 vnoremap { <Cmd>execute "keepjumps normal!" . v:count1 . "{zz"<Return>
@@ -108,12 +116,15 @@ vnoremap <C-d> <C-d>zz
 nnoremap <C-u> <C-u>zz
 vnoremap <C-u> <C-u>zz
 
+" Yank to the end of line (behave like C and D)
+nnoremap Y y$
+
 function s:ApplyHelpBufferOptions()
-    nnoremap j  <C-e>
-    nnoremap J 3<C-e>
-    nnoremap k  <C-y>
-    nnoremap K 3<C-y>
-    nnoremap q <Cmd>quit<Return>
+    nnoremap <buffer> j  <C-e>
+    nnoremap <buffer> J 3<C-e>
+    nnoremap <buffer> k  <C-y>
+    nnoremap <buffer> K 3<C-y>
+    nnoremap <buffer> q <Cmd>quit<Return>
 endfunction
 
 autocmd FileType help call s:ApplyHelpBufferOptions()

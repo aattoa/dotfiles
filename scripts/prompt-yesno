@@ -1,11 +1,19 @@
 #!/bin/sh
 
 while true; do
-    printf "%s [y/n]: " "$*"
-    read -r str
-    case ${str} in
-        [Yy]) exit 0;;
-        [Nn]) exit 1;;
-        *) continue;;
-    esac
+    if printf "" > /dev/tty; then
+        printf "%s [y/n]: " "$*"
+        read -r str
+        case ${str} in
+            [Yy]) exit 0;;
+            [Nn]) exit 1;;
+            *)    continue;;
+        esac
+    else
+        case $(printf "yes\nno" | dmenu -i -p "$*") in
+            yes) exit 0;;
+            no)  exit 1;;
+            *)   continue;;
+        esac
+    fi
 done

@@ -87,27 +87,31 @@ vim.keymap.set("n", "<Leader>q", cmd("quit"))
 vim.keymap.set("i", "<C-e>", "<C-o><C-e>")
 vim.keymap.set("i", "<C-y>", "<C-o><C-y>")
 
+-- Center the cursor in insert mode
+vim.keymap.set("i", "<C-z>", "<C-o>zz")
+
 -- Do not save paragraph jumps to the jumplist
 vim.keymap.set({ "n", "v" }, "{", cmd([[execute "keepjumps normal! " . v:count1 . "{zz"]]))
 vim.keymap.set({ "n", "v" }, "}", cmd([[execute "keepjumps normal! " . v:count1 . "}zz"]]))
 
 ---@param open string
 ---@param close string
+---@return string
 local function surround(open, close)
-    return "<Esc>`>a" .. close .. "<Esc>`<i" .. open .. "<Esc>gv" .. ("ol"):rep(2 * open:len())
+    return "<Esc>`>a" .. close .. "<Esc>`<i" .. open .. "<Esc>gv" .. string.rep("ol", 2 * open:len())
 end
 
 -- Surround selected text
-vim.keymap.set("v", "s(",  surround("(", ")"))
-vim.keymap.set("v", "s{",  surround("{", "}"))
-vim.keymap.set("v", "s[",  surround("[", "]"))
-vim.keymap.set("v", "s<",  surround("<", ">"))
-vim.keymap.set("v", "s|",  surround("|", "|"))
-vim.keymap.set("v", "s*",  surround("*", "*"))
-vim.keymap.set("v", "s`",  surround("`", "`"))
-vim.keymap.set("v", "s'",  surround("'", "'"))
-vim.keymap.set("v", "s\"", surround("\"", "\""))
-vim.keymap.set("v", "s/",  surround("/*", "*/"))
+vim.keymap.set("x", "s(",  surround("(", ")"))
+vim.keymap.set("x", "s{",  surround("{", "}"))
+vim.keymap.set("x", "s[",  surround("[", "]"))
+vim.keymap.set("x", "s<",  surround("<", ">"))
+vim.keymap.set("x", "s|",  surround("|", "|"))
+vim.keymap.set("x", "s*",  surround("*", "*"))
+vim.keymap.set("x", "s`",  surround("`", "`"))
+vim.keymap.set("x", "s'",  surround("'", "'"))
+vim.keymap.set("x", "s\"", surround("\"", "\""))
+vim.keymap.set("x", "s/",  surround("/*", "*/"))
 
 -- Center the cursor after movements
 for _, movement in ipairs({ "G", "n", "N", "<C-d>", "<C-u>" }) do

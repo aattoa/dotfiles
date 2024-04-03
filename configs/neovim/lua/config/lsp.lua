@@ -36,7 +36,7 @@ M.server_commands = {
 ---@param client lsp.Client
 ---@param buffer integer
 M.set_mappings = function (client, buffer)
-    vim.keymap.set("n", "<C-Space>",  vim.lsp.buf.signature_help, { buffer = buffer })
+    vim.keymap.set("n", "<Leader>ls", vim.lsp.buf.signature_help, { buffer = buffer })
     vim.keymap.set("n", "<Leader>lf", vim.lsp.buf.references,     { buffer = buffer })
     vim.keymap.set("n", "<Leader>lr", vim.lsp.buf.rename,         { buffer = buffer })
     vim.keymap.set("n", "<Leader>la", vim.lsp.buf.code_action,    { buffer = buffer })

@@ -17,15 +17,9 @@ end
 vim.opt.runtimepath:prepend(lazypath)
 
 require("lazy").setup("plugins", {
-    ui = {
-        border = "double",
-    },
-    defaults = {
-        lazy = true,
-    },
-    change_detection = {
-        notify = false,
-    },
+    ui               = { border  = "rounded" },
+    defaults         = { lazy    = true      },
+    change_detection = { enabled = false     },
 })
 
 vim.keymap.set("n", "<Leader>p", vim.cmd.Lazy)

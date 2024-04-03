@@ -9,25 +9,10 @@ notify () {
 looks_like_a_url () {
     case $1 in
         "https://"*) true;;
+        "http://"*)  true;;
         *)           false;;
     esac
 }
-
-# $1: Prompt string
-prompt_yesno () {
-    case $(printf "yes\nno" | dmenu -i -p "$1") in
-        "yes")
-            true;;
-        "no")
-            false;;
-        "")
-            notify "Error: No choice made, aborting"
-            exit 1;;
-        *)
-            prompt_yesno "$1";;
-    esac
-}
-
 
 bookmarks="${HOME}/misc/bookmarks"
 if [ ! -e "${bookmarks}" ]; then
@@ -58,7 +43,7 @@ if [ -z "${bookmarkchoice}" ]; then
     exit 1
 fi
 
-if looks_like_a_url "${bookmarkchoice}" && prompt_yesno "Open in browser?"; then
+if looks_like_a_url "${bookmarkchoice}" && prompt-yesno "Open in browser?"; then
     if [ -n "${BROWSER}" ]; then
         "${BROWSER}" "${bookmarkchoice}"
     else
