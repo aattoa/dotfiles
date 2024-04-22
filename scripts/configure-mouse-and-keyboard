@@ -9,31 +9,26 @@ apply_default () {
 apply_custom () {
     xset r rate 175 60
     setxkbmap -layout "us" -option caps:swapescape
-    exec unclutter --timeout 1 --jitter 10 --start-hidden --ignore-scrolling &
+    unclutter --fork --timeout=1 --jitter=10 --start-hidden --ignore-scrolling
 }
 
 is_currently_default () {
-    [ "$(pgrep --exact --count unclutter)" = "0" ]
+    [ "$(pgrep --exact --count unclutter)" = 0 ]
 }
 
-# $1: Message
-notify () {
-    [ -n "${DISPLAY}" ] && notify-send --expire-time=2000 "configure-mouse-and-keyboard" "$1"
+toggle () {
+    if is_currently_default; then
+        apply_custom
+        notify "Custom settings applied"
+    else
+        apply_default
+        notify "Default settings restored"
+    fi
 }
 
 case $1 in
-    default)
-        apply_default;;
-    custom)
-        apply_custom;;
-    toggle)
-        if is_currently_default; then
-            apply_custom
-            notify "Custom settings applied"
-        else
-            apply_default
-            notify "Default settings restored"
-        fi;;
-    *)
-        exit 1;;
+    default) apply_default;;
+    custom)  apply_custom;;
+    toggle)  toggle;;
+    *)       exit 1;;
 esac

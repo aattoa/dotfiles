@@ -1,36 +1,13 @@
 #!/bin/sh
 
 # $1: Message
-error () {
-    echo "Error: dl-view: $1" 1>&2
-    exit 1
-}
-
-# $1: URL
-# $2: File path without extension
-download () {
-    yt-dlp "$1"                       \
-        --sponsorblock-mark=default   \
-        --sponsorblock-remove=default \
-        --format-sort="res:720"       \
-        --output="$2"
-}
-
-# $1: URL
-run () {
-    path="/tmp/dl-view-$(date +%s)"
-    if download "$1" "${path}"; then
-        # Wildcards match the file extension
-        mpv "${path}"*
-        rm "${path}"*
-    else
-        error "Could not download media"
-    fi
-}
+error () { notify "dl-view" "Error: $1"; exit 1; }
 
 case $1 in
     "https://"*)
-        run "$1";;
+        id=$(date +%s)
+        ytdl --output="/tmp/%(title)s dl-view-${id}.%(ext)s" -- "$1"
+        mpv -- /tmp/*"dl-view-${id}"* || error "Unable to download media";;
     *)
         error "No URL given";;
 esac

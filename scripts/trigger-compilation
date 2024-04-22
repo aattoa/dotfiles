@@ -1,4 +1,3 @@
 #!/bin/sh
 
-mkdir --parents "${MY_DOTFILES_REPO}/state"
-touch "${MY_DOTFILES_REPO}/state/compilation-trigger"
+touch /tmp/dotfiles-compilation-trigger

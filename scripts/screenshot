@@ -4,5 +4,4 @@ if [ "$1" = gui ]; then
     flameshot gui
 else
     flameshot full --path "${HOME}/misc/screenshots/uncategorized/"
-    notify-send --expire-time=300 "Screenshot taken"
 fi

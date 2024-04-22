@@ -1,6 +1,7 @@
 configure-mouse-and-keyboard custom
-configure-monitors
+configure-monitors auto
 xset s 1800 1800 -dpms
+exec battery-sentry &
 exec slstatus &
 exec dunst &
 exec dwm

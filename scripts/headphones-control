@@ -1,31 +1,32 @@
 #!/bin/sh
 
-indexfile="${MY_DOTFILES_REPO}/state/headphones-control-index"
+indexfile=${MY_DOTFILES_REPO}/state/headphones-control-index
 mkdir --parents "${MY_DOTFILES_REPO}/state"
 [ -f "${indexfile}" ] || echo 1 > "${indexfile}"
 
-# $1: Error message
-error () {
-    if [ -n "${DISPLAY}" ]; then
-        notify-send "Error: headphones-control" "$1"
+# $1: Message
+error () { notify "headphones-control" "Error: $1"; exit 1; }
+
+# $1: Device address
+# stdout: "connect" | "disconnect"
+connection_status () {
+    if bluetoothctl devices Connected | grep --quiet --fixed-strings "$1"; then
+        echo connect
     else
-        echo "$1" 1>&2
+        echo disconnect
     fi
-    exit 1
 }
 
 # $1: "connect" | "disconnect"
 # $2: Device address
 connect_or_disconnect () {
-    if [ -z "${DISPLAY}" ]; then
-        bluetoothctl "$1" "$2"
+    [ -n "${DISPLAY}" ] && notification=$(notify-send --print-id "Attempting to ${1}...")
+    bluetoothctl --timeout=3 -- "$1" "$2"
+    [ -n "${DISPLAY}" ] || return
+    if [ "$1" = "$(connection_status "$2")" ]; then
+        notify-send --expire-time=2000 --replace-id "${notification}" "Successfully ${1}ed"
     else
-        notification=$(notify-send --print-id "Attempting to ${1}...")
-        if bluetoothctl "$1" "$2"; then
-            notify-send --expire-time=2000 --replace-id "${notification}" "Successfully ${1}ed"
-        else
-            error "Unable to $1"
-        fi
+        error "Unable to $1"
     fi
 }
 
@@ -36,12 +37,12 @@ get_info () {
 
 # $1: Index
 get_address () {
-    get_info "$1" | cut --delimiter=" " --fields=2
+    get_info "$1" | cut --delimiter=' ' --fields=2
 }
 
 # $1: Index
 get_name () {
-    get_info "$1" | cut --delimiter=" " --fields=3-
+    get_info "$1" | cut --delimiter=' ' --fields=3-
 }
 
 # $1: Index

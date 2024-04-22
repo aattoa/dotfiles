@@ -44,7 +44,7 @@ M.set_mappings = function (client, buffer)
     vim.keymap.set("n", "K",          vim.lsp.buf.hover,          { buffer = buffer })
 
     if client.name == "clangd" then
-        vim.keymap.set("n", "<Leader>ss", "<Cmd>ClangdSwitchSourceHeader<Return>", { buffer = buffer })
+        vim.keymap.set("n", "<Leader>ss", "<Cmd>ClangdSwitchSourceHeader<CR>", { buffer = buffer })
     end
 end
 

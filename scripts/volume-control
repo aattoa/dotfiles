@@ -5,21 +5,11 @@ control () {
     amixer -q set Master "$1"
 }
 
-# $1: Message
-error () {
-    [ -n "${DISPLAY}" ] && notify-send "Error: volume-control" "$1"
-    exit 1
-}
-
 case $1 in
-    toggle)
-        control toggle;;
-    up)
-        control 5%+;;
-    down)
-        control 5%-;;
-    *)
-        error "Invalid argument";;
+    up)     control 5%+;;
+    down)   control 5%-;;
+    toggle) control toggle;;
+    *)      notify "volume-control" "Error: Invalid argument"; exit 1;;
 esac
 
 update-status-bar

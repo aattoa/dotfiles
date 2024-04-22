@@ -8,4 +8,4 @@ choose_url () {
     grep --invert-match "^mailto:*" | dmenu -i -l 5 -p "Which URL?"
 }
 
-handle-url "$(gather_lines | urlscan --dedupe --no-browser | choose_url)"
+url=$(gather_lines | urlscan --dedupe --no-browser | choose_url) && handle-url "${url}"

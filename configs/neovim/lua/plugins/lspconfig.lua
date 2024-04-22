@@ -11,6 +11,7 @@ return {
     "neovim/nvim-lspconfig",
     dependencies = { "hrsh7th/cmp-nvim-lsp" },
     config = function ()
+        require("lspconfig.ui.windows").default_options.border = "rounded"
         setup_server("clangd")
         setup_server("rust_analyzer")
         setup_server("hls")

@@ -1,15 +1,11 @@
 #!/bin/sh
 
-statefile="${MY_DOTFILES_REPO}/state/current-media-player"
+statefile=${MY_DOTFILES_REPO}/state/current-media-player
 mkdir --parents "${MY_DOTFILES_REPO}/state"
 [ -f "${statefile}" ] || echo mpv > "${statefile}"
 
 case $# in
-    0)
-        cat "${statefile}";;
-    1)
-        echo "$1" > "${statefile}";;
-    *)
-        echo "Too many arguments" >&2
-        exit 1;;
+    0) cat "${statefile}";;
+    1) echo "$1" > "${statefile}";;
+    *) notify "current-media-player" "Error: Too many arguments"; exit 1;;
 esac

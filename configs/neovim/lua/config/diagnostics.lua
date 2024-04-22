@@ -18,7 +18,7 @@ end
 ---@param text string
 ---@param line string
 local function crop_virtual_text(text, line)
-    local max_len = math.floor(vim.api.nvim_win_get_width(0) * 0.6) - line:len()
+    local max_len = math.floor(vim.api.nvim_win_get_width(0) * 0.7) - line:len()
     if max_len < 1 then
         return "..."
     elseif text:len() > max_len then
@@ -33,9 +33,8 @@ end
 local function format_virtual_text(diagnostic)
     if type(diagnostic.code) == "string" then
         return diagnostic.code
-    else
-        return crop_virtual_text(diagnostic.message, nth_line(get_buffer(diagnostic), diagnostic.lnum))
     end
+    return crop_virtual_text(diagnostic.message, nth_line(get_buffer(diagnostic), diagnostic.lnum))
 end
 
 vim.diagnostic.config({
@@ -44,5 +43,5 @@ vim.diagnostic.config({
     severity_sort = true,
 })
 
-vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
-vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
+vim.keymap.set("n", "<C-n>", vim.diagnostic.goto_next)
+vim.keymap.set("n", "<C-p>", vim.diagnostic.goto_prev)

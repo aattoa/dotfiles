@@ -1,11 +1,11 @@
 ---@param command string
 ---@return string
 local function cmd(command)
-    return "<Cmd>" .. command .. "<Return>"
+    return "<Cmd>" .. command .. "<CR>"
 end
 
 -- Leader by itself does nothing
-vim.keymap.set({ "n", "v" }, "<Leader>", "<Nop>")
+vim.keymap.set({ "n", "x" }, "<Leader>", "<Nop>")
 
 -- Toggle search case sensitivity
 vim.keymap.set("n", "<Leader>i", cmd("set ignorecase!"))
@@ -33,11 +33,7 @@ vim.keymap.set("i", "<C-a>", require("config.alphabet").toggle)
 vim.keymap.set("n", "L", "<C-^>")
 
 -- System clipboard
-vim.keymap.set({ "n", "v" }, "<C-c>", "\"+")
-
--- Search and replace
-vim.keymap.set("n", "<C-s>", ":%substitute//g<Left><Left>")
-vim.keymap.set("v", "<C-s>", ":substitute//g<Left><Left>")
+vim.keymap.set({ "n", "x" }, "<C-c>", "\"+")
 
 -- Explore with Netrw
 vim.keymap.set("n", "<Leader>e",     cmd("Explore"))
@@ -49,8 +45,8 @@ vim.keymap.set("n", "<C-t>",   cmd("tabnew"))
 vim.keymap.set("n", "<C-q>",   cmd("tabclose"))
 vim.keymap.set("n", "<Tab>",   cmd("tabnext"))
 vim.keymap.set("n", "<S-Tab>", cmd("tabprevious"))
-vim.keymap.set("n", "g<",      cmd("tabmove -1"))
-vim.keymap.set("n", "g>",      cmd("tabmove +1"))
+vim.keymap.set("n", "<<",      cmd("tabmove -1"))
+vim.keymap.set("n", ">>",      cmd("tabmove +1"))
 
 for i = 1, 9 do
     vim.keymap.set("n", "<Leader>" .. i, i .. "gt")
@@ -63,36 +59,31 @@ vim.keymap.set("n", "<Leader>D", cmd("copen"))
 vim.keymap.set("n", "<Leader>c", cmd("cclose") .. cmd("lclose"))
 
 -- Move selected lines up and down
-vim.keymap.set("v", "<C-k>", ":move '<-2<Return>gv=gv", { silent = true })
-vim.keymap.set("v", "<C-j>", ":move '>+1<Return>gv=gv", { silent = true })
+vim.keymap.set("x", "<C-k>", ":move '<-2<CR>gv=gv", { silent = true })
+vim.keymap.set("x", "<C-j>", ":move '>+1<CR>gv=gv", { silent = true })
 
 -- Resize windows
-vim.keymap.set("n", "<C-j>", cmd("resize -1"))
-vim.keymap.set("n", "<C-k>", cmd("resize +1"))
+vim.keymap.set("n", "<C-j>", cmd("horizontal resize -1"))
+vim.keymap.set("n", "<C-k>", cmd("horizontal resize +1"))
 vim.keymap.set("n", "<C-h>", cmd("vertical resize -2"))
 vim.keymap.set("n", "<C-l>", cmd("vertical resize +2"))
 
 -- Stay in visual mode on indent/dedent
-vim.keymap.set("v", "<", "<gv")
-vim.keymap.set("v", ">", ">gv")
-
--- Make current file
-vim.keymap.set("n", "<Leader>m", cmd("silent make"))
+vim.keymap.set("x", "<", "<gv")
+vim.keymap.set("x", ">", ">gv")
 
 -- Write and quit
 vim.keymap.set("n", "<Leader>w", cmd("write"))
 vim.keymap.set("n", "<Leader>q", cmd("quit"))
 
--- Scroll in insert mode
+-- Normal mode actions in insert mode
 vim.keymap.set("i", "<C-e>", "<C-o><C-e>")
 vim.keymap.set("i", "<C-y>", "<C-o><C-y>")
-
--- Center the cursor in insert mode
 vim.keymap.set("i", "<C-z>", "<C-o>zz")
 
 -- Do not save paragraph jumps to the jumplist
-vim.keymap.set({ "n", "v" }, "{", cmd([[execute "keepjumps normal! " . v:count1 . "{zz"]]))
-vim.keymap.set({ "n", "v" }, "}", cmd([[execute "keepjumps normal! " . v:count1 . "}zz"]]))
+vim.keymap.set({ "n", "x" }, "{", cmd([[execute "keepjumps normal! " . v:count1 . "{zz"]]))
+vim.keymap.set({ "n", "x" }, "}", cmd([[execute "keepjumps normal! " . v:count1 . "}zz"]]))
 
 ---@param open string
 ---@param close string
@@ -115,5 +106,5 @@ vim.keymap.set("x", "s/",  surround("/*", "*/"))
 
 -- Center the cursor after movements
 for _, movement in ipairs({ "G", "n", "N", "<C-d>", "<C-u>" }) do
-    vim.keymap.set({ "n", "v" }, movement, movement .. "zz")
+    vim.keymap.set({ "n", "x" }, movement, movement .. "zz")
 end

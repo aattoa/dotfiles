@@ -1,10 +1,7 @@
 #!/bin/sh
 
-# $1: Error message
-error () {
-    notify-send "Error: media-control" "$1"
-    exit 1
-}
+# $1: Message
+error () { notify "media-control" "Error: $1"; exit 1; }
 
 # $@: Arguments to forward to the player
 control () {
@@ -13,25 +10,20 @@ control () {
 
 # $1: "-" | "+"
 seek () {
-    mkdir --parents "${MY_DOTFILES_REPO}/state"
-    lockfile="${MY_DOTFILES_REPO}/state/lock-media-control-seek"
+    lockfile=/tmp/dotfiles-media-control-seek-lock
     [ -f "${lockfile}" ] && return
     touch "${lockfile}"
     case $(control status) in
-        Paused)
-            control position "20$1";;
-        Playing)
-            control position "5$1";;
-        *)
-            error "Invalid player state";;
+        Paused)  control position "20$1";;
+        Playing) control position "5$1";;
+        *)       error "Invalid player state";;
     esac
     sleep 0.5
     rm "${lockfile}"
 }
 
 toggle () {
-    mkdir --parents "${MY_DOTFILES_REPO}/state"
-    lockfile="${MY_DOTFILES_REPO}/state/media-control-toggle-lock"
+    lockfile=/tmp/dotfiles-media-control-toggle-lock
     if [ -f "${lockfile}" ]; then
         playerctl --all-players pause &
         bluetoothctl disconnect &
@@ -42,7 +34,7 @@ toggle () {
             sleep 1
             rm "${lockfile}"
         } &
-        if [ "$(control status)" = "Paused" ]; then
+        if [ "$(control status)" = Paused ]; then
             control position 5-
             control play
         else
@@ -52,7 +44,7 @@ toggle () {
 }
 
 show_current_track_title () {
-    [ -z "${DISPLAY}" ] && return
+    [ -n "${DISPLAY}" ] || return
     if title=$(control metadata title); then
         notify-send --replace-id=999999999 --expire-time=750 "Now playing" "${title}"
     fi
@@ -77,16 +69,10 @@ next () {
 }
 
 case $1 in
-    play|pause)
-        toggle;;
-    next)
-        next;;
-    previous)
-        previous;;
-    forward)
-        seek +;;
-    rewind)
-        seek -;;
-    *)
-        error "Invalid argument";;
+    toggle|play|pause) toggle;;
+    next)              next;;
+    previous)          previous;;
+    forward)           seek +;;
+    rewind)            seek -;;
+    *)                 error "Invalid argument";;
 esac

@@ -1,0 +1,31 @@
+#!/bin/sh
+
+preview_directory () {
+    if command -v eza >/dev/null; then
+        eza --tree --level=1 --color=always -- "$1"
+    else
+        ls --format=single-column --group-directories-first --color=always -- "$1"
+    fi
+}
+
+preview_symlink () {
+    target=$(readlink --canonicalize -- "$1")
+    printf "preview: Symbolic link to %s\n\n" "${target}"
+    file-preview "${target}"
+}
+
+is_text_file () {
+    file --brief -- "$1" | grep --quiet --fixed-strings text
+}
+
+if [ -L "$1" ]; then
+    preview_symlink "$1"
+elif [ ! -e "$1" ]; then
+    echo "preview: Does not exist: $1"
+elif [ -d "$1" ]; then
+    preview_directory "$1"
+elif is_text_file "$1"; then
+    cat -- "$1"
+else
+    echo "preview: $(file --brief -- "$1")"
+fi

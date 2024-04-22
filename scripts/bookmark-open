@@ -1,11 +1,9 @@
 #!/bin/sh
 
 # $1: Message
-notify () {
-    notify-send --expire-time=2000 "bookmark-open" "$1"
-}
+error () { notify "bookmark-open" "Error: $1"; exit 1; }
 
-# $1: String to examine
+# $1: String
 looks_like_a_url () {
     case $1 in
         "https://"*) true;;
@@ -14,43 +12,25 @@ looks_like_a_url () {
     esac
 }
 
-bookmarks="${HOME}/misc/bookmarks"
-if [ ! -e "${bookmarks}" ]; then
-    notify "Error: Bookmarks directory not found"
-    exit 1
-fi
+bookmarkdirectory=${HOME}/misc/bookmarks
+[ -d "${bookmarkdirectory}" ] || error "Bookmark directory does not exist: '${bookmarkdirectory}'"
 
-filechoices=$(echo "[all]" && find "${bookmarks}" -type f -printf "%f\\n")
-bookmarkfile=$(echo "${filechoices}" | dmenu -i -p "Which bookmark file?")
-
-if [ -z "${bookmarkfile}" ]; then
-    notify "No bookmark file selected"
-    exit 1
-fi
+options=$(echo "[all]" && find "${bookmarkdirectory}" -type f -printf "%f\\n")
+bookmarkfile=$(echo "${options}" | dmenu -i -p "Which bookmark file?")
+[ -n "${bookmarkfile}" ] || error "No bookmark file selected"
 
 if [ "${bookmarkfile}" = "[all]" ]; then
-    bookmarklist=$(cat "${bookmarks}"/*)
-elif [ -e "${bookmarks}/${bookmarkfile}" ]; then
-    bookmarklist=$(cat "${bookmarks}/${bookmarkfile}")
+    bookmarklist=$(cat "${bookmarkdirectory}"/*)
+elif [ -f "${bookmarkdirectory}/${bookmarkfile}" ]; then
+    bookmarklist=$(cat "${bookmarkdirectory}/${bookmarkfile}")
 else
-    notify "Error: Bookmark file \"${bookmarkfile}\" does not exist"
-    exit 1
+    error "Bookmark file does not exist: '${bookmarkfile}'"
 fi
 
-bookmarkchoice=$(echo "${bookmarklist}" | dmenu -i -l 5)
-if [ -z "${bookmarkchoice}" ]; then
-    notify "No bookmark selected"
-    exit 1
-fi
+choice=$(echo "${bookmarklist}" | dmenu -i -l 5) || error "No bookmark selected"
 
-if looks_like_a_url "${bookmarkchoice}" && prompt-yesno "Open in browser?"; then
-    if [ -n "${BROWSER}" ]; then
-        "${BROWSER}" "${bookmarkchoice}"
-    else
-        notify "Error: \$BROWSER is not defined"
-        exit 1
-    fi
+if looks_like_a_url "${choice}"; then
+    handle-url "${choice}"
 else
-    printf %s "${bookmarkchoice}" | xclip -selection clipboard
-    notify "Copied bookmark to clipboard"
+    clip "${choice}"
 fi

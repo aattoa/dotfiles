@@ -1,49 +1,34 @@
 #!/bin/sh
 
-mkdir --parents "${MY_DOTFILES_REPO}/state"
-bat="/sys/class/power_supply/BAT0"
-
-# $1: Integer percentage
-less_than () {
-    [ "$(cat "${bat}"/capacity)" -le "$1" ]
+# $1: Status
+battery () {
+    cat "/sys/class/power_supply/BAT0/$1"
 }
 
-# $1: "normal" | "critical"
-# $2: Optional message string
-send_warning () {
-    notify-send --urgency="$1" "Battery: $(cat "${bat}"/capacity)%" "$2"
-}
-
-# $1: File path to be examined, must exist
+# $1: File path, must exist
 seconds_since_touch () {
     currenttime=$(date +%s)
-    touchtime=$(stat --format=%Y "$1")
-    echo $(("${currenttime}" - "${touchtime}"))
+    touchtime=$(stat --format=%Y -- "$1")
+    echo $((currenttime - touchtime))
 }
 
 # $1: Integer percentage
-# $2: "normal" | "critical"
-# $3: Optional message string
-warn () {
-    timestamp="${MY_DOTFILES_REPO}/state/timestamp-battery-sentry-$1"
-    interval=900 # 15 minutes
-    if [ ! -f "${timestamp}" ] || [ "$(seconds_since_touch "${timestamp}")" -ge "${interval}" ]; then
+# $2: Optional urgency
+warn_if_less_than () {
+    [ "$(battery capacity)" -le "$1" ] || return
+    timestamp=/tmp/dotfiles-battery-sentry-$1-warning-timestamp
+    if [ ! -f "${timestamp}" ] || [ "$(seconds_since_touch "${timestamp}")" -ge 900 ]; then
+        # 15 minutes since last warning
         touch "${timestamp}"
-        send_warning "$2" "$3"
+        notify-send --urgency="${2:-normal}" "Battery: $(battery capacity)%"
+        true
     fi
+    false
 }
 
-if [ "$(cat "${bat}"/status)" = "Discharging" ]; then
-    if less_than 10; then
-        suspendtime=30
-        warn 10 critical "Suspending in ${suspendtime} seconds..."
-        sleep "${suspendtime}"
-        systemctl suspend
-    elif less_than 25; then
-        warn 25 critical
-    elif less_than 50; then
-        warn 50 normal
-    elif less_than 75; then
-        warn 75 normal
+while true; do
+    if [ "$(battery status)" = Discharging ]; then
+        warn_if_less_than 15 critical || warn_if_less_than 30 critical || warn_if_less_than 50 || warn_if_less_than 70
     fi
-fi
+    sleep 299 # Check every 5 minutes
+done

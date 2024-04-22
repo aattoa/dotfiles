@@ -1,0 +1,16 @@
+#!/bin/sh
+
+case $1 in
+    up)    direction=normal;;
+    down)  direction=inverted;;
+    left)  direction=left;;
+    right) direction=right;;
+    *)     notify "rotate-monitors" "Error: Invalid direction"; exit 1;;
+esac
+
+for monitor in $(xrandr --listactivemonitors | awk 'NR>1 {print$4}'); do
+    args="${args} --output ${monitor} --rotate ${direction}"
+done
+
+# shellcheck disable=2086 # Intentional word splitting
+xrandr ${args}

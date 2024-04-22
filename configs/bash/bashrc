@@ -7,12 +7,121 @@ export MY_DOTFILES_REPO=${HOME}/misc/dotfiles
 [[ $- != *i* ]] && return
 
 # Stop here if the dotfiles repo was not found
-if [ ! -d "${MY_DOTFILES_REPO}" ]; then
-    echo "dotfiles repo not found"
-    return
-fi
+[ ! -d "${MY_DOTFILES_REPO}" ] && echo "dotfiles repo not found" && return
 
-source "${MY_DOTFILES_REPO}/configs/bash/aliases"
-source "${MY_DOTFILES_REPO}/configs/bash/variables"
-source "${MY_DOTFILES_REPO}/configs/bash/functions"
-source "${MY_DOTFILES_REPO}/configs/bash/completions"
+# Default arguments
+alias cp='cp --verbose --interactive'
+alias mv='mv --verbose --interactive'
+alias rm='rm --verbose --interactive=once'
+alias rg='rg --smart-case'
+alias bc='bc --quiet --standard'
+alias pwd='pwd -P'
+alias ghci='ghci -v0'
+alias grep='grep --ignore-case --color=auto'
+
+# Convenience
+alias q='exit'
+alias md='mkdir --verbose --parents'
+alias rd='rmdir --verbose'
+alias vi='nvim'
+alias ls='eza --git --no-permissions --octal-permissions --group-directories-first'
+alias py='python -i "$MY_DOTFILES_REPO/configs/python/startup.py"'
+alias ns='newsboat'
+alias jr='journalctl --pager-end'
+alias calendar='cal --monday $(date +%Y)'
+alias memcheck='valgrind --leak-check=full --show-leak-kinds=all --show-error-list=yes'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias ......='cd ../../../../..'
+
+PS1='$ ' # Primary prompt
+PS2='> ' # Continuation prompt
+
+# XDG base directories
+export XDG_CONFIG_HOME=${HOME}/.config
+export XDG_CACHE_HOME=${HOME}/.cache
+export XDG_DATA_HOME=${HOME}/.local/share
+export XDG_STATE_HOME=${HOME}/.local/state
+
+# Do not log duplicate or exit commands
+export HISTCONTROL=ignoredups
+export HISTIGNORE=q:exit
+
+# No history file size limit
+export HISTSIZE=-1
+
+# Add scripts and local binaries to $PATH
+export PATH=${MY_DOTFILES_REPO}/scripts:${HOME}/.local/bin:${PATH}
+
+# Default programs
+export EDITOR=/usr/bin/nvim
+export SUDO_EDITOR=/usr/bin/vim
+export BROWSER=/usr/bin/qutebrowser
+
+# Miscellaneous configuration
+export LESSHISTFILE=/dev/null
+export SQLITE_HISTORY=/dev/null
+export WATCH_INTERVAL=0.5
+export MANROFFOPT="-P -c"
+export MANPAGER="less --color=d+r --color=u+b"
+export LESS="--incsearch --ignore-case --jump-target=.3 --chop-long-lines --clear-screen --use-color --RAW-CONTROL-CHARS"
+export FZF_DEFAULT_OPTS="--cycle --no-mouse --scroll-off=10 --color=gutter:-1 --keep-right     \
+    --tiebreak=begin,length --preview='file-preview {}' --preview-window=hidden                \
+    --bind=ctrl-c:cancel,ctrl-a:toggle-preview,ctrl-r:change-preview-window\(down,30%\|right\) \
+    --bind=ctrl-w:forward-word,ctrl-b:backward-word,ctrl-l:forward-char,ctrl-h:backward-char   \
+    --bind=ctrl-g:first,ctrl-u:half-page-up,ctrl-d:half-page-down                              \
+    --bind=ctrl-p:preview-half-page-up,ctrl-n:preview-half-page-down"
+
+GPG_TTY=$(tty)
+export GPG_TTY
+
+# Tell programs not to pollute $HOME
+export HISTFILE=${XDG_STATE_HOME}/bash/history
+export XAUTHORITY=${XDG_RUNTIME_DIR}/Xauthority
+export WINEPREFIX=${XDG_DATA_HOME}/wineprefixes/default
+export CARGO_HOME=${XDG_DATA_HOME}/cargo
+export RUSTUP_HOME=${XDG_DATA_HOME}/rustup
+export GHCUP_INSTALL_BASE_PREFIX=${XDG_DATA_HOME}
+export GHCUP_USE_XDG_DIRS=yes
+export CUDA_CACHE_PATH=${XDG_CACHE_HOME}/nv
+export INPUTRC=${MY_DOTFILES_REPO}/configs/readline/inputrc
+export XINITRC=${MY_DOTFILES_REPO}/configs/x/xinitrc
+
+# Make and change directory (mkdir + cd)
+mc () {
+    [ $# = 1 ] || exit 1
+    [ ! -d "$1" ] && mkdir --parents -- "$1" && echo "Created $1"
+    builtin cd -- "$1" && echo "Moved to $1"
+}
+
+# Mimic `command` completion for `on-compilation-trigger`
+command -v _command >/dev/null && complete -F _command on-compilation-trigger
+
+_my_shell_set_line () {
+    READLINE_LINE=$1; READLINE_POINT=${#1}
+}
+
+_my_shell_fzf () {
+    fzf --height=40% --layout=reverse --border=rounded "$@"
+}
+
+_my_shell_history () {
+    _my_line=$(builtin history | cut --characters=8- | _my_shell_fzf --tac --no-sort) && _my_shell_set_line "${_my_line}"
+}
+
+_my_shell_find_file () {
+    _my_file=$(_my_shell_fzf --walker=file,dir,hidden --walker-root="$1") && _my_shell_set_line "${READLINE_LINE}\"${_my_file}\" "
+}
+
+_my_shell_cd () {
+    _my_dir=$(_my_shell_fzf --walker=dir,hidden --walker-root="$1") && builtin cd -- "${_my_dir}" || return
+}
+
+# Custom fzf shell integration
+bind -m vi-insert -x '"\C-r": _my_shell_history'
+bind -m vi-insert -x '"\C-f": _my_shell_find_file .'
+bind -m vi-insert -x '"\C-g": _my_shell_find_file /'
+bind -m vi-insert -x '"\C-e": _my_shell_cd .'
+bind -m vi-insert -x '"\C-a": _my_shell_cd /'

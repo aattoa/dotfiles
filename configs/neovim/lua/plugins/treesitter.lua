@@ -75,12 +75,12 @@ return {
         vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 
         -- Repeat textobject motions
-        vim.keymap.set({ "n", "v" }, "[[", "<Cmd>TSTextobjectRepeatLastMovePrevious<Return>zz")
-        vim.keymap.set({ "n", "v" }, "]]", "<Cmd>TSTextobjectRepeatLastMoveNext<Return>zz")
+        vim.keymap.set({ "n", "x" }, "[[", "<Cmd>TSTextobjectRepeatLastMovePrevious<CR>zz")
+        vim.keymap.set({ "n", "x" }, "]]", "<Cmd>TSTextobjectRepeatLastMoveNext<CR>zz")
 
         -- Make it easier to hold down `[[` and `]]`
-        vim.keymap.set({ "n", "v" }, "[]", "<Nop>")
-        vim.keymap.set({ "n", "v" }, "][", "<Nop>")
+        vim.keymap.set({ "n", "x" }, "[]", "<Nop>")
+        vim.keymap.set({ "n", "x" }, "][", "<Nop>")
 
         -- Make TODO comments stand out
         vim.api.nvim_set_hl(0, "@comment.todo", { fg = "DarkOrange", underline = true, bold = true })

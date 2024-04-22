@@ -20,6 +20,9 @@ reload-threads 10
 # Populate query feeds on startup
 prepopulate-query-feeds yes
 
+# Give up if a download has not finished in 20 seconds
+# download-timeout 20
+
 # Custom URL handler
 external-url-viewer handle-urls
 

@@ -1,33 +1,26 @@
 #!/bin/sh
 
 # $1: Message
-notify () {
-    notify-send --expire-time=2000 "bookmark-add" "$1"
-}
+notify () { command notify "bookmark-add" "$1"; }
+
+# $1: Message
+error () { notify "Error: $1"; exit 1; }
 
 selection=$(xclip -out -rmlastnl)
 if [ -n "${selection}" ]; then
     notify "Current selection: ${selection}"
 else
-    notify "Error: No selection"
-    exit 1
+    error "No selection"
 fi
 
-bookmarks="${HOME}/misc/bookmarks"
-if [ ! -e "${bookmarks}" ]; then
-    notify "Error: Bookmarks directory not found"
-    exit 1
-fi
+bookmarkdirectory=${HOME}/misc/bookmarks
+[ -d "${bookmarkdirectory}" ] || error "${bookmarkdirectory} does not exist"
+bookmarkname=$(find "${bookmarkdirectory}" -type f -printf "%f\\n" | dmenu -i -p "Save where?")
+[ -n "${bookmarkname}" ] || error "No bookmark file selected"
 
-bookmarkfile=$(find "${bookmarks}" -type f -printf "%f\\n" | dmenu -i -p "Save where?")
-if [ -z "${bookmarkfile}" ]; then
-    notify "No bookmark file selected"
-    exit 1
-fi
-
-if grep --quiet --fixed-strings --line-regexp "${selection}" "${bookmarks}/${bookmarkfile}"; then
+if grep --quiet --fixed-strings --line-regexp "${selection}" "${bookmarkdirectory}/${bookmarkname}"; then
     notify "Already bookmarked"
 else
-    echo "${selection}" >> "${bookmarks}/${bookmarkfile}"
-    notify "Bookmark saved to ${bookmarkfile}"
+    echo "${selection}" >> "${bookmarkdirectory}/${bookmarkname}"
+    notify "Bookmark saved to ${bookmarkname}"
 fi

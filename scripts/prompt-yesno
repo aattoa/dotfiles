@@ -1,7 +1,7 @@
 #!/bin/sh
 
-while true; do
-    if printf "" > /dev/tty; then
+if printf "" > /dev/tty; then
+    while true; do
         printf "%s [y/n]: " "$*"
         read -r str
         case ${str} in
@@ -9,11 +9,13 @@ while true; do
             [Nn]) exit 1;;
             *)    continue;;
         esac
-    else
+    done
+else
+    while true; do
         case $(printf "yes\nno" | dmenu -i -p "$*") in
             yes) exit 0;;
             no)  exit 1;;
             *)   continue;;
         esac
-    fi
-done
+    done
+fi

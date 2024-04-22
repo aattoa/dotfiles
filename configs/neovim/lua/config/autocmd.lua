@@ -8,6 +8,16 @@ vim.api.nvim_create_autocmd("DiagnosticChanged", {
     desc     = "Keep the quickfix list up to date",
 })
 
+vim.api.nvim_create_autocmd("QuickFixCmdPost", {
+    pattern  = "make",
+    callback = function (event)
+        local ns = vim.api.nvim_create_namespace("my-quickfix-list-diagnostics")
+        local qf = vim.api.nvim_call_function("getqflist", {})
+        vim.diagnostic.set(ns, event.buf, vim.diagnostic.fromqflist(qf))
+    end,
+    desc = "Convert quickfix list to diagnostics",
+})
+
 vim.api.nvim_create_autocmd({ "WinResized", "LspAttach" }, {
     callback = function ()
         local options = {
@@ -62,30 +72,40 @@ end
 
 filetype({ "help", "man" }, function (buffer)
     vim.opt_local.cursorline = false
-    vim.keymap.set("n", "j",  "<C-e>",     { buffer = buffer })
     vim.keymap.set("n", "J", "3<C-e>",     { buffer = buffer })
-    vim.keymap.set("n", "k",  "<C-y>",     { buffer = buffer })
     vim.keymap.set("n", "K", "3<C-y>",     { buffer = buffer })
     vim.keymap.set("n", "q", vim.cmd.quit, { buffer = buffer })
 end)
 
 filetype({ "qf" }, function (buffer)
     quit_if_last_window(buffer)
-    vim.keymap.set("n", "j", "j<Return>zz<C-w>p", { buffer = buffer })
-    vim.keymap.set("n", "k", "k<Return>zz<C-w>p", { buffer = buffer })
-    vim.keymap.set("n", "q", vim.cmd.quit,        { buffer = buffer })
+    vim.keymap.set("n", "j", "j<CR>zz<C-w>p", { buffer = buffer })
+    vim.keymap.set("n", "k", "k<CR>zz<C-w>p", { buffer = buffer })
+    vim.keymap.set("n", "q", vim.cmd.quit,    { buffer = buffer })
 end)
 
 filetype({ "markdown" }, function (buffer)
-    -- Make markdown files by converting them to PDF
     vim.bo[buffer].makeprg = "pandoc % -o %<.pdf &"
 end)
 
+filetype({ "sh" }, function (buffer)
+    vim.cmd("compiler shellcheck")
+    vim.api.nvim_create_autocmd("BufWritePost", {
+        command = "silent make! %",
+        buffer  = buffer,
+        desc    = "Keep shellcheck diagnostics up to date",
+    })
+end)
+
+-- TODO: neovim 0.10: Use `vim.keymap.set` for abbreviations
+
 filetype({ "cpp" }, function ()
-    -- TODO: neovim 0.10: Use `vim.keymap.set` for abbreviations
     vim.cmd("inoreabbrev <buffer> f: std::filesystem:")
     vim.cmd("inoreabbrev <buffer> c: std::chrono:")
     vim.cmd("inoreabbrev <buffer> r: std::ranges:")
     vim.cmd("inoreabbrev <buffer> v: std::views:")
+end)
+
+filetype({ "c", "cpp", "rust" }, function ()
     vim.cmd("inoreabbrev <buffer> -- //")
 end)

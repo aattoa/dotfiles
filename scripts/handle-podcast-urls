@@ -1,22 +1,12 @@
 #!/bin/sh
 
 # $1: Message
-error () {
-    [ -n "${DISPLAY}" ] && notify-send --expire-time=2000 "Error: handle-podcast-urls" "$1"
-    exit 1
-}
+error () { notify "handle-podcast-urls" "Error: $1"; exit 1; }
 
-gather_lines () {
-    while read -r line; do echo "${line}"; done
-}
-
-urls=$(gather_lines | urlscan --dedupe --no-browser | grep --fixed-strings ".mp3")
+urls=$(urlscan --dedupe --no-browser | grep --fixed-strings ".mp3")
 
 case $(echo "${urls}" | wc --lines) in
-    1)
-        mpv --no-audio-display "${urls}";;
-    0)
-        error "No valid URLs found";;
-    *)
-        error "Too many valid URLs found";;
+    1) mpv --no-audio-display -- "${urls}";;
+    0) error "No valid URLs found";;
+    *) error "Too many valid URLs found";;
 esac

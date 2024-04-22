@@ -1,17 +1,13 @@
 #!/bin/sh
 
 # $1: New brightness
-control() {
+control () {
     brightnessctl set "$1"
     notify-send --expire-time=250 "New brightness" "$(brightnessctl get)%"
 }
 
 case $1 in
-    up)
-        control 5%+;;
-    down)
-        control 5%-;;
-    *)
-        notify-send "Error: change-brightness" "Invalid argument"
-        exit 1;;
+    up)   control 5%+;;
+    down) control 5%-;;
+    *)    notify "change-brightness" "Error: Invalid argument"; exit 1;;
 esac

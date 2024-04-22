@@ -1,0 +1,3 @@
+#!/bin/sh
+
+apropos . | fzf --query="$*" | awk '{print$2" "$1}' | tr --delete "()" | xargs man
