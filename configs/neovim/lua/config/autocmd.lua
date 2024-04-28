@@ -19,54 +19,27 @@ vim.api.nvim_create_autocmd("QuickFixCmdPost", {
 })
 
 vim.api.nvim_create_autocmd({ "WinResized", "LspAttach" }, {
-    callback = function ()
-        local options = {
-            border     = "rounded",
-            max_width  = 100,
-            max_height = math.floor(vim.api.nvim_win_get_height(0) / 3),
-        }
-        vim.lsp.handlers["textDocument/hover"]         = vim.lsp.with(vim.lsp.handlers.hover, options)
-        vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, options)
-    end,
-    desc = "Set and update LSP floating window settings",
+    callback = require("util.lsp").configure_handlers,
+    desc     = "Keep LSP handler configuration up to date",
 })
 
 vim.api.nvim_create_autocmd("LspAttach", {
     callback = function (event)
-        local config = require("config.lsp")
-        local client = vim.lsp.get_client_by_id(event.data.client_id) ---@type lsp.Client
-
-        config.set_mappings(client, event.buf)
-        config.enable_format_on_write(client, event.buf)
-        config.enable_highlight_cursor_references(client, event.buf)
-
-        vim.lsp.handlers["textDocument/references"] = vim.lsp.with(vim.lsp.handlers["textDocument/references"], {
-            loclist = true, -- Use loclist instead of qflist to keep references separate from diagnostics.
-        })
+        local client = assert(vim.lsp.get_client_by_id(event.data.client_id))
+        require("util.lsp").set_mappings(client, event.buf)
+        require("util.lsp").enable_format_on_write(client, event.buf)
+        require("util.lsp").enable_highlight_cursor_references(client, event.buf)
     end,
     desc = "Apply LSP configuration",
 })
 
----@param buffer integer
-local function quit_if_last_window(buffer)
-    vim.api.nvim_create_autocmd("WinEnter", {
-        callback = function ()
-            if #vim.api.nvim_list_wins() == 1 then
-                vim.cmd.quit()
-            end
-        end,
-        buffer = buffer,
-        desc   = "Quit if last window",
-    })
-end
-
----@param filetypes string[]
+---@param filetypes string[]|string
 ---@param callback fun(buffer: integer): nil
 local function filetype(filetypes, callback)
     vim.api.nvim_create_autocmd("FileType", {
         pattern  = filetypes,
         callback = function (event) callback(event.buf) end,
-        desc     = "Set local options for " .. table.concat(filetypes, ", "),
+        desc     = "Set local options for " .. vim.inspect(filetypes),
     })
 end
 
@@ -77,18 +50,26 @@ filetype({ "help", "man" }, function (buffer)
     vim.keymap.set("n", "q", vim.cmd.quit, { buffer = buffer })
 end)
 
-filetype({ "qf" }, function (buffer)
-    quit_if_last_window(buffer)
+filetype("qf", function (buffer)
+    vim.api.nvim_create_autocmd("WinEnter", {
+        callback = function ()
+            if #vim.api.nvim_list_wins() == 1 then
+                vim.cmd.quit()
+            end
+        end,
+        buffer = buffer,
+        desc   = "Quit if last window",
+    })
     vim.keymap.set("n", "j", "j<CR>zz<C-w>p", { buffer = buffer })
     vim.keymap.set("n", "k", "k<CR>zz<C-w>p", { buffer = buffer })
     vim.keymap.set("n", "q", vim.cmd.quit,    { buffer = buffer })
 end)
 
-filetype({ "markdown" }, function (buffer)
+filetype("markdown", function (buffer)
     vim.bo[buffer].makeprg = "pandoc % -o %<.pdf &"
 end)
 
-filetype({ "sh" }, function (buffer)
+filetype("sh", function (buffer)
     vim.cmd("compiler shellcheck")
     vim.api.nvim_create_autocmd("BufWritePost", {
         command = "silent make! %",
@@ -97,15 +78,13 @@ filetype({ "sh" }, function (buffer)
     })
 end)
 
--- TODO: neovim 0.10: Use `vim.keymap.set` for abbreviations
-
-filetype({ "cpp" }, function ()
-    vim.cmd("inoreabbrev <buffer> f: std::filesystem:")
-    vim.cmd("inoreabbrev <buffer> c: std::chrono:")
-    vim.cmd("inoreabbrev <buffer> r: std::ranges:")
-    vim.cmd("inoreabbrev <buffer> v: std::views:")
+filetype("cpp", function (buffer)
+    vim.keymap.set("ia", "f:", "std::filesystem:", { buffer = buffer })
+    vim.keymap.set("ia", "c:", "std::chrono:",     { buffer = buffer })
+    vim.keymap.set("ia", "r:", "std::ranges:",     { buffer = buffer })
+    vim.keymap.set("ia", "v:", "std::views:",      { buffer = buffer })
 end)
 
-filetype({ "c", "cpp", "rust" }, function ()
-    vim.cmd("inoreabbrev <buffer> -- //")
+filetype({ "c", "cpp", "rust" }, function (buffer)
+    vim.keymap.set("ia", "--", "//", { buffer = buffer })
 end)

@@ -29,6 +29,7 @@ vim.opt.splitkeep        = "topline"       -- Do not scroll when resizing horizo
 vim.opt.wrap             = false           -- Do not wrap long lines
 vim.opt.linebreak        = true            -- Do not split words when wrapping long lines (for documentation windows)
 vim.opt.conceallevel     = 2               -- Do not render markdown syntax
+vim.opt.showmode         = false           -- Do not show current mode
 
 vim.opt.completeopt:append("noselect")     -- Do not preselect completion entries
 vim.opt.matchpairs:append("<:>")           -- Jump between matching angle brackets

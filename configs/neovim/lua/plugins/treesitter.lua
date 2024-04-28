@@ -87,6 +87,9 @@ return {
 
         -- Highlight C++ modifiers (const, thread_local, etc.) like built in types
         vim.api.nvim_set_hl(0, "@keyword.modifier.cpp", { link = "@type.builtin" })
+
+        -- Highlight active parameter in signature help popup
+        vim.api.nvim_set_hl(0, "LspSignatureActiveParameter", { link = "@text.strong" })
     end,
     event = "VeryLazy",
 }

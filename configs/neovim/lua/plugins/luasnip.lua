@@ -1,5 +1,4 @@
----@param jump_index integer
----@param reference_index integer
+---@type fun(jump_index: integer, reference_index: integer): nil
 local function reference_node(jump_index, reference_index)
     local ls = require("luasnip")
     return ls.dynamic_node(jump_index, function (args)
@@ -115,7 +114,7 @@ struct std::formatter<{}> {{
 end
 
 return {
-    -- TODO: neovim 0.10: Use `vim.snippet`
+    -- TODO: neovim 0.10: Use vim.snippet
     "L3MON4D3/LuaSnip",
     keys = {
         { "<C-j>", function () require("luasnip").expand_or_jump() end, mode = { "i", "s" } },

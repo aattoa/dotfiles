@@ -25,7 +25,7 @@ end
 ---@type boolean
 local is_latin = true
 
-M.toggle = function ()
+M.rotate = function ()
     if is_latin then M.greek() else M.latin() end
     is_latin = not is_latin
 end

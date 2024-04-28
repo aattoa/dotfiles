@@ -1,1 +1,5 @@
-require("config")
+require("config.settings")
+require("config.mappings")
+require("config.autocmd")
+require("config.diagnostics")
+require("config.lazy")

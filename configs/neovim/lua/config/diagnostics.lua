@@ -1,22 +1,4 @@
----@param buffer integer
----@param line integer 0-indexed
----@return string
-local function nth_line(buffer, line)
-    ---@type string[]
-    local lines = vim.api.nvim_buf_get_lines(buffer, line, line + 1, true)
-    assert(#lines == 1)
-    return lines[1]
-end
-
----The `Diagnostic` class is specified to have a field `buffer`, but the actual
----tables seem to have `bufnr` instead. This function tries both, just in case.
----@return integer
-local function get_buffer(diagnostic)
-    return assert(diagnostic.bufnr or diagnostic.buffer)
-end
-
----@param text string
----@param line string
+---@type fun(text: string, line: string): string
 local function crop_virtual_text(text, line)
     local max_len = math.floor(vim.api.nvim_win_get_width(0) * 0.7) - line:len()
     if max_len < 1 then
@@ -28,13 +10,13 @@ local function crop_virtual_text(text, line)
     end
 end
 
----@param diagnostic Diagnostic
----@return string
+---@type fun(diagnostic: vim.Diagnostic): string
 local function format_virtual_text(diagnostic)
     if type(diagnostic.code) == "string" then
-        return diagnostic.code
+        return diagnostic.code ---@type string
     end
-    return crop_virtual_text(diagnostic.message, nth_line(get_buffer(diagnostic), diagnostic.lnum))
+    local line = require("util.misc").nth_line(diagnostic.bufnr, diagnostic.lnum)
+    return crop_virtual_text(diagnostic.message, line)
 end
 
 vim.diagnostic.config({

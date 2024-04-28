@@ -3,8 +3,9 @@
 ---@type string
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
--- Clone the plugin manager if it is not present.
-if not vim.loop.fs_stat(lazypath) then
+---@diagnostic disable-next-line: undefined-field
+if not vim.uv.fs_stat(lazypath) then
+    -- Clone the plugin manager when it is not present.
     vim.fn.system({
         "git",
         "clone",
@@ -35,8 +36,8 @@ local icons = {
 
 require("lazy").setup("plugins", {
     ui               = { border  = "rounded", icons = icons },
-    defaults         = { lazy    = true                     },
-    change_detection = { enabled = false                    },
+    defaults         = { lazy    = true },
+    change_detection = { enabled = false },
 })
 
 vim.keymap.set("n", "<Leader>p", vim.cmd.Lazy)

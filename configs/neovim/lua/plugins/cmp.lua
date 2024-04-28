@@ -2,8 +2,6 @@ return {
     "hrsh7th/nvim-cmp",
     dependencies = {
         "hrsh7th/cmp-nvim-lsp",
-        "hrsh7th/cmp-buffer",
-        "hrsh7th/cmp-cmdline",
         "hrsh7th/cmp-nvim-lsp-signature-help",
     },
     config = function ()
@@ -12,7 +10,6 @@ return {
             sources = {
                 { name = "nvim_lsp" },
                 { name = "nvim_lsp_signature_help" },
-                { name = "buffer" },
             },
             mapping = cmp.mapping.preset.insert({
                 ["<Tab>"]   = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
@@ -33,17 +30,6 @@ return {
                 documentation = cmp.config.window.bordered(),
             },
             preselect = cmp.PreselectMode.None,
-        })
-        cmp.setup.cmdline("/", {
-            mapping = cmp.mapping.preset.cmdline(),
-            sources = {{ name = "buffer" }}
-        })
-        cmp.setup.cmdline(":", {
-            mapping = cmp.mapping.preset.cmdline(),
-            sources = {
-                { name = "cmdline" },
-                { name = "buffer" },
-            },
         })
     end,
     event = { "InsertEnter", "CmdlineEnter" },

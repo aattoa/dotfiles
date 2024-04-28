@@ -1,5 +1,4 @@
----@param command string
----@return string
+---@type fun(command: string): string
 local function cmd(command)
     return "<Cmd>" .. command .. "<CR>"
 end
@@ -26,14 +25,14 @@ vim.keymap.set("n", "<Leader>u", cmd("call system('handle-urls', bufnr())"))
 vim.keymap.set("n", "<Leader>j", "<C-o>zz")
 vim.keymap.set("n", "<Leader>k", "<C-i>zz")
 
--- Toggle between alphabets
-vim.keymap.set("i", "<C-a>", require("config.alphabet").toggle)
-
 -- Easier alternate file access
 vim.keymap.set("n", "L", "<C-^>")
 
 -- System clipboard
 vim.keymap.set({ "n", "x" }, "<C-c>", "\"+")
+
+-- Symmetric command-line window toggle
+vim.keymap.set("n", "<C-f>", "<C-c>")
 
 -- Explore with Netrw
 vim.keymap.set("n", "<Leader>e",     cmd("Explore"))
@@ -85,9 +84,7 @@ vim.keymap.set("i", "<C-z>", "<C-o>zz")
 vim.keymap.set({ "n", "x" }, "{", cmd([[execute "keepjumps normal! " . v:count1 . "{zz"]]))
 vim.keymap.set({ "n", "x" }, "}", cmd([[execute "keepjumps normal! " . v:count1 . "}zz"]]))
 
----@param open string
----@param close string
----@return string
+---@type fun(open: string, close: string): string
 local function surround(open, close)
     return "<Esc>`>a" .. close .. "<Esc>`<i" .. open .. "<Esc>gv" .. string.rep("ol", 2 * open:len())
 end
@@ -101,6 +98,7 @@ vim.keymap.set("x", "s|",  surround("|", "|"))
 vim.keymap.set("x", "s*",  surround("*", "*"))
 vim.keymap.set("x", "s`",  surround("`", "`"))
 vim.keymap.set("x", "s'",  surround("'", "'"))
+vim.keymap.set("x", "s ",  surround(" ", " "))
 vim.keymap.set("x", "s\"", surround("\"", "\""))
 vim.keymap.set("x", "s/",  surround("/*", "*/"))
 
@@ -108,3 +106,14 @@ vim.keymap.set("x", "s/",  surround("/*", "*/"))
 for _, movement in ipairs({ "G", "n", "N", "<C-d>", "<C-u>" }) do
     vim.keymap.set({ "n", "x" }, movement, movement .. "zz")
 end
+
+-- Accept completion
+vim.keymap.set("i", "<CR>", "pumvisible() ? '<C-y>' : '<CR>'", { expr = true })
+
+-- Rotate alphabet
+vim.keymap.set("i", "<C-a>", require("util.alphabet").rotate)
+
+-- Comment and uncomment
+vim.keymap.set({ "n", "x" }, "<C-s><C-s>", require("util.comment").toggle)
+vim.keymap.set({ "n", "x" }, "<C-s><C-k>", require("util.comment").comment)
+vim.keymap.set({ "n", "x" }, "<C-s><C-c>", require("util.comment").uncomment)

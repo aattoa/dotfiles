@@ -33,12 +33,14 @@ return {
             },
             keymap = {
                 builtin = {
+                    ["<F1>"]  = "toggle-help",
                     ["<C-a>"] = "toggle-preview",
                     ["<C-r>"] = "toggle-preview-cw",
                     ["<C-f>"] = "toggle-fullscreen",
                     ["<C-p>"] = "preview-page-up",
                     ["<C-n>"] = "preview-page-down",
                 },
+                fzf = {}, -- Use systemwide fzf bindings
             },
             grep = {
                 actions = {
@@ -55,6 +57,7 @@ return {
                 },
                 git_icons   = false,
                 cwd_prompt  = false,
+                cwd_header  = false,
                 no_header_i = true,
             },
             oldfiles = {

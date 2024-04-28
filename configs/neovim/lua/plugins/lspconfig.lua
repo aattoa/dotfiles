@@ -2,8 +2,8 @@
 local function setup_server(server)
     require("lspconfig")[server].setup({
         capabilities = require("cmp_nvim_lsp").default_capabilities(),
-        settings     = require("config.lsp").server_settings,
-        cmd          = require("config.lsp").server_commands[server],
+        settings     = require("util.lsp").server_settings,
+        cmd          = require("util.lsp").server_commands[server],
     })
 end
 
