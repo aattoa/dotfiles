@@ -18,6 +18,11 @@ M.find_file = function (name)
     return vim.fs.find(name, { upward = true, stop = vim.uv.os_homedir() })[1]
 end
 
+---@type fun(str: string, from: integer, to: integer): string
+M.string_erase = function (str, from, to)
+    return str:sub(1, from) .. str:sub(to + 1, -1)
+end
+
 ---@type fun(a: any, b: any): nil
 M.assert_equal = function (a, b)
     if a ~= b then

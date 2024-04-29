@@ -12,9 +12,6 @@ vim.keymap.set("n", "<Leader>i", cmd("set ignorecase!"))
 -- Toggle search highlight
 vim.keymap.set("n", "<Leader>h", cmd("set hlsearch!"))
 
--- Clear current search highlight
-vim.keymap.set("n", "<Esc>", cmd("nohlsearch"))
-
 -- Toggle line number visibility
 vim.keymap.set("n", "<Leader>n", cmd("set number!") .. cmd("set relativenumber!"))
 
@@ -110,8 +107,17 @@ end
 -- Accept completion
 vim.keymap.set("i", "<CR>", "pumvisible() ? '<C-y>' : '<CR>'", { expr = true })
 
+-- Clear current search highlight or active snippet
+vim.keymap.set("n", "<Esc>", function ()
+    return vim.snippet.active() and vim.snippet.exit() or cmd("nohlsearch")
+end, { expr = true })
+
 -- Rotate alphabet
 vim.keymap.set("i", "<C-a>", require("util.alphabet").rotate)
+
+-- Snippet controls
+vim.keymap.set({ "i", "s" }, "<C-j>", require("util.snippet").expand_or_jump)
+vim.keymap.set({ "i", "s" }, "<C-k>", function () vim.snippet.jump(-1) end)
 
 -- Comment and uncomment
 vim.keymap.set({ "n", "x" }, "<C-s><C-s>", require("util.comment").toggle)
