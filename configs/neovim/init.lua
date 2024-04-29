@@ -1,5 +1,6 @@
 require("config.settings")
 require("config.mappings")
 require("config.autocmd")
+require("config.highlight")
 require("config.diagnostics")
 require("config.lazy")

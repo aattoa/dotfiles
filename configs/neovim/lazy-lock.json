@@ -6,6 +6,5 @@
   "nvim-cmp": { "branch": "main", "commit": "04e0ca376d6abdbfc8b52180f8ea236cbfddf782" },
   "nvim-lspconfig": { "branch": "master", "commit": "5b364bd4db0fb68a56ffe427a370920854acb834" },
   "nvim-treesitter": { "branch": "master", "commit": "5b8458c5aa533803febabe31c018030826f86ac7" },
-  "nvim-treesitter-textobjects": { "branch": "master", "commit": "d2a4ffc22d9d38d44edb73da007b3cf43451e9b4" },
-  "tokyodark.nvim": { "branch": "master", "commit": "a19cef29a190f37eb7a025eb155abda6f3979f3f" }
+  "nvim-treesitter-textobjects": { "branch": "master", "commit": "d2a4ffc22d9d38d44edb73da007b3cf43451e9b4" }
 }

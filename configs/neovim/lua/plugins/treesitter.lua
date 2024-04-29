@@ -83,13 +83,10 @@ return {
         vim.keymap.set({ "n", "x" }, "][", "<Nop>")
 
         -- Make TODO comments stand out
-        vim.api.nvim_set_hl(0, "@comment.todo", { fg = "DarkOrange", underline = true, bold = true })
+        vim.api.nvim_set_hl(0, "@comment.todo", { fg = "NvimDarkYellow", standout = true })
 
         -- Highlight C++ modifiers (const, thread_local, etc.) like built in types
         vim.api.nvim_set_hl(0, "@keyword.modifier.cpp", { link = "@type.builtin" })
-
-        -- Highlight active parameter in signature help popup
-        vim.api.nvim_set_hl(0, "LspSignatureActiveParameter", { link = "@text.strong" })
     end,
     event = "VeryLazy",
 }
