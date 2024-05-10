@@ -3,14 +3,28 @@
 # $1: Message
 error () { notify "run-tests" "Error: $1"; exit 1; }
 
+is_cmake_out () {
+    [ -f "$1/CMakeCache.txt" ]
+}
+
+run_ctest () {
+    cmake --build "$1" || return
+    ctest --test-dir "$1" --progress && return
+    ctest --test-dir "$1" --rerun-failed --output-on-failure
+}
+
+run_cargo () {
+    cargo test --manifest-path "$1/Cargo.toml"
+}
+
 # $1: Directory
 run_tests () {
-    if [ -f "$1/CMakeCache.txt" ]; then
-        cmake --build "$1" && (ctest --test-dir "$1" --progress || ctest --test-dir "$1" --rerun-failed --output-on-failure)
-    elif [ -f "$1/Cargo.toml" ]; then
-        cargo test --manifest-path "$1/Cargo.toml"
-    else
-        error "Could not run tests in $1"
+    if   is_cmake_out "$1";             then run_ctest "$1"
+    elif is_cmake_out "$1/out/debug";   then run_ctest "$1/out/debug"
+    elif is_cmake_out "$1/out/release"; then run_ctest "$1/out/release"
+    elif is_cmake_out "$1/build";       then run_ctest "$1/build"
+    elif [ -f "$1/Cargo.toml" ];        then run_cargo "$1"
+    else error "Could not run tests in $1"
     fi
 }
 

@@ -50,9 +50,9 @@ local highlight = {
 local incremental_selection = {
     enable  = true,
     keymaps = {
-        init_selection   = "(",
-        node_incremental = "(",
-        node_decremental = ")",
+        init_selection   = "+",
+        node_incremental = "+",
+        node_decremental = "-",
     },
 }
 
@@ -81,9 +81,6 @@ return {
         -- Make it easier to hold down `[[` and `]]`
         vim.keymap.set({ "n", "x" }, "[]", "<Nop>")
         vim.keymap.set({ "n", "x" }, "][", "<Nop>")
-
-        -- Make TODO comments stand out
-        vim.api.nvim_set_hl(0, "@comment.todo", { fg = "NvimDarkYellow", standout = true })
 
         -- Highlight C++ modifiers (const, thread_local, etc.) like built in types
         vim.api.nvim_set_hl(0, "@keyword.modifier.cpp", { link = "@type.builtin" })

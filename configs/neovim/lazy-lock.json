@@ -1,10 +1,10 @@
 {
   "cmp-nvim-lsp": { "branch": "main", "commit": "5af77f54de1b16c34b23cba810150689a3a90312" },
   "cmp-nvim-lsp-signature-help": { "branch": "main", "commit": "3d8912ebeb56e5ae08ef0906e3a54de1c66b92f1" },
-  "fzf-lua": { "branch": "main", "commit": "62cb8f37b3a017e6b2401726c96e02498f332b70" },
-  "lazy.nvim": { "branch": "main", "commit": "83493db50a434a4c5c648faf41e2ead80f96e478" },
-  "nvim-cmp": { "branch": "main", "commit": "04e0ca376d6abdbfc8b52180f8ea236cbfddf782" },
-  "nvim-lspconfig": { "branch": "master", "commit": "5b364bd4db0fb68a56ffe427a370920854acb834" },
-  "nvim-treesitter": { "branch": "master", "commit": "5b8458c5aa533803febabe31c018030826f86ac7" },
-  "nvim-treesitter-textobjects": { "branch": "master", "commit": "d2a4ffc22d9d38d44edb73da007b3cf43451e9b4" }
+  "fzf-lua": { "branch": "main", "commit": "0a36172c5a25070b4d38a9b3a42261f26b7a4074" },
+  "lazy.nvim": { "branch": "main", "commit": "d3974346b6cef2116c8e7b08423256a834cb7cbc" },
+  "nvim-cmp": { "branch": "main", "commit": "cd2cf0c124d3de577fb5449746568ee8e601afc8" },
+  "nvim-lspconfig": { "branch": "master", "commit": "a3d9395455f2b2e3b50a0b0f37b8b4c23683f44a" },
+  "nvim-treesitter": { "branch": "master", "commit": "d6dcfe888724d271dcbaa6f2c80f9f706b39cd2a" },
+  "nvim-treesitter-textobjects": { "branch": "master", "commit": "dfa4178c0cadb44f687603d72ad0908474c28dd9" }
 }

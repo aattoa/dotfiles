@@ -22,12 +22,11 @@ M.latin = function ()
     vim.notify("Latin alphabet")
 end
 
----@type boolean
-local is_latin = true
+M.current = "latin"
 
 M.rotate = function ()
-    if is_latin then M.greek() else M.latin() end
-    is_latin = not is_latin
+    M.current = ({ greek = "latin", latin = "greek" })[M.current]
+    M[M.current]()
 end
 
 return M

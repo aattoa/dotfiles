@@ -1,13 +1,13 @@
 #!/bin/sh
 
-args="--embed-metadata --sponsorblock-remove=default --sponsorblock-mark=all"
-
 if [ "$1" = audio ]; then
     shift
-    args="${args} --extract-audio --audio-format=mp3 --audio-quality=0"
+    args="--extract-audio --audio-format=mp3 --audio-quality=0"
 else
-    args="${args} --format-sort=res:720"
+    args="--format-sort=res:720"
 fi
+
+args="${args} --embed-metadata --sponsorblock-remove=default --sponsorblock-mark=all"
 
 # shellcheck disable=2086 # Intentional word splitting
 yt-dlp ${args} "$@"

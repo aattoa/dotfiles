@@ -15,7 +15,7 @@ fi
 
 bookmarkdirectory=${HOME}/misc/bookmarks
 [ -d "${bookmarkdirectory}" ] || error "${bookmarkdirectory} does not exist"
-bookmarkname=$(find "${bookmarkdirectory}" -type f -printf "%f\\n" | dmenu -i -p "Save where?")
+bookmarkname=$(find "${bookmarkdirectory}" -type f -printf "%f\\n" | choice-menu "Save where?")
 [ -n "${bookmarkname}" ] || error "No bookmark file selected"
 
 if grep --quiet --fixed-strings --line-regexp "${selection}" "${bookmarkdirectory}/${bookmarkname}"; then

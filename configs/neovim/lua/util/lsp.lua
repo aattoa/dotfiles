@@ -7,6 +7,9 @@ M.server_settings = {
         },
     },
     Lua = {
+        runtime = {
+            version = "LuaJIT",
+        },
         workspace = {
             library = { vim.env.VIMRUNTIME },
         },
@@ -31,19 +34,23 @@ M.server_commands = {
     },
 }
 
+---@param buffer integer?
+local function lsp_toggle_inlay_hints(buffer)
+    local enable = not vim.lsp.inlay_hint.is_enabled(buffer)
+    vim.lsp.inlay_hint.enable(buffer, enable)
+    vim.notify("Inlay hints " .. (enable and "enabled" or "disabled"))
+end
+
 ---@type fun(client: vim.lsp.Client, buffer: integer): nil
-M.set_mappings = function (client, buffer)
-    vim.keymap.set("n", "<Leader>lf", vim.lsp.buf.references,  { buffer = buffer })
-    vim.keymap.set("n", "<Leader>lr", vim.lsp.buf.rename,      { buffer = buffer })
-    vim.keymap.set("n", "<Leader>la", vim.lsp.buf.code_action, { buffer = buffer })
-    vim.keymap.set("n", "<Leader>ld", vim.lsp.buf.definition,  { buffer = buffer })
-    vim.keymap.set("n", "K",          vim.lsp.buf.hover,       { buffer = buffer })
-
-    vim.keymap.set({ "n", "i" }, "<C-Space>", vim.lsp.buf.signature_help, { buffer = buffer })
-
-    if client.name == "clangd" then
-        vim.keymap.set("n", "<Leader>ss", "<Cmd>ClangdSwitchSourceHeader<CR>", { buffer = buffer })
-    end
+M.set_mappings = function (client, buffer) ---@diagnostic disable-line: unused-local
+    vim.keymap.set("n",          "<Leader>ls", "<Cmd>ClangdSwitchSourceHeader<CR>", { buffer = buffer })
+    vim.keymap.set("n",          "<Leader>li", lsp_toggle_inlay_hints,              { buffer = buffer })
+    vim.keymap.set("n",          "<Leader>lf", vim.lsp.buf.references,              { buffer = buffer })
+    vim.keymap.set("n",          "<Leader>lr", vim.lsp.buf.rename,                  { buffer = buffer })
+    vim.keymap.set("n",          "<Leader>la", vim.lsp.buf.code_action,             { buffer = buffer })
+    vim.keymap.set("n",          "<Leader>ld", vim.lsp.buf.definition,              { buffer = buffer })
+    vim.keymap.set("n",          "K",          vim.lsp.buf.hover,                   { buffer = buffer })
+    vim.keymap.set({ "n", "i" }, "<C-Space>",  vim.lsp.buf.signature_help,          { buffer = buffer })
 end
 
 ---@type fun(client: vim.lsp.Client, buffer: integer): nil
@@ -83,7 +90,7 @@ M.enable_format_on_write = function (client, buffer)
     })
 end
 
----@type fun(): nil
+---@return nil
 M.configure_handlers = function ()
     vim.lsp.handlers["textDocument/references"] = vim.lsp.with(vim.lsp.handlers["textDocument/references"], {
         loclist = true, -- Use loclist instead of qflist to keep references separate from diagnostics.

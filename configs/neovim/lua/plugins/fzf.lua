@@ -11,16 +11,16 @@ return {
         { "<Leader>o",    fzf("oldfiles") },
         { "<Leader>r",    fzf("live_grep_native") },
         { "<Leader>f",    fzf("files") },
-        { "<Leader>g",    fzf("git_files",        { prompt = "Git>" }) },
-        { "<Leader>/",    fzf("blines",           { prompt = "Buffer>" }) },
-        { "<Leader>sd",   fzf("files",            { prompt = "Dotfiles>", cwd = "$MY_DOTFILES_REPO" }) },
-        { "<Leader>sD",   fzf("live_grep_native", { prompt = "Dotfiles>", cwd = "$MY_DOTFILES_REPO" }) },
-        { "<Leader>sh",   fzf("files",            { prompt = "Home>",     cwd = "$HOME" }) },
+        { "<Leader>?",    fzf("helptags") },
+        { "<Leader>/",    fzf("blines",           { prompt = "Buffer> " }) },
+        { "<Leader>g",    fzf("git_files",        { prompt = "Git> " }) },
+        { "<Leader>sd",   fzf("files",            { prompt = "Dotfiles> ", cwd = "$MY_DOTFILES_REPO" }) },
+        { "<Leader>sD",   fzf("live_grep_native", { prompt = "Dotfiles> ", cwd = "$MY_DOTFILES_REPO" }) },
+        { "<Leader>sh",   fzf("files",            { prompt = "Home> ",     cwd = "$HOME" }) },
         { "<Leader>sm",   fzf("manpages") },
         { "<Leader>sf",   fzf("builtin") },
         { "<Leader><BS>", fzf("resume") },
         { "<C-f>",        fzf("complete_file"), mode = "i" },
-        { "?",            fzf("helptags") },
     },
     config = function ()
         local actions = require("fzf-lua.actions")
@@ -48,6 +48,7 @@ return {
                     ["ctrl-q"] = actions.toggle_ignore,
                     ["ctrl-o"] = actions.grep_lgrep,
                 },
+                cwd_header  = false,
                 no_header_i = true,
             },
             files = {
@@ -59,6 +60,9 @@ return {
                 cwd_prompt  = false,
                 cwd_header  = false,
                 no_header_i = true,
+            },
+            helptags = {
+                winopts = { preview = { hidden = "hidden" } },
             },
             oldfiles = {
                 winopts = { preview = { hidden = "hidden" } },

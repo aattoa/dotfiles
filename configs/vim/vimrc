@@ -15,14 +15,18 @@ set expandtab                    " Convert tabs to spaces
 set scrolloff=10                 " Vertical scrolloff
 set sidescrolloff=40             " Horizontal scrolloff
 set virtualedit=block            " Allow going past the end of line in visual block mode
+set completeopt=menuone,noselect " Completion options
 set wildmenu                     " Show command line completions list
+set wildoptions=pum              " Popup wildmenu
 set path+=**                     " Recursively find in subdirectories
-set nowrap                       " Do not wrap long lines
-set splitkeep=topline            " Do not scroll when resizing horizontal splits
-set nostartofline                " Do not move the the cursor to the start of the line on vertical movements
 set shortmess+=I                 " Disable intro message
 set viminfo=                     " Disable viminfo
 set nomodeline                   " Disable unnecessary feature
+set laststatus=2                 " Always show status line
+set nowrap                       " Do not wrap long lines
+set splitkeep=topline            " Do not scroll when resizing horizontal splits
+set nostartofline                " Do not move the the cursor to the start of the line on vertical movements
+set noshowmode                   " Do not show current mode
 let g:netrw_banner=0             " Disable Netrw help banner
 let g:netrw_list_hide="^\\.\\/$" " Disable current directory
 let g:netrw_cursor=0             " Disable cursorline in Netrw
@@ -37,7 +41,7 @@ nnoremap <Leader><C-e> <Cmd>Texplore<CR>
 
 " Command shortcuts
 nnoremap <Leader>f :find<Space>
-nnoremap ? :help<Space>
+nnoremap <Leader>? :help<Space>
 
 " Toggle search highlight
 nnoremap <Leader>h <Cmd>set hlsearch!<CR>
@@ -45,20 +49,23 @@ nnoremap <Leader>h <Cmd>set hlsearch!<CR>
 " Toggle line number visibility
 nnoremap <Leader>n <Cmd>set number!<CR><Cmd>set relativenumber!<CR>
 
-" Jumplist navigation
-nnoremap <Leader>j <C-o>zz
-nnoremap <Leader>k <C-i>zz
+" Easier alternate file access
+nnoremap M <C-^>
+
+" Symmetric command-line window toggle
+nnoremap <C-f> <C-c>
 
 " Clear current search highlight
 nnoremap <Esc> <Cmd>nohlsearch<CR>
 
 " Tab controls
-nnoremap <C-t>     <Cmd>tabnew<CR>
-nnoremap <C-q>     <Cmd>tabclose<CR>
-nnoremap <Tab>     <Cmd>tabnext<CR>
-nnoremap <S-Tab>   <Cmd>tabprevious<CR>
-nnoremap g<        <Cmd>tabmove -1<CR>
-nnoremap g>        <Cmd>tabmove +1<CR>
+nnoremap <C-t> <Cmd>tabnew<CR>
+nnoremap <C-q> <Cmd>tabclose<CR>
+nnoremap H     <Cmd>tabprevious<CR>
+nnoremap L     <Cmd>tabnext<CR>
+nnoremap <C-h> <Cmd>tabmove -1<CR>
+nnoremap <C-l> <Cmd>tabmove +1<CR>
+
 nnoremap <Leader>1 1gt
 nnoremap <Leader>2 2gt
 nnoremap <Leader>3 3gt
@@ -75,10 +82,10 @@ xnoremap <silent> <C-k> :move '<-2<CR>gv=gv
 xnoremap <silent> <C-j> :move '>+1<CR>gv=gv
 
 " Resize windows
-nnoremap <C-j> <Cmd>horizontal resize -1<CR>
-nnoremap <C-k> <Cmd>horizontal resize +1<CR>
-nnoremap <C-h> <Cmd>vertical resize -2<CR>
-nnoremap <C-l> <Cmd>vertical resize +2<CR>
+nnoremap ( <Cmd>horizontal resize -2<CR>
+nnoremap ) <Cmd>horizontal resize +2<CR>
+nnoremap < <Cmd>vertical resize -1<CR>
+nnoremap > <Cmd>vertical resize +1<CR>
 
 " Stay in visual mode on indent/dedent
 xnoremap < <gv
@@ -110,6 +117,10 @@ nnoremap <C-d> <C-d>zz
 xnoremap <C-d> <C-d>zz
 nnoremap <C-u> <C-u>zz
 xnoremap <C-u> <C-u>zz
+nnoremap <C-o> <C-o>zz
+xnoremap <C-o> <C-o>zz
+nnoremap <C-i> <C-i>zz
+xnoremap <C-i> <C-i>zz
 
 " Yank to the end of line (behave like C and D)
 nnoremap Y y$

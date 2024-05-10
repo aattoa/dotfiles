@@ -1,6 +1,6 @@
----@type fun(text: string, line: string): string
-local function crop_virtual_text(text, line)
-    local max_len = math.floor(vim.api.nvim_win_get_width(0) * 0.7) - line:len()
+---@type fun(text: string, line_length: integer): string
+local function crop_virtual_text(text, line_length)
+    local max_len = math.floor(vim.api.nvim_win_get_width(0) * 0.7) - line_length
     if max_len < 1 then
         return "..."
     elseif text:len() > max_len then
@@ -16,7 +16,7 @@ local function format_virtual_text(diagnostic)
         return diagnostic.code ---@type string
     end
     local line = require("util.misc").nth_line(diagnostic.bufnr, diagnostic.lnum)
-    return crop_virtual_text(diagnostic.message, line)
+    return crop_virtual_text(diagnostic.message, line:len())
 end
 
 vim.diagnostic.config({
@@ -27,3 +27,9 @@ vim.diagnostic.config({
 
 vim.keymap.set("n", "<C-n>", vim.diagnostic.goto_next)
 vim.keymap.set("n", "<C-p>", vim.diagnostic.goto_prev)
+
+vim.keymap.set("n", "<Leader>x", function ()
+    -- Called twice so the floating window is focused.
+    vim.diagnostic.open_float()
+    vim.diagnostic.open_float()
+end)

@@ -1,21 +1,9 @@
 #!/bin/sh
 
-if printf "" > /dev/tty; then
-    while true; do
-        printf "%s [y/n]: " "$*"
-        read -r str
-        case ${str} in
-            [Yy]) exit 0;;
-            [Nn]) exit 1;;
-            *)    continue;;
-        esac
-    done
-else
-    while true; do
-        case $(printf "yes\nno" | dmenu -i -p "$*") in
-            yes) exit 0;;
-            no)  exit 1;;
-            *)   continue;;
-        esac
-    done
-fi
+while true; do
+    case $(printf "yes\nno" | choice-menu "$*") in
+        yes) exit 0;;
+        no) exit 1;;
+        *) continue;;
+    esac
+done

@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if [ -n "${DISPLAY}" ] && ! has-controlling-terminal; then
+    dmenu -i -l 10 -p "$1"
+else
+    fzf --prompt="$1 " --no-sort --height=~50% --border=rounded --print-query | tail -1
+fi

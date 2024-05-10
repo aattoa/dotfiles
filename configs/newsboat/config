@@ -20,8 +20,8 @@ reload-threads 10
 # Populate query feeds on startup
 prepopulate-query-feeds yes
 
-# Give up if a download has not finished in 20 seconds
-# download-timeout 20
+# Give up if a download has not finished in some time
+download-timeout 10
 
 # Custom URL handler
 external-url-viewer handle-urls
@@ -39,14 +39,14 @@ goto-next-feed no
 scrolloff 10
 
 # Directly stream media with mpv
-macro v set browser mpv; open-in-browser ; set browser $BROWSER
+macro v set browser mpv; open-in-browser; set browser $BROWSER
 
-# Download and view media
-macro d set browser dl-view; open-in-browser ; set browser $BROWSER
+# Download upfront and then view media
+macro d set browser dl-view; open-in-browser; set browser $BROWSER
 
 # Directly stream podcast audio with mpv
-macro a set external-url-viewer handle-podcast-urls ; show-urls ; set external-url-viewer handle-urls
+macro a set external-url-viewer handle-podcast-urls; show-urls; set external-url-viewer handle-urls
 
 # Feed separators
 highlight feedlist "---.*---" green default bold
-highlight feedlist ".*0/0.." default default invis
+highlight feedlist ".*(0/0).." default default invis

@@ -2,7 +2,7 @@
 
 if [ -z "$*" ]; then
     exit 1
-elif [ -n "${DISPLAY}" ] && ! printf "" > /dev/tty; then
+elif [ -n "${DISPLAY}" ] && ! has-controlling-terminal; then
     notify-send --expire-time=2000 -- "$1" "$2"
 elif [ -n "$2" ]; then
     echo "$1: $2" 1>&2

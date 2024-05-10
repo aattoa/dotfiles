@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# TODO: There has to be a better way
+printf "" > /dev/tty

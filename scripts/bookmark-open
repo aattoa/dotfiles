@@ -16,7 +16,7 @@ bookmarkdirectory=${HOME}/misc/bookmarks
 [ -d "${bookmarkdirectory}" ] || error "Bookmark directory does not exist: '${bookmarkdirectory}'"
 
 options=$(echo "[all]" && find "${bookmarkdirectory}" -type f -printf "%f\\n")
-bookmarkfile=$(echo "${options}" | dmenu -i -p "Which bookmark file?")
+bookmarkfile=$(echo "${options}" | choice-menu "Which bookmark file?")
 [ -n "${bookmarkfile}" ] || error "No bookmark file selected"
 
 if [ "${bookmarkfile}" = "[all]" ]; then
@@ -27,7 +27,7 @@ else
     error "Bookmark file does not exist: '${bookmarkfile}'"
 fi
 
-choice=$(echo "${bookmarklist}" | dmenu -i -l 5) || error "No bookmark selected"
+choice=$(echo "${bookmarklist}" | choice-menu "Which bookmark?") || error "No bookmark selected"
 
 if looks_like_a_url "${choice}"; then
     handle-url "${choice}"

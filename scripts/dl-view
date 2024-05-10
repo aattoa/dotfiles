@@ -6,8 +6,8 @@ error () { notify "dl-view" "Error: $1"; exit 1; }
 case $1 in
     "https://"*)
         id=$(date +%s)
-        ytdl --output="/tmp/%(title)s dl-view-${id}.%(ext)s" -- "$1"
-        mpv -- /tmp/*"dl-view-${id}"* || error "Unable to download media";;
+        ytdl --output="/tmp/dl-view-${id} %(title)s.%(ext)s" -- "$1"
+        mpv -- "/tmp/dl-view-${id} "* || error "Unable to download media";;
     *)
         error "No URL given";;
 esac

@@ -3,37 +3,29 @@
 # $1: Message
 notify () { command notify "handle-url" "$1"; }
 
-choose_strategy () {
-    choices="browser clipboard ytdl ytdl-audio mpv mpv-audio wget"
-    echo "${choices}" | tr ' ' '\n' | dmenu -i -p "How to handle URL?"
+strategies () {
+    echo "browser clipboard ytdl ytdl-audio mpv mpv-audio dl-view wget" | tr ' ' '\n'
 }
 
 # $1: URL
 # $2: Strategy
 execute_strategy () {
-    cd -- "${HOME}/misc/media/download" || exit 1
+    builtin cd -- "${HOME}/misc/media/download" || exit 1
     case $2 in
-        browser)
-            [ -n "${BROWSER}" ] && "${BROWSER}" "$1";;
-        clipboard)
-            clip "$1" && notify "Copied to clipboard";;
-        ytdl)
-            ytdl "$1";;
-        ytdl-audio)
-            ytdl audio "$1";;
-        mpv)
-            mpv -- "$1";;
-        mpv-audio)
-            mpv --no-video -- "$1";;
-        wget)
-            wget --no-verbose --show-progress -- "$1";;
-        *)
-            notify "No choice made, aborting"; exit 1;;
+        browser)    [ -n "${BROWSER}" ] && "${BROWSER}" "$1";;
+        clipboard)  clip "$1" && notify "Copied to clipboard";;
+        ytdl)       ytdl "$1";;
+        ytdl-audio) ytdl audio "$1";;
+        mpv)        mpv -- "$1";;
+        mpv-audio)  mpv --no-video -- "$1";;
+        dl-view)    dl-view "$1";;
+        wget)       wget --no-verbose --show-progress -- "$1";;
+        *)          notify "No choice made, aborting"; exit 1;;
     esac
 }
 
 if [ $# = 1 ]; then
-    execute_strategy "$1" "$(choose_strategy)"
+    execute_strategy "$1" "$(strategies | choice-menu "How to handle URL?")"
 else
     notify "Error: Expected an argument, but got $#"; exit 1
 fi

@@ -12,8 +12,7 @@ vim.api.nvim_create_autocmd("QuickFixCmdPost", {
     pattern  = "make",
     callback = function (event)
         local ns = vim.api.nvim_create_namespace("my-quickfix-list-diagnostics")
-        local qf = vim.api.nvim_call_function("getqflist", {})
-        vim.diagnostic.set(ns, event.buf, vim.diagnostic.fromqflist(qf))
+        vim.diagnostic.set(ns, event.buf, vim.diagnostic.fromqflist(vim.fn.getqflist()))
     end,
     desc = "Convert quickfix list to diagnostics",
 })
@@ -31,6 +30,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
         require("util.lsp").enable_highlight_cursor_references(client, event.buf)
     end,
     desc = "Apply LSP configuration",
+})
+
+vim.api.nvim_create_autocmd({ "WinNew", "VimEnter" }, {
+    command = [[call matchadd('Todo', '\ctodo\|\cfixme\|\cnocommit')]],
+    desc    = "Define highlight matches for special text markers",
 })
 
 ---@param filetypes string[]|string
@@ -52,21 +56,13 @@ end)
 
 filetype("qf", function (buffer)
     vim.api.nvim_create_autocmd("WinEnter", {
-        callback = function ()
-            if #vim.api.nvim_list_wins() == 1 then
-                vim.cmd.quit()
-            end
-        end,
-        buffer = buffer,
-        desc   = "Quit if last window",
+        command = "if winnr('$') == 1 | quit | endif",
+        buffer  = buffer,
+        desc    = "Quit if last window",
     })
-    vim.keymap.set("n", "j", "j<CR>zz<C-w>p", { buffer = buffer })
-    vim.keymap.set("n", "k", "k<CR>zz<C-w>p", { buffer = buffer })
+    vim.keymap.set("n", "J", "j<CR>zz<C-w>p", { buffer = buffer })
+    vim.keymap.set("n", "K", "k<CR>zz<C-w>p", { buffer = buffer })
     vim.keymap.set("n", "q", vim.cmd.quit,    { buffer = buffer })
-end)
-
-filetype("markdown", function (buffer)
-    vim.bo[buffer].makeprg = "pandoc % -o %<.pdf &"
 end)
 
 filetype("sh", function (buffer)
@@ -79,6 +75,7 @@ filetype("sh", function (buffer)
 end)
 
 filetype("cpp", function (buffer)
+    if vim.version().minor < 10 then return end
     vim.keymap.set("ia", "f:", "std::filesystem:", { buffer = buffer })
     vim.keymap.set("ia", "c:", "std::chrono:",     { buffer = buffer })
     vim.keymap.set("ia", "r:", "std::ranges:",     { buffer = buffer })
@@ -86,5 +83,7 @@ filetype("cpp", function (buffer)
 end)
 
 filetype({ "c", "cpp", "rust" }, function (buffer)
+    vim.bo[buffer].commentstring = "// %s"
+    if vim.version().minor < 10 then return end
     vim.keymap.set("ia", "--", "//", { buffer = buffer })
 end)

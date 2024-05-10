@@ -5,7 +5,7 @@ gather_lines () {
 }
 
 choose_url () {
-    grep --invert-match "^mailto:*" | dmenu -i -l 5 -p "Which URL?"
+    grep --invert-match "^mailto:*" | choice-menu "Which URL?"
 }
 
 url=$(gather_lines | urlscan --dedupe --no-browser | choose_url) && handle-url "${url}"
