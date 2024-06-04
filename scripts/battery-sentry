@@ -28,7 +28,7 @@ warn_if_less_than () {
 
 while true; do
     if [ "$(battery status)" = Discharging ]; then
-        warn_if_less_than 15 critical || warn_if_less_than 30 critical || warn_if_less_than 50 || warn_if_less_than 70
+        warn_if_less_than 30 critical || warn_if_less_than 70 normal
     fi
     sleep 299 # Check every 5 minutes
 done

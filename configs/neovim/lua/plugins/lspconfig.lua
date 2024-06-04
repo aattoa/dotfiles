@@ -1,23 +1,18 @@
----@param server string
-local function setup_server(server)
-    require("lspconfig")[server].setup({
-        capabilities = require("cmp_nvim_lsp").default_capabilities(),
-        settings     = require("util.lsp").server_settings,
-        cmd          = require("util.lsp").server_commands[server],
-    })
-end
+local capabilities = vim.tbl_deep_extend('force', vim.lsp.protocol.make_client_capabilities(), {
+    textDocument = { completion = { completionItem = { snippetSupport = true } } },
+})
 
 return {
-    "neovim/nvim-lspconfig",
-    dependencies = { "hrsh7th/cmp-nvim-lsp" },
+    'neovim/nvim-lspconfig',
     config = function ()
-        require("lspconfig.ui.windows").default_options.border = "rounded"
-        setup_server("clangd")
-        setup_server("rust_analyzer")
-        setup_server("hls")
-        setup_server("pylsp")
-        setup_server("lua_ls")
-        setup_server("gdscript")
+        require('lspconfig.ui.windows').default_options.border = vim.g.floatborder
+        for _, server in ipairs({ 'clangd', 'rust_analyzer', 'hls', 'pylsp', 'lua_ls', 'gdscript' }) do
+            require('lspconfig')[server].setup({
+                capabilities = capabilities,
+                settings     = require('util.lsp').server_settings,
+                cmd          = require('util.lsp').server_commands[server],
+            })
+        end
     end,
     lazy = false,
 }

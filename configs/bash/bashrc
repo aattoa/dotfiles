@@ -25,6 +25,7 @@ alias grep='grep --ignore-case --color=auto'
 # Convenience
 alias q='exit'
 alias vi='nvim'
+alias vis='nvim -S'
 alias md='mkdir --verbose --parents'
 alias rd='rmdir --verbose'
 alias ls='eza --git --no-permissions --octal-permissions --group-directories-first'
@@ -64,6 +65,7 @@ export MANROFFOPT="-P -c"
 export MANPAGER="less --color=d+r --color=u+b"
 export LESS="--incsearch --ignore-case --jump-target=.3 --chop-long-lines --clear-screen --use-color --RAW-CONTROL-CHARS"
 export FZF_DEFAULT_OPTS="--cycle --no-mouse --scroll-off=10 --color=gutter:-1 --no-separator   \
+    --walker-skip=.cache,.git,.godot                                                           \
     --keep-right --tiebreak=begin,length --preview='file-preview {}' --preview-window=hidden   \
     --bind=ctrl-a:toggle-preview,ctrl-r:change-preview-window\(down,30%\|right\)               \
     --bind=ctrl-w:forward-word,ctrl-b:backward-word,ctrl-l:forward-char,ctrl-h:backward-char   \
@@ -89,8 +91,8 @@ export GPG_TTY
 # Make and change directory (mkdir + cd)
 mc () {
     [ $# = 1 ] || exit 1
-    [ ! -d "$1" ] && mkdir --parents -- "$1" && echo "Created $1"
-    builtin cd -- "$1" && echo "Moved to $1"
+    [ ! -d "$1" ] && mkdir --parents -- "$1" || echo "Already exists: $1"
+    builtin cd -- "$1" && echo "Moved to $(pwd)"
 }
 
 # Mimic `command` completion for `on-compilation-trigger`

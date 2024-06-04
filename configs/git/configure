@@ -11,8 +11,11 @@ git config --global alias.uncommit "reset --soft HEAD^"
 # Name the default branch 'main'
 git config --global init.defaultBranch main
 
-# Sign all commits by default (use `--no-gpg-sign` to commit without signing)
+# Sign all commits by default (use --no-gpg-sign to commit without signing)
 git config --global commit.gpgSign true
+
+# Use vim instead of $EDITOR
+git config --global core.editor /usr/bin/vim
 
 # Global gitignore
 git config --global core.excludesFile "${MY_DOTFILES_REPO}/configs/git/gitignore"
