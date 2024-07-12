@@ -1,6 +1,11 @@
 vim.api.nvim_create_autocmd('TextYankPost', {
-    callback = function () vim.highlight.on_yank({ timeout = 100 --[[milliseconds]] }) end,
+    callback = function () vim.highlight.on_yank({ timeout = 100 --[[ms]] }) end,
     desc     = 'Briefly highlight yanked text',
+})
+
+vim.api.nvim_create_autocmd('InsertLeave', {
+    callback = function () vim.diagnostic.setqflist({ open = false }) end,
+    desc     = 'Keep the quickflix list up to date'
 })
 
 vim.api.nvim_create_autocmd('QuickFixCmdPost', {
@@ -28,6 +33,13 @@ vim.api.nvim_create_autocmd({ 'WinNew', 'VimEnter' }, {
 vim.api.nvim_create_autocmd('TermOpen', {
     command = 'setlocal nonumber norelativenumber | startinsert',
     desc    = 'Set local options for terminal buffers',
+})
+
+vim.api.nvim_create_autocmd('TermClose', {
+    callback = function (event)
+        vim.api.nvim_buf_delete(event.buf, {})
+    end,
+    desc = 'Delete finished terminal buffers',
 })
 
 ---@param filetypes string[]|string
@@ -58,13 +70,15 @@ end)
 
 filetype({ 'c', 'cpp', 'rust' }, function (buffer)
     vim.bo[buffer].commentstring = '// %s'
-    if vim.version().minor < 10 then return end
-    vim.keymap.set('ia', '--', '//', { buffer = buffer })
 end)
 
 filetype('haskell', function (buffer)
     vim.bo[buffer].shiftwidth = 2
     vim.bo[buffer].tabstop = 2
+end)
+
+filetype('gdscript', function (buffer)
+    vim.bo[buffer].expandtab = false
 end)
 
 filetype('qf', function (buffer)
@@ -73,14 +87,7 @@ filetype('qf', function (buffer)
         buffer  = buffer,
         desc    = 'Quit if last window',
     })
-    vim.api.nvim_create_autocmd('WinEnter', {
-        callback = function ()
-            vim.diagnostic.setqflist({ open = false })
-        end,
-        buffer = buffer,
-        desc   = 'Refresh quickfix list',
-    })
     vim.keymap.set('n', 'J', 'j<CR>zz<C-w>p', { buffer = buffer })
     vim.keymap.set('n', 'K', 'k<CR>zz<C-w>p', { buffer = buffer })
-    vim.keymap.set('n', 'q', vim.cmd.quit,    { buffer = buffer })
+    vim.keymap.set('n', 'q', '<Cmd>quit<CR>', { buffer = buffer })
 end)

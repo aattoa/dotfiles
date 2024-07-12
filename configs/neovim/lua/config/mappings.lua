@@ -27,9 +27,6 @@ vim.keymap.set('n', '<Esc>', cmd('nohlsearch'))
 -- Easier alternate file access
 vim.keymap.set('n', 'M', '<C-^>')
 
--- System clipboard
-vim.keymap.set({ 'n', 'x' }, '<C-c>', '"+')
-
 -- Explore with Netrw
 vim.keymap.set('n', '<Leader>e',     cmd('Explore'))
 vim.keymap.set('n', '<Leader>E',     cmd('Sexplore'))

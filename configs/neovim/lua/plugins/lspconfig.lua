@@ -13,6 +13,7 @@ return {
                 cmd          = require('util.lsp').server_commands[server],
             })
         end
+        vim.keymap.set('n', '<Leader>ll', '<Cmd>LspInfo<CR>')
     end,
     lazy = false,
 }

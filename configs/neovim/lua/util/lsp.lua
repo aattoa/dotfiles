@@ -93,8 +93,10 @@ M.enable_format_on_write = function (client, buffer)
     })
 end
 
+local original_open_floating_preview = vim.lsp.util.open_floating_preview
+
 M.configure_floating_windows = function ()
-    local original_open_floating_preview = vim.lsp.util.open_floating_preview
+    if vim.lsp.util.open_floating_preview ~= original_open_floating_preview then return end
     ---@diagnostic disable-next-line: duplicate-set-field
     vim.lsp.util.open_floating_preview = function (contents, syntax, options, ...)
         return original_open_floating_preview(contents, syntax, vim.tbl_extend('keep', options or {}, {

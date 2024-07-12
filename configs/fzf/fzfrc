@@ -1,0 +1,22 @@
+--cycle
+--no-mouse
+--scroll-off=10
+--color=gutter:-1
+--no-separator
+--walker-skip=.cache,.git,.godot
+--keep-right
+--tiebreak=begin,length
+--preview='file-preview {}'
+--preview-window=hidden
+--bind=ctrl-a:toggle-preview
+--bind=ctrl-r:change-preview-window\(down,30%\|right\)
+--bind=ctrl-w:forward-word
+--bind=ctrl-b:backward-word
+--bind=ctrl-l:forward-char
+--bind=ctrl-h:backward-char
+--bind=ctrl-g:first
+--bind=ctrl-u:half-page-up
+--bind=ctrl-d:half-page-down
+--bind=ctrl-p:preview-half-page-up
+--bind=ctrl-n:preview-half-page-down
+--bind=ctrl-c:cancel

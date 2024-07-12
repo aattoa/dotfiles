@@ -4,7 +4,7 @@ if [ "$1" = audio ]; then
     shift
     args="--extract-audio --audio-format=mp3 --audio-quality=0"
 else
-    args="--format-sort=res:${YTDL_RES:-720}"
+    args="--format-sort=res:${YTDL_RES:-480}"
 fi
 
 args="${args} --embed-metadata --sponsorblock-remove=default --sponsorblock-mark=all"

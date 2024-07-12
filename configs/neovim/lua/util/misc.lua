@@ -7,11 +7,6 @@ M.visual_line_range = function ()
     if a < b then return a - 1, b else return b - 1, a end
 end
 
----@type fun(buffer: integer, line: integer): string
-M.nth_line = function (buffer, line)
-    return vim.api.nvim_buf_get_lines(buffer, line, line + 1, true)[1]
-end
-
 ---@type fun(name: string): string?
 M.find_file = function (name)
     ---@diagnostic disable-next-line: undefined-field

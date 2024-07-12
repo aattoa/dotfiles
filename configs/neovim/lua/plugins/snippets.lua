@@ -68,14 +68,15 @@ local snippets = {
 
 return {
     dir = vim.fn.stdpath('data') .. '/local-plugins/nvim-simple-snippets',
+    opts = {
+        completion = true,
+        treesitter = true,
+        snippets = snippets,
+    },
     keys = {
         { '<C-l>', function () require('simple-snippets').expand_or_jump() end, mode = 'i' },
         { '<C-s>', function () require('simple-snippets').complete()       end, mode = 'i' },
     },
     event = 'LspAttach',
-    config = function ()
-        require('simple-snippets').snippets = snippets
-        require('simple-snippets').enable_expand_completed_snippets()
-    end,
-    enabled = vim.version().minor >= 10,
+    enabled = vim.snippet ~= nil,
 }

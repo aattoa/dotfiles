@@ -57,3 +57,8 @@ vim.opt.completeopt = { 'menuone', 'noselect' }
 if vim.version().minor >= 10 then
     vim.opt.completeopt:append('popup')
 end
+
+vim.diagnostic.config({
+    float = { border = vim.g.floatborder, header = "" },
+    severity_sort = true,
+})

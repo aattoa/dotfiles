@@ -12,12 +12,8 @@ apply_custom () {
     unclutter --fork --timeout=1 --jitter=10 --start-hidden --ignore-scrolling
 }
 
-is_currently_default () {
-    [ "$(pgrep --exact --count unclutter)" = 0 ]
-}
-
 toggle () {
-    if is_currently_default; then
+    if ! pidof -q unclutter; then
         apply_custom
         notify "Custom settings applied"
     else

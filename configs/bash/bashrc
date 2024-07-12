@@ -64,14 +64,7 @@ export WATCH_INTERVAL=0.5
 export MANROFFOPT="-P -c"
 export MANPAGER="less --color=d+r --color=u+b"
 export LESS="--incsearch --ignore-case --jump-target=.3 --chop-long-lines --clear-screen --use-color --RAW-CONTROL-CHARS"
-export FZF_DEFAULT_OPTS="--cycle --no-mouse --scroll-off=10 --color=gutter:-1 --no-separator   \
-    --walker-skip=.cache,.git,.godot                                                           \
-    --keep-right --tiebreak=begin,length --preview='file-preview {}' --preview-window=hidden   \
-    --bind=ctrl-a:toggle-preview,ctrl-r:change-preview-window\(down,30%\|right\)               \
-    --bind=ctrl-w:forward-word,ctrl-b:backward-word,ctrl-l:forward-char,ctrl-h:backward-char   \
-    --bind=ctrl-g:first,ctrl-u:half-page-up,ctrl-d:half-page-down                              \
-    --bind=ctrl-p:preview-half-page-up,ctrl-n:preview-half-page-down                           \
-    --bind=ctrl-c:cancel,ctrl-v:become\('nvim {}'\)"
+export FZF_DEFAULT_OPTS_FILE=${MY_DOTFILES_REPO}/configs/fzf/fzfrc
 
 # Tell programs not to pollute $HOME
 export HISTFILE=${XDG_STATE_HOME}/bash/history
