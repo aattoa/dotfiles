@@ -6,12 +6,13 @@ set ttimeoutlen=100              " Short insert mode escape sequence timeout
 set hlsearch                     " Highlight search matches
 set incsearch                    " Interactive search highlight
 set ignorecase                   " Enable case insensitive search
+set cursorline                   " Highlight current line
 set relativenumber               " Enable relative line numbers
 set number                       " Absolute line number for current line
 set smartindent                  " Automatically indent new lines
-set tabstop=4                    " Tabs appear as 4 spaces
-set shiftwidth=4                 " Set indentation to 4 spaces
-set expandtab                    " Convert tabs to spaces
+set tabstop=4                    " Tab character width
+set shiftwidth=0                 " Use tabstop value for indentation
+set expandtab                    " Insert spaces in place of tabs
 set scrolloff=10                 " Vertical scrolloff
 set sidescrolloff=40             " Horizontal scrolloff
 set virtualedit=block            " Allow going past the end of line in visual block mode
@@ -20,10 +21,12 @@ set wildmenu                     " Show command line completions list
 set wildoptions=pum              " Popup wildmenu
 set path+=**                     " Recursively find in subdirectories
 set shortmess+=I                 " Disable intro message
+set shortmess+=c                 " Disable insert mode completion messages
 set viminfo=                     " Disable viminfo
 set nomodeline                   " Disable unnecessary feature
 set laststatus=2                 " Always show status line
 set nowrap                       " Do not wrap long lines
+set nowrapscan                   " Do not wrap searches around the end of file
 set splitkeep=topline            " Do not scroll when resizing horizontal splits
 set nostartofline                " Do not move the the cursor to the start of the line on vertical movements
 set noshowmode                   " Do not show current mode
@@ -31,80 +34,105 @@ let g:netrw_banner=0             " Disable Netrw help banner
 let g:netrw_list_hide="^\\.\\/$" " Disable current directory
 let g:netrw_cursor=0             " Disable cursorline in Netrw
 let g:mapleader=" "              " Set the leader key
-filetype off                     " Disable file type detection
 syntax enable                    " Enable syntax highting
 
-" Explore with Netrw
-nnoremap <Leader>e     <Cmd>Explore<CR>
-nnoremap <Leader>E     <Cmd>Sexplore<CR>
-nnoremap <Leader><C-e> <Cmd>Texplore<CR>
+" Leader by itself does nothing
+nnoremap <leader> <nop>
+xnoremap <leader> <nop>
+
+" Toggle search case sensitivity
+nnoremap <leader>i <cmd>set ignorecase!<cr>
 
 " Command shortcuts
-nnoremap <Leader>f :find<Space>
-nnoremap <Leader>? :help<Space>
+nnoremap <leader>f :find<space>
+nnoremap <leader>? :help<space>
 
 " Toggle search highlight
-nnoremap <Leader>h <Cmd>set hlsearch!<CR>
+nnoremap <leader>h <cmd>set hlsearch!<cr>
 
 " Toggle line number visibility
-nnoremap <Leader>n <Cmd>set number!<CR><Cmd>set relativenumber!<CR>
+nnoremap <leader>n <cmd>set number!<cr><cmd>set relativenumber!<cr>
+
+" Open a terminal buffer in a new tab
+nnoremap <leader>t <cmd>tab terminal<cr>
+
+" Easier normal mode from terminal mode
+tnoremap <esc><esc> <c-\><c-n>
 
 " Easier alternate file access
-nnoremap M <C-^>
-
-" Symmetric command-line window toggle
-nnoremap <C-f> <C-c>
+nnoremap M <c-^>
 
 " Clear current search highlight
-nnoremap <Esc> <Cmd>nohlsearch<CR>
+nnoremap <esc> <cmd>nohlsearch<cr>
+
+" Explore with Netrw
+nnoremap <leader>e     <cmd>Explore<cr>
+nnoremap <leader>E     <cmd>Sexplore<cr>
+nnoremap <leader><c-e> <cmd>Texplore<cr>
 
 " Tab controls
-nnoremap <C-t> <Cmd>tabnew<CR>
-nnoremap <C-q> <Cmd>tabclose<CR>
-nnoremap H     <Cmd>tabprevious<CR>
-nnoremap L     <Cmd>tabnext<CR>
-nnoremap <C-h> <Cmd>tabmove -1<CR>
-nnoremap <C-l> <Cmd>tabmove +1<CR>
+nnoremap <c-t> <cmd>tabnew<cr>
+nnoremap <c-q> <cmd>tabclose<cr>
+nnoremap H     <cmd>tabprevious<cr>
+nnoremap L     <cmd>tabnext<cr>
+nnoremap <c-h> <cmd>tabmove -1<cr>
+nnoremap <c-l> <cmd>tabmove +1<cr>
 
-nnoremap <Leader>1 1gt
-nnoremap <Leader>2 2gt
-nnoremap <Leader>3 3gt
-nnoremap <Leader>4 4gt
-nnoremap <Leader>5 5gt
-nnoremap <Leader>6 6gt
-nnoremap <Leader>7 7gt
-nnoremap <Leader>8 8gt
-nnoremap <Leader>9 9gt
-nnoremap <Leader>0 g<Tab>
+nnoremap <leader>1 1gt
+nnoremap <leader>2 2gt
+nnoremap <leader>3 3gt
+nnoremap <leader>4 4gt
+nnoremap <leader>5 5gt
+nnoremap <leader>6 6gt
+nnoremap <leader>7 7gt
+nnoremap <leader>8 8gt
+nnoremap <leader>9 9gt
+nnoremap <leader>0 g<Tab>
+
+" Quickfix controls
+nnoremap <leader>d <cmd>copen<cr><c-w>p
+nnoremap <leader>D <cmd>copen<cr>
+nnoremap <leader>c <cmd>cclose<cr>
+nnoremap <c-j>     <cmd>cnext<cr>zz
+nnoremap <c-k>     <cmd>cprevious<cr>zz
+
+" Popup-menu controls
+inoremap <expr> <c-j> pumvisible() ? "<c-n>" : "<c-j>"
+cnoremap <expr> <c-j> pumvisible() ? "<c-n>" : "<c-j>"
+inoremap <expr> <c-k> pumvisible() ? "<c-p>" : "<c-k>"
+cnoremap <expr> <c-k> pumvisible() ? "<c-p>" : "<c-k>"
+inoremap <expr> <c-c> pumvisible() ? "<c-e>" : "<c-c>"
+cnoremap <expr> <c-c> pumvisible() ? "<c-e>" : "<c-c>"
+inoremap <expr> <cr>  pumvisible() ? "<c-y>" : "<cr>"
 
 " Move selected lines up and down
-xnoremap <silent> <C-k> :move '<-2<CR>gv=gv
-xnoremap <silent> <C-j> :move '>+1<CR>gv=gv
+xnoremap <silent> <c-k> :move '<-2<cr>gv=gv
+xnoremap <silent> <c-j> :move '>+1<cr>gv=gv
 
 " Resize windows
-nnoremap ( <Cmd>horizontal resize -2<CR>
-nnoremap ) <Cmd>horizontal resize +2<CR>
-nnoremap < <Cmd>vertical resize -1<CR>
-nnoremap > <Cmd>vertical resize +1<CR>
+nnoremap ( <cmd>horizontal resize -1<cr>
+nnoremap ) <cmd>horizontal resize +1<cr>
+nnoremap < <cmd>vertical resize -2<cr>
+nnoremap > <cmd>vertical resize +2<cr>
 
 " Stay in visual mode on indent/dedent
 xnoremap < <gv
 xnoremap > >gv
 
 " Write and quit
-nnoremap <Leader>w <Cmd>write<CR>
-nnoremap <Leader>q <Cmd>quit<CR>
+nnoremap <leader>w <cmd>write<cr>
+nnoremap <leader>q <cmd>quit<cr>
 
 " Normal mode actions in insert mode
-inoremap <C-e> <C-o><C-e>
-inoremap <C-y> <C-o><C-y>
-inoremap <C-z> <C-o>zz
+inoremap <c-e> <c-o><c-e>
+inoremap <c-y> <c-o><c-y>
+inoremap <c-z> <c-o>zz
 
 " Do not save paragraph jumps to the jumplist
-nnoremap { <Cmd>execute ("keepjumps normal!" . v:count1 . "{zz")<CR>
-xnoremap { <Cmd>execute ("keepjumps normal!" . v:count1 . "{zz")<CR>
-nnoremap } <Cmd>execute ("keepjumps normal!" . v:count1 . "}zz")<CR>
-xnoremap } <Cmd>execute ("keepjumps normal!" . v:count1 . "}zz")<CR>
+nnoremap { <cmd>execute ("keepjumps normal!" . v:count1 . "{zz")<cr>
+xnoremap { <cmd>execute ("keepjumps normal!" . v:count1 . "{zz")<cr>
+nnoremap } <cmd>execute ("keepjumps normal!" . v:count1 . "}zz")<cr>
+xnoremap } <cmd>execute ("keepjumps normal!" . v:count1 . "}zz")<cr>
 
 " Try to keep the cursor centered
 nnoremap G Gzz
@@ -113,14 +141,14 @@ nnoremap n nzz
 xnoremap n nzz
 nnoremap N Nzz
 xnoremap N Nzz
-nnoremap <C-d> <C-d>zz
-xnoremap <C-d> <C-d>zz
-nnoremap <C-u> <C-u>zz
-xnoremap <C-u> <C-u>zz
-nnoremap <C-o> <C-o>zz
-xnoremap <C-o> <C-o>zz
-nnoremap <C-i> <C-i>zz
-xnoremap <C-i> <C-i>zz
+nnoremap <c-d> <c-d>zz
+xnoremap <c-d> <c-d>zz
+nnoremap <c-u> <c-u>zz
+xnoremap <c-u> <c-u>zz
+nnoremap <c-o> <c-o>zz
+xnoremap <c-o> <c-o>zz
+nnoremap <c-i> <c-i>zz
+xnoremap <c-i> <c-i>zz
 
 " Yank to the end of line (behave like C and D)
 nnoremap Y y$
@@ -129,11 +157,25 @@ nnoremap Y y$
 runtime ftplugin/man.vim
 
 function s:ApplyHelpBufferOptions()
-    nnoremap <buffer> J 3<C-e>
-    nnoremap <buffer> K 3<C-y>
-    nnoremap <buffer> q <Cmd>quit<CR>
+    nnoremap <buffer> J 3<c-e>
+    nnoremap <buffer> K 3<c-y>
+    nnoremap <buffer> q <cmd>quit<cr>
 endfunction
 
-autocmd FileType help,man call s:ApplyHelpBufferOptions()
+function s:ApplyQuickfixOptions()
+    nnoremap <buffer> J j<cr>zz<c-w>p
+    nnoremap <buffer> K k<cr>zz<c-w>p
+    nnoremap <buffer> q <cmd>quit<cr>
+endfunction
 
-autocmd FileType gitcommit setlocal colorcolumn=60
+function s:OfferCompletions()
+    if !pumvisible() && state('m') == '' && v:char =~ "[a-z_]"
+        call feedkeys("\<c-x>\<c-n>")
+    endif
+endfunction
+
+autocmd FileType qf call s:ApplyQuickfixOptions()
+autocmd FileType help,man call s:ApplyHelpBufferOptions()
+autocmd FileType gitcommit setlocal colorcolumn=50
+autocmd TerminalOpen * setlocal nonumber norelativenumber
+autocmd InsertCharPre * call s:OfferCompletions()

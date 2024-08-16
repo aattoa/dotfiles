@@ -4,9 +4,17 @@ number () {
     nl --number-separator=' ' --number-width=1 --starting-line-number=0
 }
 
+clean () {
+    # 1: Remove suffix .mp3
+    # 2: Remove suffix [source information]
+    # 3: Replace underscores and hyphens with whitespace
+    # 4: Replace '/' with ' - '
+    sed 's/\.mp3$//;s/[ -_]*\[[^]]*\]$//;s/[-_]/ /g;s/\// - /g'
+}
+
 # $1: Directory
 choose_track () {
-    find "$1" -type f -printf "%P\n" | number | fzf | cut --delimiter=' ' --fields=1
+    find "$1" -type f -printf "%P\n" | clean | number | fzf | cut --delimiter=' ' --fields=1
 }
 
 musicpath=${HOME}/misc/media/music/all

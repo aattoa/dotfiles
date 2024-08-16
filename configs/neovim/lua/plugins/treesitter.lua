@@ -23,8 +23,8 @@ local textobjects = {
     },
     swap = {
         enable        = true,
-        swap_next     = { ['<Leader>>'] = '@parameter.inner' },
-        swap_previous = { ['<Leader><'] = '@parameter.inner' },
+        swap_next     = { ['<leader>>'] = '@parameter.inner' },
+        swap_previous = { ['<leader><'] = '@parameter.inner' },
     },
 }
 
@@ -75,12 +75,12 @@ return {
         vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
 
         -- Repeat textobject motions
-        vim.keymap.set({ 'n', 'x' }, '[[', '<Cmd>TSTextobjectRepeatLastMovePrevious<CR>zz')
-        vim.keymap.set({ 'n', 'x' }, ']]', '<Cmd>TSTextobjectRepeatLastMoveNext<CR>zz')
+        vim.keymap.set({ 'n', 'x' }, '[[', '<cmd>TSTextobjectRepeatLastMovePrevious<cr>zz')
+        vim.keymap.set({ 'n', 'x' }, ']]', '<cmd>TSTextobjectRepeatLastMoveNext<cr>zz')
 
         -- Make it easier to hold down `[[` and `]]`
-        vim.keymap.set({ 'n', 'x' }, '[]', '<Nop>')
-        vim.keymap.set({ 'n', 'x' }, '][', '<Nop>')
+        vim.keymap.set({ 'n', 'x' }, '[]', '<nop>')
+        vim.keymap.set({ 'n', 'x' }, '][', '<nop>')
 
         -- Miscellaneous highlighting tweaks
         vim.api.nvim_set_hl(0, '@keyword.modifier.cpp', { link = '@type.builtin' })

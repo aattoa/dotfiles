@@ -74,8 +74,8 @@ return {
         snippets = snippets,
     },
     keys = {
-        { '<C-l>', function () require('simple-snippets').expand_or_jump() end, mode = 'i' },
-        { '<C-s>', function () require('simple-snippets').complete()       end, mode = 'i' },
+        { '<c-l>', function () require('simple-snippets').expand_or_jump() end, mode = 'i' },
+        { '<c-s>', function () require('simple-snippets').complete()       end, mode = 'i' },
     },
     event = 'LspAttach',
     enabled = vim.snippet ~= nil,

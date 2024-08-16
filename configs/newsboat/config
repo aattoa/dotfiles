@@ -50,3 +50,8 @@ macro a set external-url-viewer handle-podcast-urls; show-urls; set external-url
 # Feed separators
 highlight feedlist "---.*---" green default bold
 highlight feedlist ".*(0/0).." default default invis
+
+# Better colors
+color info black white
+color listfocus black blue
+color listfocus_unread black blue bold

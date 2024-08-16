@@ -3,8 +3,8 @@ vim.g.man_hardwrap       = false              -- Soft-wrap manual pages
 vim.g.netrw_altfile      = 1                  -- Do not count the Netrw browser window as an alternate file
 vim.g.netrw_banner       = 0                  -- Disable the Netrw help banner
 vim.g.netrw_list_hide    = '^\\.\\/$'         -- Disable the `./` directory entry
-vim.g.floatborder        = 'rounded'          -- Border for all floating windows (not a built in global)
-vim.g.autocomplete       = true               -- Enable autocompletion (not a built in global)
+vim.g.floatborder        = 'single'           -- Border for all floating windows (not a built in global)
+vim.g.lspautostart       = true               -- Automatically start LSP clients based on filetype (not a built in global)
 vim.opt.modeline         = false              -- Disable unnecessary feature
 vim.opt.mouse            = ''                 -- Disable the mouse
 vim.opt.guicursor        = ''                 -- Disable cursor styling
@@ -21,7 +21,7 @@ vim.opt.ttimeoutlen      = 10                 -- Smaller time window for keycode
 vim.opt.undofile         = true               -- Enable persistent undo
 vim.opt.expandtab        = true               -- Insert spaces in place of tabs
 vim.opt.tabstop          = 4                  -- Tab character width
-vim.opt.shiftwidth       = 4                  -- Indentation width
+vim.opt.shiftwidth       = 0                  -- Use tabstop value for indentation
 vim.opt.list             = true               -- Render whitespace according to listchars
 vim.opt.listchars        = 'tab:| ,trail:_'   -- Render tabs as '|   ' and trailing whitespace as '_'
 vim.opt.pumheight        = 10                 -- Maximum popup menu height
@@ -59,6 +59,9 @@ if vim.version().minor >= 10 then
 end
 
 vim.diagnostic.config({
-    float = { border = vim.g.floatborder, header = "" },
+    float = {
+        border = vim.g.floatborder,
+        header = "",
+    },
     severity_sort = true,
 })

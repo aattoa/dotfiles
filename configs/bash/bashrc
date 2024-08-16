@@ -1,12 +1,9 @@
 #!/bin/bash
 
-# Set dotfiles repo location, even for non-interactive shells
+# Set dotfiles repo location
 export MY_DOTFILES_REPO=${HOME}/misc/dotfiles
 
-# Stop here if the current shell is not interactive
-[[ $- != *i* ]] && return
-
-# Stop here if the dotfiles repo was not found
+# Stop here if the dotfiles repo can not be found
 [ ! -d "${MY_DOTFILES_REPO}" ] && echo "dotfiles repo not found" && return
 
 PS1='$ ' # Primary prompt
@@ -88,6 +85,10 @@ mc () {
     builtin cd -- "$1" && echo "Moved to $(pwd)"
 }
 
+reboot () {
+    prompt-yesno "Reboot?" && command reboot
+}
+
 # Mimic `command` completion for `on-compilation-trigger`
 command -v _command >/dev/null && complete -F _command on-compilation-trigger
 
@@ -96,7 +97,7 @@ _my_shell_set_line () {
 }
 
 _my_shell_fzf () {
-    fzf --height=~40% --layout=reverse --info=inline --border=rounded "$@"
+    fzf --height=~60% --layout=reverse --info=inline --border=rounded "$@"
 }
 
 _my_shell_history () {

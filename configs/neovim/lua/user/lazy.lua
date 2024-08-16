@@ -54,4 +54,4 @@ require('lazy').setup('plugins', {
     defaults = { lazy = true },
 })
 
-vim.keymap.set('n', '<Leader>p', '<Cmd>Lazy<CR>')
+vim.keymap.set('n', '<leader>p', '<cmd>Lazy<cr>')
