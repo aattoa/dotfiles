@@ -22,7 +22,17 @@ vim.api.nvim_create_autocmd({ 'WinNew', 'VimEnter' }, {
     desc    = 'Define highlight matches for special text markers',
 })
 
+vim.api.nvim_create_autocmd('WinEnter', {
+    command = 'setlocal cursorline',
+    desc    = 'Enable cursorline for the active window',
+})
+
+vim.api.nvim_create_autocmd('WinLeave', {
+    command = 'setlocal nocursorline',
+    desc    = 'Disable cursorline for inactive windows',
+})
+
 vim.api.nvim_create_autocmd('TermOpen', {
     command = 'setlocal nonumber norelativenumber | startinsert',
-    desc    = 'Disable line numbers and enter terminal mode',
+    desc    = 'Disable line numbers and start in terminal mode',
 })

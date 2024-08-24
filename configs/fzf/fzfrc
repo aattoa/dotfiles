@@ -7,9 +7,9 @@
 --keep-right
 --tiebreak=begin,length
 --preview='file-preview {}'
---preview-window=hidden
+--preview-window=hidden,border-left,60%
 --bind=ctrl-a:toggle-preview
---bind=ctrl-r:change-preview-window\(down,30%\|right\)
+--bind=ctrl-r:change-preview-window\(down,border-top,50%\|right,60%\)
 --bind=ctrl-w:forward-word
 --bind=ctrl-b:backward-word
 --bind=ctrl-l:forward-char

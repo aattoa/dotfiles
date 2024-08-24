@@ -1,10 +1,11 @@
 #!/bin/sh
 
-error () { notify track "Error: $1"; exit 1; }
-
 file=${HOME}/misc/track.txt
+today=$(date +%F)
 
-[ -f "${file}" ] || error "File does not exist: ${file}"
-[ -n "$*" ]      || error "Expected at least one argument"
+for arg in "$@"; do
+    [ -n "${arg}" ] && echo "${today} ${arg}" >> "${file}"
+done
 
-echo "$(date +%F) $*" >> "${file}"
+script="BEGIN {sum=0} /^${today}/ {sum+=\$2} END {print sum}"
+notify "Today: $(awk "${script}" "${file}")"

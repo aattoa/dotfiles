@@ -45,8 +45,15 @@ toggle () {
 
 show_current_track_title () {
     [ -n "${DISPLAY}" ] || return
+    icon=/tmp/dotfiles-media-control-metadata-icon
     if title=$(control metadata title); then
-        notify-send --replace-id=999999999 --expire-time=750 "Now playing" "${title}"
+        case $(control metadata mpris:artUrl | cut --delimiter=, --fields=1) in
+            "data:image/"*";base64")
+                control metadata mpris:artUrl | cut --delimiter=, --fields=2 | base64 --decode > "${icon}";;
+            *)
+                [ -f "${icon}" ] && rm "${icon}";;
+        esac
+        notify-send --icon="${icon}" --replace-id=999999999 --expire-time=750 "Now playing" "${title}"
     fi
 }
 

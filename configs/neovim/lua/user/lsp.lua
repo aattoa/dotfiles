@@ -20,7 +20,7 @@ local function lsp_toggle_inlay_hints(buffer)
 end
 
 ---@type fun(client: vim.lsp.Client, buffer: integer): nil
-local function create_mappings(client, buffer)
+local function create_mappings(_, buffer)
     vim.keymap.set('n',          '<leader>li', lsp_toggle_inlay_hints,      { buffer = buffer })
     vim.keymap.set('n',          '<leader>lf', vim.lsp.buf.references,      { buffer = buffer })
     vim.keymap.set('n',          '<leader>lr', vim.lsp.buf.rename,          { buffer = buffer })
@@ -30,11 +30,6 @@ local function create_mappings(client, buffer)
     vim.keymap.set('n',          '<leader>lw', vim.lsp.buf.format,          { buffer = buffer })
     vim.keymap.set('n',          'K',          vim.lsp.buf.hover,           { buffer = buffer })
     vim.keymap.set({ 'n', 'i' }, '<c-space>',  vim.lsp.buf.signature_help,  { buffer = buffer })
-
-    if client.server_capabilities.signatureHelpProvider then
-        -- Send signature help request on '('
-        vim.keymap.set('i', '(', '(<c-space>', { buffer = buffer, remap = true })
-    end
 end
 
 ---@type fun(client: vim.lsp.Client, buffer: integer): nil
@@ -87,9 +82,7 @@ local capabilities = vim.tbl_deep_extend('force', vim.lsp.protocol.make_client_c
     textDocument = { completion = { completionItem = { snippetSupport = true } } },
 })
 
----@param name string
----@param config ClientConfig
----@param path string
+---@type fun(name: string, config: ClientConfig, path: string)
 local function start_client(name, config, path)
     local root = vim.fs.root(path, config.root) or vim.fs.root(path, '.git') or vim.fs.dirname(path)
     vim.lsp.start({

@@ -97,7 +97,7 @@ _my_shell_set_line () {
 }
 
 _my_shell_fzf () {
-    fzf --height=~60% --layout=reverse --info=inline --border=rounded "$@"
+    fzf --height=~60% --layout=reverse --info=inline "$@"
 }
 
 _my_shell_history () {

@@ -14,4 +14,9 @@ end
 
 vim.api.nvim_create_user_command('ApplyHighlights', apply_highlights, {})
 
+vim.api.nvim_create_autocmd('ColorScheme', {
+    callback = apply_highlights,
+    desc     = 'Reapply custom highlights',
+})
+
 apply_highlights()

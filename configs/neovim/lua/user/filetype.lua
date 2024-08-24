@@ -47,3 +47,11 @@ filetype('qf', function (buffer)
     vim.keymap.set('n', 'K', 'k<cr>zz<c-w>p', { buffer = buffer })
     vim.keymap.set('n', 'q', '<cmd>quit<cr>', { buffer = buffer })
 end)
+
+filetype('fzf', function (buffer)
+    vim.keymap.set('t', '<esc>', '<esc>', {
+        nowait = true,
+        buffer = buffer,
+        desc   = 'Hide global terminal mode mapping <esc><esc>',
+    })
+end)

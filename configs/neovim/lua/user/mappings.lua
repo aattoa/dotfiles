@@ -29,7 +29,7 @@ vim.keymap.set('n', 'M', '<c-^>')
 
 -- Explore with Netrw
 vim.keymap.set('n', '<leader>e',     cmd('Explore'))
-vim.keymap.set('n', '<leader>E',     cmd('Sexplore'))
+vim.keymap.set('n', '<leader>E',     cmd('Vexplore'))
 vim.keymap.set('n', '<leader><c-e>', cmd('Texplore'))
 
 -- Tab controls
@@ -109,7 +109,7 @@ vim.keymap.set('x', 'sa', surround('assert(', ')'))
 vim.keymap.set('x', 'S', '<esc>`>l"_x`<h"_xgvohoh')
 
 -- Center the cursor after movements
-for _, movement in ipairs({ 'G', 'n', 'N', '<c-d>', '<c-u>', '<c-o>', '<c-i>' }) do
+for _, movement in ipairs({ 'G', 'n', 'N', 'g;', 'g,', '<c-d>', '<c-u>', '<c-o>', '<c-i>' }) do
     vim.keymap.set({ 'n', 'x' }, movement, movement .. 'zz')
 end
 
