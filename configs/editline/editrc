@@ -1,0 +1,2 @@
+lldb:bind -v               # vi-mode
+lldb:bind ^I lldb-complete # tab complete

@@ -13,7 +13,7 @@ local cmake_fetch = [[FetchContent_Declare(${1:library}
     GIT_TAG        ${3:tag})
 FetchContent_MakeAvailable($1)]]
 
-local snippets = {
+return {
     all = {
         date = function () return os.date('%F') end,
         time = function () return os.date('%T') end,
@@ -45,6 +45,7 @@ local snippets = {
         v       = 'std::views::',
         c       = 'std::chrono::',
         f       = 'std::filesystem::',
+        tod     = 'cpputil::todo()',
     },
     cmake = {
         ['for'] = 'foreach ($1)\n\t$0\nendforeach ()',
@@ -64,19 +65,7 @@ local snippets = {
     markdown = {
         ln = '[$1](https://$1)',
     },
-}
-
-return {
-    dir = vim.fn.stdpath('data') .. '/local-plugins/nvim-simple-snippets',
-    opts = {
-        completion = true,
-        treesitter = true,
-        snippets = snippets,
+    tex = {
+        block = '\\begin{$1}\n$0\n\\end{$1}',
     },
-    keys = {
-        { '<c-l>', function () require('simple-snippets').expand_or_jump() end, mode = 'i' },
-        { '<c-s>', function () require('simple-snippets').complete()       end, mode = 'i' },
-    },
-    event = 'LspAttach',
-    enabled = vim.snippet ~= nil,
 }

@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# Set dotfiles repo location
-export MY_DOTFILES_REPO=${HOME}/misc/dotfiles
+# Set dotfiles path, many scripts and configs rely on this.
+export DOTFILES=${HOME}/misc/dotfiles
 
-# Stop here if the dotfiles repo can not be found
-[ ! -d "${MY_DOTFILES_REPO}" ] && echo "dotfiles repo not found" && return
+# Ensure the dotfiles path is valid.
+[ ! -d "${DOTFILES}" ] && echo "dotfiles not found" && return
 
 PS1='$ ' # Primary prompt
 PS2='> ' # Continuation prompt
@@ -25,12 +25,13 @@ alias vi='nvim'
 alias vis='nvim -S'
 alias md='mkdir --verbose --parents'
 alias rd='rmdir --verbose'
-alias ls='eza --git --no-permissions --octal-permissions --group-directories-first'
-alias py='python -i "$MY_DOTFILES_REPO/configs/python/startup.py"'
+alias py='python -i "${DOTFILES}/configs/python/startup.py"'
 alias ns='newsboat'
 alias jr='journalctl --pager-end'
 alias calendar='cal --monday $(date +%Y)'
-alias memcheck='valgrind --leak-check=full --show-leak-kinds=all --show-error-list=yes'
+alias netwatch='watch --interval 0.5 netstat --inet --all --program'
+alias memcheck='valgrind --track-origins=yes --leak-check=full --show-leak-kinds=all --show-error-list=yes'
+command -v eza > /dev/null && alias ls='eza --git --no-permissions --octal-permissions --group-directories-first'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
@@ -44,7 +45,7 @@ export XDG_DATA_HOME=${HOME}/.local/share
 export XDG_STATE_HOME=${HOME}/.local/state
 
 # Add scripts and local binaries to $PATH
-export PATH=${MY_DOTFILES_REPO}/scripts:${HOME}/.local/bin:${PATH}
+export PATH=${DOTFILES}/scripts:${HOME}/.local/bin:${PATH}
 
 # Default programs
 export EDITOR=/usr/bin/nvim
@@ -55,25 +56,27 @@ export BROWSER=/usr/bin/qutebrowser
 export HISTSIZE=-1
 export HISTIGNORE=q:exit
 export HISTCONTROL=ignoredups
-export LESSHISTFILE=/dev/null
-export SQLITE_HISTORY=/dev/null
 export WATCH_INTERVAL=0.5
 export MANROFFOPT="-P -c"
 export MANPAGER="less --color=d+r --color=u+b"
 export LESS="--incsearch --ignore-case --jump-target=.3 --chop-long-lines --clear-screen --use-color --RAW-CONTROL-CHARS"
-export FZF_DEFAULT_OPTS_FILE=${MY_DOTFILES_REPO}/configs/fzf/fzfrc
+export FZF_DEFAULT_OPTS_FILE=${DOTFILES}/configs/fzf/fzfrc
 
-# Tell programs not to pollute $HOME
+# Avoid $HOME pollution
+export LESSHISTFILE=/dev/null
+export SQLITE_HISTORY=/dev/null
 export HISTFILE=${XDG_STATE_HOME}/bash/history
 export XAUTHORITY=${XDG_RUNTIME_DIR}/Xauthority
 export WINEPREFIX=${XDG_DATA_HOME}/wineprefixes/default
 export CARGO_HOME=${XDG_DATA_HOME}/cargo
 export RUSTUP_HOME=${XDG_DATA_HOME}/rustup
+export OPAMROOT=${XDG_DATA_HOME}/opam
 export GHCUP_INSTALL_BASE_PREFIX=${XDG_DATA_HOME}
 export GHCUP_USE_XDG_DIRS=yes
 export CUDA_CACHE_PATH=${XDG_CACHE_HOME}/nv
-export INPUTRC=${MY_DOTFILES_REPO}/configs/readline/inputrc
-export XINITRC=${MY_DOTFILES_REPO}/configs/x/xinitrc
+export XINITRC=${DOTFILES}/configs/x/xinitrc
+export INPUTRC=${DOTFILES}/configs/readline/inputrc
+export EDITRC=${DOTFILES}/configs/editline/editrc
 
 GPG_TTY=$(tty)
 export GPG_TTY
@@ -85,23 +88,24 @@ mc () {
     builtin cd -- "$1" && echo "Moved to $(pwd)"
 }
 
-reboot () {
-    prompt-yesno "Reboot?" && command reboot
-}
+# Guard against accidental shutdowns
+reboot () { prompt-yesno "Reboot?" && command reboot; }
+sdn () { prompt-yesno "Shut down?" && command sdn; }
 
 # Mimic `command` completion for `on-compilation-trigger`
-command -v _command >/dev/null && complete -F _command on-compilation-trigger
+command -v _command > /dev/null && complete -F _command on-compilation-trigger
 
 _my_shell_set_line () {
-    READLINE_LINE=$1; READLINE_POINT=${#1}
+    READLINE_LINE=$1
+    READLINE_POINT=${#1}
 }
 
 _my_shell_fzf () {
-    fzf --height=~60% --layout=reverse --info=inline "$@"
+    fzf --height=~80% --layout=reverse --info=inline "$@"
 }
 
 _my_shell_history () {
-    if _my_line=$(builtin history | cut --characters=8- | _my_shell_fzf --tac --no-sort); then
+    if _my_line=$(builtin history | cut --characters=8- | _my_shell_fzf --tac --no-sort --preview=); then
         _my_shell_set_line "${_my_line}"
     fi
 }
@@ -119,7 +123,7 @@ _my_shell_cd () {
 }
 
 # Custom fzf shell integration
-if command -v fzf >/dev/null; then
+if command -v fzf > /dev/null; then
     bind -m vi-insert -x '"\C-r": _my_shell_history'
     bind -m vi-insert -x '"\C-f": _my_shell_find_file .'
     bind -m vi-insert -x '"\C-g": _my_shell_find_file /'

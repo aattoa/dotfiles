@@ -2,7 +2,6 @@ set editing-mode vi
 
 $if mode=vi
     set keymap vi-command
-    Control-l: clear-screen
     g: beginning-of-history
     G: end-of-history
     set keymap vi-insert
@@ -24,7 +23,7 @@ set show-all-if-ambiguous on
 # Color files by type
 set colored-stats on
 
-# Directly print completions without going through a pager
+# Directly display completions without going through a pager
 set page-completions off
 
 # Confirm before showing 200+ completions

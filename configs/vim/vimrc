@@ -34,7 +34,7 @@ set nostartofline                   " Do not move the the cursor to the start of
 set noshowmode                      " Do not show current mode
 let g:netrw_dirhistmax=0            " Disable Netrw directory history
 let g:netrw_banner=0                " Disable Netrw help banner
-let g:netrw_list_hide="^\\.\\/$"    " Disable current directory
+let g:netrw_list_hide="^\\.\\+\\/$" " Disable directory entries ./ and ../
 let g:netrw_cursor=0                " Disable cursorline in Netrw
 let g:mapleader=" "                 " Set the leader key
 syntax enable                       " Enable syntax highting
@@ -155,6 +155,12 @@ xnoremap <c-i> <c-i>zz
 
 " Yank to the end of line (behave like C and D)
 nnoremap Y y$
+
+" Umlauts
+inoremap <c-a> <c-k>a:
+cnoremap <c-a> <c-k>a:
+inoremap <c-o> <c-k>o:
+cnoremap <c-o> <c-k>o:
 
 " Highlighting for 'listchars' and nonprintable characters
 highlight SpecialKey ctermfg=darkgrey

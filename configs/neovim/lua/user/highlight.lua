@@ -1,15 +1,21 @@
+---@type table<string, vim.api.keyset.highlight>
+local map = {
+    Normal                      = {},
+    NormalFloat                 = {},
+    LspSignatureActiveParameter = { bold = true },
+    LspReferenceText            = { bold = true, bg = vim.api.nvim_get_hl(0, { name = 'CursorLine' }).bg },
+    Todo                        = { bold = true, fg = 'DarkOrange', standout = true },
+    SnippetTabStop              = { italic = true },
+    Constant                    = { link = 'String' },
+    StatusLine                  = { link = 'StatusLineNC' },
+    ['@keyword.modifier.cpp']   = { link = '@type.builtin' },
+    ['@markup.link']            = { link = 'Constant' },
+}
+
 local function apply_highlights()
-    local cursorline = vim.api.nvim_get_hl(0, { name = 'CursorLine' })
-    vim.api.nvim_set_hl(0, 'Normal', {})
-    vim.api.nvim_set_hl(0, 'NormalFloat', {})
-    vim.api.nvim_set_hl(0, 'LspSignatureActiveParameter', { bold = true })
-    vim.api.nvim_set_hl(0, 'LspReferenceText', { bold = true, bg = cursorline.bg })
-    vim.api.nvim_set_hl(0, 'LspReferenceRead', { bold = true, bg = cursorline.bg })
-    vim.api.nvim_set_hl(0, 'LspReferenceWrite', { bold = true, bg = cursorline.bg })
-    vim.api.nvim_set_hl(0, 'Constant', { link = 'String' })
-    vim.api.nvim_set_hl(0, 'StatusLine', { link = 'StatusLineNC' })
-    vim.api.nvim_set_hl(0, 'SnippetTabStop', { italic = true })
-    vim.api.nvim_set_hl(0, 'Todo', { fg = 'DarkOrange', standout = true, bold = true })
+    for name, highlight in pairs(map) do
+        vim.api.nvim_set_hl(0, name, highlight)
+    end
 end
 
 vim.api.nvim_create_user_command('ApplyHighlights', apply_highlights, {})

@@ -1,4 +1,13 @@
-vim.filetype.add({ extension = { kieli = 'kieli' } })
+vim.filetype.add({
+    extension = {
+        h = 'c',
+        tex = 'tex',
+        kieli = 'kieli',
+    },
+    filename = {
+        xinitrc = 'sh',
+    },
+})
 
 ---@param filetypes string[]|string
 ---@param callback fun(buffer: integer): nil
@@ -10,6 +19,16 @@ local function filetype(filetypes, callback)
     })
 end
 
+---@param buffer integer
+---@param description string
+local function enable_auto_make(buffer, description)
+    vim.api.nvim_create_autocmd('BufWritePost', {
+        command = 'silent make! %',
+        buffer  = buffer,
+        desc    = description,
+    })
+end
+
 filetype({ 'help', 'man' }, function (buffer)
     vim.keymap.set('n', 'J', '3<c-e>',        { buffer = buffer })
     vim.keymap.set('n', 'K', '3<c-y>',        { buffer = buffer })
@@ -18,11 +37,7 @@ end)
 
 filetype('sh', function (buffer)
     vim.cmd('compiler shellcheck')
-    vim.api.nvim_create_autocmd('BufWritePost', {
-        command = 'silent make! %',
-        buffer  = buffer,
-        desc    = 'Keep shellcheck diagnostics up to date',
-    })
+    enable_auto_make(buffer, 'Keep shellcheck diagnostics up to date')
 end)
 
 filetype({ 'c', 'cpp', 'rust', 'kieli' }, function (buffer)
@@ -37,12 +52,17 @@ filetype('gdscript', function (buffer)
     vim.bo[buffer].expandtab = false
 end)
 
+filetype('tex', function (buffer)
+    vim.bo[buffer].makeprg = 'latexmk -pdf $*'
+end)
+
 filetype('qf', function (buffer)
     vim.api.nvim_create_autocmd('WinEnter', {
         command = 'if winnr("$") == 1 | quit | endif',
         buffer  = buffer,
-        desc    = 'Quit if last window',
+        desc    = 'Close dangling quickfix window',
     })
+    vim.keymap.set('n', 'r', vim.diagnostic.setqflist, { buffer = buffer })
     vim.keymap.set('n', 'J', 'j<cr>zz<c-w>p', { buffer = buffer })
     vim.keymap.set('n', 'K', 'k<cr>zz<c-w>p', { buffer = buffer })
     vim.keymap.set('n', 'q', '<cmd>quit<cr>', { buffer = buffer })

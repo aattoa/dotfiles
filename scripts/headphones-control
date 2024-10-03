@@ -1,7 +1,7 @@
 #!/bin/sh
 
-indexfile=${MY_DOTFILES_REPO}/state/headphones-control-index
-mkdir --parents "${MY_DOTFILES_REPO}/state"
+indexfile=${DOTFILES}/state/headphones-control-index
+mkdir --parents "${DOTFILES}/state"
 [ -f "${indexfile}" ] || echo 1 > "${indexfile}"
 
 # $1: Message

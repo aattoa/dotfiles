@@ -3,14 +3,16 @@ vim.g.man_hardwrap       = false              -- Soft-wrap manual pages
 vim.g.netrw_altfile      = 1                  -- Do not count the Netrw browser window as an alternate file
 vim.g.netrw_banner       = 0                  -- Disable the Netrw help banner
 vim.g.netrw_dirhistmax   = 0                  -- Disable Netrw directory history
-vim.g.netrw_list_hide    = '^\\.\\/$'         -- Disable the `./` directory entry
+vim.g.netrw_cursor       = 5                  -- Make Netrw respect cursorline and cursorcolumn
+vim.g.netrw_list_hide    = '^\\.\\+\\/$'      -- Disable directory entries ./ and ../
 vim.g.floatborder        = 'single'           -- Border for all floating windows (not a built in global)
-vim.g.lspautostart       = true               -- Automatically start LSP clients based on filetype (not a built in global)
+vim.g.lspautostart       = true               -- Automatically attach LSP clients to buffers (not a built in global)
+vim.g.autoloadplugins    = true               -- Automatically load plugins (not a built in global)
 vim.opt.modeline         = false              -- Disable unnecessary feature
 vim.opt.mouse            = ''                 -- Disable the mouse
 vim.opt.guicursor        = ''                 -- Disable cursor styling
 vim.opt.signcolumn       = 'no'               -- Disable the sign column
-vim.opt.cursorline       = true               -- Highlight current line
+vim.opt.cursorline       = false              -- Highlight current line
 vim.opt.relativenumber   = true               -- Enable relative line numbers
 vim.opt.number           = true               -- Absolute line number for current line
 vim.opt.smartindent      = true               -- Automatically indent new lines
@@ -52,17 +54,46 @@ vim.opt.shortmess:append('c')
 -- Recursively `:find` in subdirectories
 vim.opt.path:append('**')
 
--- Completion options
+vim.opt.wildoptions = { 'pum', 'fuzzy' }
 vim.opt.completeopt = { 'menuone', 'noselect' }
-
-if vim.version().minor >= 10 then
+if vim.fn.has('nvim-0.10') == 1 then
     vim.opt.completeopt:append('popup')
+end
+if vim.fn.has('nvim-0.11') == 1 then
+    vim.opt.completeopt:append('fuzzy')
 end
 
 vim.diagnostic.config({
     float = {
         border = vim.g.floatborder,
-        header = "",
+        header = '',
     },
     severity_sort = true,
 })
+
+-- Disable regex-based syntax highlighting
+vim.cmd.syntax('off')
+
+-- Disable some cruft
+vim.g.editorconfig = false
+vim.g.loaded_gzip = 1
+vim.g.loaded_tar = 1
+vim.g.loaded_tarPlugin = 1
+vim.g.loaded_zip = 1
+vim.g.loaded_zipPlugin = 1
+vim.g.loaded_2html_plugin = 1
+vim.g.loaded_spellfile_plugin = 1
+vim.g.loaded_tutor_mode_plugin = 1
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_node_provider = 0
+vim.opt.runtimepath:remove('/usr/lib/nvim')
+vim.opt.runtimepath:remove('/etc/xdg/nvim')
+vim.opt.runtimepath:remove('/etc/xdg/nvim/after')
+vim.opt.runtimepath:remove('/usr/share/vim/vimfiles')
+vim.opt.runtimepath:remove('/usr/share/vim/vimfiles/after')
+vim.opt.runtimepath:remove('/usr/share/nvim/site')
+vim.opt.runtimepath:remove('/usr/share/nvim/site/after')
+vim.opt.runtimepath:remove('/usr/local/share/nvim/site')
+vim.opt.runtimepath:remove('/usr/local/share/nvim/site/after')

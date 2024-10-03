@@ -46,17 +46,17 @@ end
 vim.keymap.set('n', '<leader>0', 'g<tab>')
 
 -- Quickfix controls
-vim.keymap.set('n', '<leader>d', cmd('copen') .. '<c-w>p')
-vim.keymap.set('n', '<leader>D', cmd('copen'))
+vim.keymap.set('n', '<leader>d', cmd('copen') .. '<c-w>p' .. cmd('lua vim.diagnostic.setqflist()'))
 vim.keymap.set('n', '<leader>c', cmd('cclose') .. cmd('lclose'))
-vim.keymap.set('n', '<c-j>',     cmd('lnext') .. 'zz')
-vim.keymap.set('n', '<c-k>',     cmd('lprevious') .. 'zz')
+vim.keymap.set('n', '<c-j>',     cmd('cnext') .. 'zz')
+vim.keymap.set('n', '<c-k>',     cmd('cprevious') .. 'zz')
 
 -- Popup-menu controls
 vim.keymap.set({ 'i', 'c' }, '<c-j>', '<c-n>')
 vim.keymap.set({ 'i', 'c' }, '<c-k>', 'pumvisible() ? "<c-p>" : "<c-k>"', { expr = true })
-vim.keymap.set({ 'i', 'c' }, '<c-c>', 'pumvisible() ? "<c-e>" : "<c-c>"', { expr = true })
-vim.keymap.set('i',          '<cr>',  'pumvisible() ? "<c-y>" : "<cr>"',  { expr = true })
+vim.keymap.set('c',          '<c-c>', 'pumvisible() ? "<c-e>" : "<c-c>"', { expr = true })
+vim.keymap.set('i',          '<c-c>', 'pumvisible() ? "<c-e>" : &omnifunc=="" ? "<c-x><c-n>" : "<c-x><c-o>"', { expr = true })
+vim.keymap.set('i',          '<cr>',  'pumvisible() ? "<c-y>" : "<cr>"', { expr = true })
 
 -- Move selected lines up and down
 vim.keymap.set('x', '<c-k>', ':move \'<-2<cr>gv=gv', { silent = true })
@@ -86,6 +86,9 @@ vim.keymap.set('i', '<c-z>', '<c-o>zz')
 vim.keymap.set({ 'n', 'x' }, '{', cmd([[execute 'keepjumps normal! ' . v:count1 . '{zz']]))
 vim.keymap.set({ 'n', 'x' }, '}', cmd([[execute 'keepjumps normal! ' . v:count1 . '}zz']]))
 
+-- Make current file
+vim.keymap.set('n', '<leader>m', cmd('make! %'))
+
 ---@type fun(open: string, close: string): string
 local function surround(open, close)
     return '<esc>`>a' .. close .. '<esc>`<i' .. open .. '<esc>gv' .. string.rep('ol', 2 * open:len())
@@ -98,6 +101,7 @@ vim.keymap.set('x', 's[', surround('[', ']'))
 vim.keymap.set('x', 's<', surround('<', '>'))
 vim.keymap.set('x', 's|', surround('|', '|'))
 vim.keymap.set('x', 's*', surround('*', '*'))
+vim.keymap.set('x', 's$', surround('$', '$'))
 vim.keymap.set('x', 's`', surround('`', '`'))
 vim.keymap.set('x', 's ', surround(' ', ' '))
 vim.keymap.set('x', 's"', surround('"', '"'))
@@ -108,6 +112,14 @@ vim.keymap.set('x', 'sa', surround('assert(', ')'))
 -- Unsurround selected text
 vim.keymap.set('x', 'S', '<esc>`>l"_x`<h"_xgvohoh')
 
+-- Make it easier to hold down `[[` and `]]`
+vim.keymap.set({ 'n', 'x' }, '[]', '<nop>')
+vim.keymap.set({ 'n', 'x' }, '][', '<nop>')
+
+-- Umlauts
+vim.keymap.set({ 'i', 'c' }, '<c-a>', '<c-k>a:')
+vim.keymap.set({ 'i', 'c' }, '<c-o>', '<c-k>o:')
+
 -- Center the cursor after movements
 for _, movement in ipairs({ 'G', 'n', 'N', 'g;', 'g,', '<c-d>', '<c-u>', '<c-o>', '<c-i>' }) do
     vim.keymap.set({ 'n', 'x' }, movement, movement .. 'zz')
@@ -115,7 +127,3 @@ end
 
 -- Center the cursor after searching
 vim.keymap.set('c', '<cr>', 'getcmdtype() =~ "[/?]" ? "<cr>zz" : "<cr>"', { expr = true })
-
--- Snippet controls (expansion and completion keys defined in plugins.snippets)
-vim.keymap.set({ 'i', 's' }, '<c-h>', function () vim.snippet.jump(-1) end)
-vim.keymap.set('s',          '<c-l>', function () vim.snippet.jump(1) end)

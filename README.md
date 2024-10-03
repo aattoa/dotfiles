@@ -4,6 +4,10 @@
 
 - Symlink `~/.bashrc` → `configs/bash/bashrc`.
 
+## editline
+
+- `$EDITRC` should expand to `configs/editline/editrc`
+
 ## feh
 
 - Symlink `$XDG_CONFIG_HOME/feh` → `configs/feh`.
@@ -38,6 +42,11 @@
 - Symlink `$XDG_CONFIG_HOME/newsboat/config` → `configs/newsboat/config`
 - Store the url file at `$XDG_CONFIG_HOME/newsboat/urls`
 
+## ocaml
+
+- Symlink `$XDG_CONFIG_HOME/utop` → `configs/ocaml/utop`
+- Symlink `$XDG_CONFIG_HOME/lambda-term-inputrc` → `configs/ocaml/lambda-term-inputrc`
+
 ## python
 
 - Invoke the repl with `-i configs/python/startup.py`
@@ -46,9 +55,9 @@
 
 - `$INPUTRC` should expand to `configs/readline/inputrc`
 
-## rustfmt
+## rust
 
-- Symlink `$XDG_CONFIG_HOME/rustfmt` → `configs/rustfmt`
+- Symlink `$XDG_CONFIG_HOME/rustfmt` → `configs/rust`
 
 ## shellcheck
 

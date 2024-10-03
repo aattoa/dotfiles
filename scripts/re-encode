@@ -1,0 +1,9 @@
+#!/bin/sh
+
+builtin cd -- "$1"             || exit 1
+[ ! -d "../new-$1" ]           || exit 1
+mkdir --parents -- "../new-$1" || exit 1
+
+for f in *; do
+    ffmpeg -i "${f}" "../new-$1/${f}"
+done

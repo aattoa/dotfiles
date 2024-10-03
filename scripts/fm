@@ -1,3 +1,4 @@
 #!/bin/sh
 
-apropos . | fzf --query="$*" | awk '{print$2" "$1}' | tr --delete "()" | xargs man
+preview="echo {} | awk '{print\$1\$2}' | xargs man | col --spaces --no-backspace"
+apropos . | fzf --query="$*" --preview="${preview}" | awk '{print$1$2}' | xargs man

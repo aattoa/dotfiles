@@ -3,11 +3,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     desc     = 'Briefly highlight yanked text',
 })
 
-vim.api.nvim_create_autocmd('InsertLeave', {
-    callback = function () vim.diagnostic.setqflist({ open = false }) end,
-    desc     = 'Keep the quickflix list up to date'
-})
-
 vim.api.nvim_create_autocmd('QuickFixCmdPost', {
     pattern  = 'make',
     callback = function (event)
@@ -22,17 +17,26 @@ vim.api.nvim_create_autocmd({ 'WinNew', 'VimEnter' }, {
     desc    = 'Define highlight matches for special text markers',
 })
 
-vim.api.nvim_create_autocmd('WinEnter', {
-    command = 'setlocal cursorline',
-    desc    = 'Enable cursorline for the active window',
-})
-
-vim.api.nvim_create_autocmd('WinLeave', {
-    command = 'setlocal nocursorline',
-    desc    = 'Disable cursorline for inactive windows',
-})
-
 vim.api.nvim_create_autocmd('TermOpen', {
     command = 'setlocal nonumber norelativenumber | startinsert',
     desc    = 'Disable line numbers and start in terminal mode',
 })
+
+vim.api.nvim_create_autocmd('VimEnter', {
+    callback = function ()
+        vim.api.nvim_del_augroup_by_name('Network')
+    end,
+    once = true,
+    desc = 'Remove unnecessary autocommands',
+})
+
+if vim.o.cursorline then
+    vim.api.nvim_create_autocmd('WinEnter', {
+        command = 'setlocal cursorline',
+        desc    = 'Enable cursorline for the active window',
+    })
+    vim.api.nvim_create_autocmd('WinLeave', {
+        command = 'setlocal nocursorline',
+        desc    = 'Disable cursorline for inactive windows',
+    })
+end
