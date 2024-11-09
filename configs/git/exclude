@@ -1,4 +1,9 @@
 *.pdf
+*.out
+.env
+.venv
 .cache
+__pycache__
+vgcore.*
 Session.vim
 compile_commands.json

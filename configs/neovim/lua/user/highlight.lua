@@ -8,7 +8,6 @@ local map = {
     SnippetTabStop              = { italic = true },
     Constant                    = { link = 'String' },
     StatusLine                  = { link = 'StatusLineNC' },
-    ['@keyword.modifier.cpp']   = { link = '@type.builtin' },
     ['@markup.link']            = { link = 'Constant' },
 }
 

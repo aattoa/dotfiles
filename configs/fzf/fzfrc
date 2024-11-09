@@ -3,20 +3,21 @@
 --scroll-off=10
 --color=gutter:-1
 --no-separator
---walker-skip=.cache,.git,.godot
+--walker-skip=.git,.cache,.pytest_cache,__pycache__,.venv,node_modules,.godot
 --keep-right
 --tiebreak=begin,length
 --preview='file-preview {}'
 --preview-window=hidden,border-left,60%
+--bind=change:first
 --bind=ctrl-a:toggle-preview
 --bind=ctrl-r:change-preview-window\(down,border-top,50%\|right,60%\)
 --bind=ctrl-w:forward-word
 --bind=ctrl-b:backward-word
---bind=ctrl-l:forward-char
---bind=ctrl-h:backward-char
 --bind=ctrl-g:first
 --bind=ctrl-u:half-page-up
 --bind=ctrl-d:half-page-down
 --bind=ctrl-p:preview-half-page-up
 --bind=ctrl-n:preview-half-page-down
+--bind=ctrl-l:preview-down
+--bind=ctrl-h:preview-up
 --bind=ctrl-c:cancel

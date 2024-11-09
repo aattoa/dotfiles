@@ -6,9 +6,6 @@ end
 -- Leader by itself does nothing
 vim.keymap.set({ 'n', 'x' }, '<leader>', '<nop>')
 
--- Toggle search case sensitivity
-vim.keymap.set('n', '<leader>i', cmd('set ignorecase!'))
-
 -- Toggle line number visibility
 vim.keymap.set('n', '<leader>n', cmd('set number!') .. cmd('set relativenumber!'))
 
@@ -17,9 +14,6 @@ vim.keymap.set('n', '<leader>u', cmd([[call system('handle-urls', bufnr())]]))
 
 -- Open a terminal buffer in a new tab
 vim.keymap.set('n', '<leader>t', cmd('tab terminal'))
-
--- Easier normal mode from terminal mode
-vim.keymap.set('t', '<esc><esc>', '<c-\\><c-n>')
 
 -- Clear current search highlight
 vim.keymap.set('n', '<esc>', cmd('nohlsearch'))
@@ -31,6 +25,10 @@ vim.keymap.set('n', 'M', '<c-^>')
 vim.keymap.set('n', '<leader>e',     cmd('Explore'))
 vim.keymap.set('n', '<leader>E',     cmd('Vexplore'))
 vim.keymap.set('n', '<leader><c-e>', cmd('Texplore'))
+
+-- Buffer controls
+vim.keymap.set('n', '<c-f>', cmd('bnext'))
+vim.keymap.set('n', '<c-b>', cmd('bprevious'))
 
 -- Tab controls
 vim.keymap.set('n', '<c-t>', cmd('tabnew'))
@@ -62,12 +60,6 @@ vim.keymap.set('i',          '<cr>',  'pumvisible() ? "<c-y>" : "<cr>"', { expr 
 vim.keymap.set('x', '<c-k>', ':move \'<-2<cr>gv=gv', { silent = true })
 vim.keymap.set('x', '<c-j>', ':move \'>+1<cr>gv=gv', { silent = true })
 
--- Resize windows
-vim.keymap.set('n', '(', cmd('horizontal resize -1'))
-vim.keymap.set('n', ')', cmd('horizontal resize +1'))
-vim.keymap.set('n', '<', cmd('vertical resize -2'))
-vim.keymap.set('n', '>', cmd('vertical resize +2'))
-
 -- Stay in visual mode on indent/dedent
 vim.keymap.set('x', '<', '<gv')
 vim.keymap.set('x', '>', '>gv')
@@ -86,7 +78,10 @@ vim.keymap.set('i', '<c-z>', '<c-o>zz')
 vim.keymap.set({ 'n', 'x' }, '{', cmd([[execute 'keepjumps normal! ' . v:count1 . '{zz']]))
 vim.keymap.set({ 'n', 'x' }, '}', cmd([[execute 'keepjumps normal! ' . v:count1 . '}zz']]))
 
--- Make current file
+-- Yank file to system clipboard
+vim.keymap.set('n', '<leader>y', [[m'gg"+yG''zz]])
+
+-- Make file
 vim.keymap.set('n', '<leader>m', cmd('make! %'))
 
 ---@type fun(open: string, close: string): string
@@ -102,6 +97,7 @@ vim.keymap.set('x', 's<', surround('<', '>'))
 vim.keymap.set('x', 's|', surround('|', '|'))
 vim.keymap.set('x', 's*', surround('*', '*'))
 vim.keymap.set('x', 's$', surround('$', '$'))
+vim.keymap.set('x', 's-', surround('-', '-'))
 vim.keymap.set('x', 's`', surround('`', '`'))
 vim.keymap.set('x', 's ', surround(' ', ' '))
 vim.keymap.set('x', 's"', surround('"', '"'))
@@ -127,3 +123,21 @@ end
 
 -- Center the cursor after searching
 vim.keymap.set('c', '<cr>', 'getcmdtype() =~ "[/?]" ? "<cr>zz" : "<cr>"', { expr = true })
+
+local window_mode = false
+vim.keymap.set('n', 'X', function ()
+    window_mode = not window_mode
+    if window_mode then
+        vim.notify('Window mode')
+        vim.keymap.set('n', 'h', cmd('vertical resize -2'))
+        vim.keymap.set('n', 'l', cmd('vertical resize +2'))
+        vim.keymap.set('n', 'j', cmd('horizontal resize -1'))
+        vim.keymap.set('n', 'k', cmd('horizontal resize +1'))
+    else
+        vim.notify('Normal mode')
+        vim.keymap.del('n', 'h')
+        vim.keymap.del('n', 'l')
+        vim.keymap.del('n', 'j')
+        vim.keymap.del('n', 'k')
+    end
+end)

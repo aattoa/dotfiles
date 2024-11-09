@@ -1,0 +1,2 @@
+[cargo-new]
+vcs = "none" # Do not automatically create git repos

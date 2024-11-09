@@ -6,8 +6,6 @@ vim.g.netrw_dirhistmax   = 0                  -- Disable Netrw directory history
 vim.g.netrw_cursor       = 5                  -- Make Netrw respect cursorline and cursorcolumn
 vim.g.netrw_list_hide    = '^\\.\\+\\/$'      -- Disable directory entries ./ and ../
 vim.g.floatborder        = 'single'           -- Border for all floating windows (not a built in global)
-vim.g.lspautostart       = true               -- Automatically attach LSP clients to buffers (not a built in global)
-vim.g.autoloadplugins    = true               -- Automatically load plugins (not a built in global)
 vim.opt.modeline         = false              -- Disable unnecessary feature
 vim.opt.mouse            = ''                 -- Disable the mouse
 vim.opt.guicursor        = ''                 -- Disable cursor styling
@@ -17,6 +15,7 @@ vim.opt.relativenumber   = true               -- Enable relative line numbers
 vim.opt.number           = true               -- Absolute line number for current line
 vim.opt.smartindent      = true               -- Automatically indent new lines
 vim.opt.ignorecase       = true               -- Enable case insensitive search
+vim.opt.smartcase        = true               -- Case sensitive search when not all lowercase
 vim.opt.hlsearch         = true               -- Highlight search matches
 vim.opt.incsearch        = true               -- Interactive search highlight
 vim.opt.updatetime       = 200                -- Faster CursorHold events
@@ -41,6 +40,7 @@ vim.opt.showmode         = false              -- Do not show current mode
 vim.opt.wrap             = false              -- Do not wrap long lines
 vim.opt.wrapscan         = false              -- Do not wrap searches around the end of file
 vim.opt.linebreak        = true               -- Do not split words when wrapping long lines (for documentation windows)
+vim.opt.cinoptions       = ':0'               -- Do not further indent case labels
 
 -- Jump between matching angle brackets with %
 vim.opt.matchpairs:append('<:>')
@@ -54,6 +54,7 @@ vim.opt.shortmess:append('c')
 -- Recursively `:find` in subdirectories
 vim.opt.path:append('**')
 
+-- Completion settings
 vim.opt.wildoptions = { 'pum', 'fuzzy' }
 vim.opt.completeopt = { 'menuone', 'noselect' }
 if vim.fn.has('nvim-0.10') == 1 then
@@ -67,6 +68,7 @@ vim.diagnostic.config({
     float = {
         border = vim.g.floatborder,
         header = '',
+        source = true,
     },
     severity_sort = true,
 })

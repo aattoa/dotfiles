@@ -18,7 +18,7 @@ vim.api.nvim_create_autocmd({ 'WinNew', 'VimEnter' }, {
 })
 
 vim.api.nvim_create_autocmd('TermOpen', {
-    command = 'setlocal nonumber norelativenumber | startinsert',
+    command = 'setlocal nonumber norelativenumber scrolloff=0 | startinsert',
     desc    = 'Disable line numbers and start in terminal mode',
 })
 

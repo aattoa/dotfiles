@@ -8,21 +8,17 @@ struct std::formatter<$2> {
     }
 };]]
 
-local cmake_fetch = [[FetchContent_Declare(${1:library}
-    GIT_REPOSITORY https://github.com/$2/$1.git
-    GIT_TAG        ${3:tag})
-FetchContent_MakeAvailable($1)]]
-
 return {
     all = {
         date = function () return os.date('%F') end,
         time = function () return os.date('%T') end,
     },
     haskell = {
-        fn = '${1:name} :: ${2:type}\n$1 $3 = ${4:undefined}',
+        fn = '${1:name} :: ${2:type}\n$1 $0',
+        lang = '{-# LANGUAGE $0 #-}',
     },
     python = {
-        main = 'def ${1:main}():\n\t$0\n\nif __name__ == "__main__":\n\t$1()',
+        main = 'if __name__ == "__main__":\n\t$0',
     },
     lua = {
         inspect = 'vim.notify(vim.inspect($0))',
@@ -31,6 +27,9 @@ return {
         derive = '#[derive(${1:Debug})]',
         tests  = '#[cfg(test)]\nmod tests {\n\tuse super::*;\n\n\t$0\n}',
         test   = '#[test]\nfn ${1:test-name}() {\n\t$0\n}',
+    },
+    c = {
+        guard = '#ifndef $1\n#define $1\n\n$0\n\n#endif // $1',
     },
     cpp = {
         fmt     = cpp_formatter,
@@ -45,16 +44,19 @@ return {
         v       = 'std::views::',
         c       = 'std::chrono::',
         f       = 'std::filesystem::',
-        tod     = 'cpputil::todo()',
+        tod     = 'cpputil::todo();',
     },
     cmake = {
         ['for'] = 'foreach ($1)\n\t$0\nendforeach ()',
         ['if']  = 'if (${1:condition})\n\t$0\nendif ()',
         fn      = 'function (${1:function-name})\n\t$0\nendfunction ()',
-        fetch   = cmake_fetch,
     },
     gdscript = {
         fn = 'func ${1:function-name}($2) -> $3:\n\t${4:pass}',
+    },
+    javascript = {
+        tag = '<$1>$0</$1>',
+        log = 'console.log($0)',
     },
     sh = {
         ['if'] = 'if $1; then\n\t$0\nfi',

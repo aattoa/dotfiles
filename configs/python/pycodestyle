@@ -1,0 +1,4 @@
+[pycodestyle]
+count = False
+ignore = E201,E202,E231,E261,E302,E303,E305,E306
+max-line-length = 120

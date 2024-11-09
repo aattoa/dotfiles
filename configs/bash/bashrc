@@ -13,6 +13,7 @@ PS2='> ' # Continuation prompt
 alias cp='cp --verbose --interactive'
 alias mv='mv --verbose --interactive'
 alias rm='rm --verbose --interactive=once'
+alias ln='ln --verbose'
 alias rg='rg --smart-case'
 alias bc='bc --quiet --standard'
 alias pwd='pwd -P'
@@ -25,9 +26,10 @@ alias vi='nvim'
 alias vis='nvim -S'
 alias md='mkdir --verbose --parents'
 alias rd='rmdir --verbose'
-alias py='python -i "${DOTFILES}/configs/python/startup.py"'
+alias py='python'
 alias ns='newsboat'
 alias jr='journalctl --pager-end'
+alias dune='opam exec -- dune'
 alias calendar='cal --monday $(date +%Y)'
 alias netwatch='watch --interval 0.5 netstat --inet --all --program'
 alias memcheck='valgrind --track-origins=yes --leak-check=full --show-leak-kinds=all --show-error-list=yes'
@@ -73,6 +75,8 @@ export RUSTUP_HOME=${XDG_DATA_HOME}/rustup
 export OPAMROOT=${XDG_DATA_HOME}/opam
 export GHCUP_INSTALL_BASE_PREFIX=${XDG_DATA_HOME}
 export GHCUP_USE_XDG_DIRS=yes
+export PYTHONSTARTUP=${DOTFILES}/configs/python/startup.py
+export NODE_REPL_HISTORY=${XDG_DATA_HOME}/node_repl_history
 export CUDA_CACHE_PATH=${XDG_CACHE_HOME}/nv
 export XINITRC=${DOTFILES}/configs/x/xinitrc
 export INPUTRC=${DOTFILES}/configs/readline/inputrc
@@ -80,6 +84,11 @@ export EDITRC=${DOTFILES}/configs/editline/editrc
 
 GPG_TTY=$(tty)
 export GPG_TTY
+
+md-view () {
+    out=/tmp/md-view-output.pdf
+    pandoc --output="${out}" -- "$1" && zathura -- "${out}"
+}
 
 # Make and change directory (mkdir + cd)
 mc () {

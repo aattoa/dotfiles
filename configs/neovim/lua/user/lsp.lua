@@ -26,7 +26,7 @@ local function create_mappings(_, buffer)
     vim.keymap.set('n', '<leader>lw', vim.lsp.buf.format,          { buffer = buffer })
     vim.keymap.set('n', 'K',          vim.lsp.buf.hover,           { buffer = buffer })
 
-    vim.keymap.set({ 'n', 's', 'i' }, '<c-space>',  vim.lsp.buf.signature_help,  { buffer = buffer })
+    vim.keymap.set({ 'n', 's', 'i' }, '<c-space>', vim.lsp.buf.signature_help, { buffer = buffer })
 end
 
 ---@type fun(client: vim.lsp.Client, buffer: integer): nil
@@ -52,19 +52,15 @@ end
 
 ---@type fun(client: vim.lsp.Client, buffer: integer): nil
 local function enable_format_on_write(client, buffer)
-    local ft = vim.bo[buffer].filetype
-    if ft ~= 'cpp' and ft ~= 'rust' then
-        return -- Do not format languages other than C++ and Rust.
-    elseif ft == 'cpp' and not has_clang_format_file() then
-        return -- Do not format C++ files when there is no clang-format file.
+    if vim.list_contains({ 'cpp', 'rust', 'ocaml' }, vim.bo[buffer].filetype) and (client.name ~= 'clangd' or has_clang_format_file()) then
+        vim.api.nvim_create_autocmd('BufWritePre', {
+            callback = function ()
+                vim.lsp.buf.format({ id = client.id, bufnr = buffer })
+            end,
+            buffer = buffer,
+            desc   = 'Format with ' .. client.name .. ' before saving',
+        })
     end
-    vim.api.nvim_create_autocmd('BufWritePre', {
-        callback = function ()
-            vim.lsp.buf.format({ id = client.id, bufnr = buffer })
-        end,
-        buffer = buffer,
-        desc   = 'Format with ' .. client.name .. ' before saving',
-    })
 end
 
 local capabilities = vim.tbl_deep_extend('force', vim.lsp.protocol.make_client_capabilities(), {
@@ -123,15 +119,22 @@ end
 
 local function lsp_list_clients()
     vim.notify('LSP clients:\n' .. vim.iter(vim.lsp.get_clients()):map(function (client)
-        return string.format('- %s running with root directory %s', client.name, client.root_dir)
+        return ('- %s running with root directory %s'):format(client.name, client.root_dir)
     end):join('\n'))
 end
 
+local function lsp_disable()
+    lsp_autostart_disable()
+    lsp_stop_clients()
+end
+
 local lsp_commands = {
+    ['']            = lsp_list_clients,
     listClients     = lsp_list_clients,
     stopClients     = lsp_stop_clients,
     stopAutoAttach  = lsp_autostart_disable,
     startAutoAttach = lsp_autostart_enable,
+    disable         = lsp_disable,
 }
 
 vim.api.nvim_create_user_command('Lsp', function (args)
@@ -145,6 +148,6 @@ end, {
     end,
 })
 
-if vim.g.lspautostart then
-    lsp_autostart_enable()
-end
+vim.keymap.set('n', '<leader>ll', lsp_list_clients)
+
+lsp_autostart_enable()

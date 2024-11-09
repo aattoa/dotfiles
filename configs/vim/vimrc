@@ -1,11 +1,12 @@
 set nocompatible                    " Disable vi compatibility. Keep at the top.
 set background=dark                 " Dark mode
 set encoding=utf-8                  " Unicode
-set ttimeout                        " Insert mode escape sequence timeout
-set ttimeoutlen=100                 " Short insert mode escape sequence timeout
+set ttimeout                        " Enable escape sequence timeout
+set ttimeoutlen=10                  " Shorter escape sequence timeout
 set hlsearch                        " Highlight search matches
 set incsearch                       " Interactive search highlight
 set ignorecase                      " Enable case insensitive search
+set smartcase                       " Case sensitive search when not all lowercase
 set relativenumber                  " Enable relative line numbers
 set number                          " Absolute line number for current line
 set smartindent                     " Automatically indent new lines
@@ -112,12 +113,6 @@ inoremap <expr> <cr>  pumvisible() ? "<c-y>" : "<cr>"
 xnoremap <silent> <c-k> :move '<-2<cr>gv=gv
 xnoremap <silent> <c-j> :move '>+1<cr>gv=gv
 
-" Resize windows
-nnoremap ( <cmd>horizontal resize -1<cr>
-nnoremap ) <cmd>horizontal resize +1<cr>
-nnoremap < <cmd>vertical resize -2<cr>
-nnoremap > <cmd>vertical resize +2<cr>
-
 " Stay in visual mode on indent/dedent
 xnoremap < <gv
 xnoremap > >gv
@@ -191,3 +186,23 @@ autocmd FileType help,man call s:ApplyHelpBufferOptions()
 autocmd FileType gitcommit setlocal colorcolumn=50
 autocmd TerminalOpen * setlocal nonumber norelativenumber
 autocmd InsertCharPre * call s:OfferCompletions()
+
+let g:window_mode = v:false
+function g:ToggleWindowMode()
+    let g:window_mode = !g:window_mode
+    if g:window_mode
+        echo "Window mode"
+        nnoremap h <cmd>vertical resize -2<cr>
+        nnoremap l <cmd>vertical resize +2<cr>
+        nnoremap j <cmd>horizontal resize -1<cr>
+        nnoremap k <cmd>horizontal resize +1<cr>
+    else
+        echo "Normal mode"
+        nunmap h
+        nunmap l
+        nunmap j
+        nunmap k
+    endif
+endfunction
+
+nnoremap X <cmd>call g:ToggleWindowMode()<cr>

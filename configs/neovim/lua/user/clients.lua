@@ -13,14 +13,8 @@ return {
         root = { 'build.kieli' },
     },
 
-    cpp = {
-        command = {
-            'clangd',
-            '--clang-tidy',                -- Enable clang-tidy checks
-            '--completion-style=detailed', -- Provide individual completion entries for overloads
-            '--header-insertion=never',    -- Do not automatically insert #include directives
-            '--log=error',                 -- Less verbose logging
-        },
+    clangd = {
+        command = { 'clangd', '--clang-tidy', '--completion-style=detailed', '--header-insertion=never', '--log=error' },
         filetypes = { 'c', 'cpp' },
         root = { '.clangd', 'compile_commands.json' },
     },
@@ -48,13 +42,6 @@ return {
 
     haskell = {
         command = { 'haskell-language-server-wrapper', '--lsp' },
-        settings = {
-            haskell = {
-                plugin = {
-                    stan = { globalOn = false }, -- stan mostly just gets in the way.
-                },
-            },
-        },
         filetypes = { 'haskell' },
         root = { 'cabal.project', 'dist-newstyle' },
     },

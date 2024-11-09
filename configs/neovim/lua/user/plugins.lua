@@ -43,19 +43,22 @@ plug('aattoa', 'nvim-simple-snippets', 'VimEnter', function ()
 end)
 
 plug('aattoa', 'nvim-cmdfloat', 'VimEnter', function ()
-    require('cmdfloat').default_options = {
-        on_buffer = function (buffer)
-            vim.keymap.set('i', '<cr>', '<cr>', { buffer = buffer })
-        end,
-        on_window = function (window)
-            vim.fn.clearmatches(window)
-            vim.wo[window].sidescrolloff = 10
-        end,
-        border = vim.g.floatborder,
-        completeopt = { 'menu' },
-    }
-    vim.keymap.set({ 'n', 'x' }, ':', require('cmdfloat').open, { desc = 'nvim-cmdfloat' })
-    vim.keymap.set({ 'n', 'x' }, '<leader>:', ':', { desc = 'Backup native command line' })
+    require('cmdfloat').setup({
+        default_options = {
+            on_buffer = function (buffer)
+                -- Don't use <cr> to accept completions
+                vim.keymap.set('i', '<cr>', '<cr>', { buffer = buffer })
+            end,
+            on_window = function (window)
+                vim.fn.clearmatches(window)
+                vim.wo[window].sidescrolloff = 10
+            end,
+            -- border = vim.g.floatborder,
+            completeopt = { 'menu' },
+        },
+        map_open = ':',
+        map_backup = '<leader>:',
+    })
 end)
 
 plug('nvim-treesitter', 'nvim-treesitter-textobjects', 'VimEnter', function ()
@@ -133,18 +136,16 @@ local function load_plugin(name)
     end
 end
 
-if vim.g.autoloadplugins then
-    for name, plugin in pairs(plugins) do
-        vim.api.nvim_create_autocmd(plugin.event, {
-            callback = function ()
-                vim.schedule(function ()
-                    load_plugin(name)
-                end)
-            end,
-            once = true,
-            desc = 'Load plugin: ' .. name,
-        })
-    end
+for name, plugin in pairs(plugins) do
+    vim.api.nvim_create_autocmd(plugin.event, {
+        callback = function ()
+            vim.schedule(function ()
+                load_plugin(name)
+            end)
+        end,
+        once = true,
+        desc = 'Load plugin: ' .. name,
+    })
 end
 
 local function list_plugins()

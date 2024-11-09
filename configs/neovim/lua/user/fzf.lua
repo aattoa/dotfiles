@@ -15,17 +15,7 @@ local previous_fzf_options
 
 ---@type fun(options: FzfOptions): vim.api.keyset.win_config
 local function fzf_window_config(options)
-    local scale  = options.fullscreen and 1 or options.scale or 0.75
-    local width  = vim.o.columns
-    local height = vim.o.lines - (options.fullscreen and (vim.o.cmdheight + 3) or 0)
-    return {
-        relative = 'editor',
-        width    = math.floor(width  * scale),
-        height   = math.floor(height * scale),
-        col      = math.floor(width  * (1 - scale) / 2),
-        row      = math.floor(height * (1 - scale) / 2),
-        border   = vim.g.floatborder,
-    }
+    return require('user.scratch').window_config(options.fullscreen, options.scale)
 end
 
 ---@type fun(buffer: integer, options: FzfOptions): integer
@@ -193,6 +183,15 @@ local function fzf_manpages()
     })
 end
 
+local function fzf_hoogle()
+    run_fzf({
+        command   = 'true',
+        prompt    = 'Hoogle',
+        fzfargs   = '--preview= --ansi --disabled --bind=change:reload:"hoogle --count=500 {q}"',
+        on_result = function () end,
+    })
+end
+
 local function fzf_resume()
     if previous_fzf_options then
         run_fzf(previous_fzf_options)
@@ -210,10 +209,11 @@ vim.keymap.set('n', '<leader>f',    fzf_files(files))
 vim.keymap.set('n', '<leader>F',    fzf_files(allfiles, 'All'))
 vim.keymap.set('n', '<leader>g',    fzf_files(gitfiles, 'Git'))
 vim.keymap.set('n', '<leader>o',    fzf_files(oldfiles, 'History'))
-vim.keymap.set('n', '<leader>sh',   fzf_files(allfiles, 'Home', vim.env.HOME))
+vim.keymap.set('n', '<leader>sa',   fzf_files(allfiles, 'Home', vim.env.HOME))
 vim.keymap.set('n', '<leader>sd',   fzf_files(files,    'Dotfiles', vim.env.DOTFILES))
 vim.keymap.set('n', '<leader>sD',   fzf_grep('Dotfiles', vim.env.DOTFILES))
 vim.keymap.set('n', '<leader>sm',   fzf_manpages)
+vim.keymap.set('n', '<leader>sh',   fzf_hoogle)
 vim.keymap.set('n', '<leader>r',    fzf_grep('Grep'))
 vim.keymap.set('n', '<leader>?',    fzf_help_tags)
 vim.keymap.set('n', '<leader>/',    fzf_buffer_lines)
