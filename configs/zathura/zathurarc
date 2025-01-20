@@ -11,7 +11,3 @@ map d scroll half-down
 # Easier zoom
 map <C-k> zoom in
 map <C-j> zoom out
-
-# <C-r> to switch between light and dark theme
-set recolor-lightcolor "#1a1b26"
-set recolor-darkcolor "#c0caf5"

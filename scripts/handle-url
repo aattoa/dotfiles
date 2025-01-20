@@ -4,7 +4,7 @@
 notify () { command notify "handle-url" "$1"; }
 
 strategies () {
-    echo "browser clipboard ytdl ytdl-audio mpv mpv-audio dl-view wget" | tr ' ' '\n'
+    echo "clipboard browser ytdl ytdl-audio mpv mpv-audio dl-view wget" | tr ' ' '\n'
 }
 
 # $1: URL

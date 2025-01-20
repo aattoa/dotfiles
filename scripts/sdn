@@ -1,3 +1,8 @@
 #!/bin/sh
 
-shutdown now
+if grep --quiet '^ID=debian$' /etc/os-release; then
+    # Add line to /etc/sudoers: '[username] ALL=NOPASSWD: /sbin/poweroff, /sbin/reboot'
+    sudo --non-interactive /sbin/poweroff
+else
+    shutdown now
+fi

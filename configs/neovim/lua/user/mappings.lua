@@ -43,11 +43,14 @@ for i = 1, 9 do
 end
 vim.keymap.set('n', '<leader>0', 'g<tab>')
 
+-- Toggle diagnostics
+vim.keymap.set('n', '<leader>dd', function () vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end)
+
 -- Quickfix controls
-vim.keymap.set('n', '<leader>d', cmd('copen') .. '<c-w>p' .. cmd('lua vim.diagnostic.setqflist()'))
-vim.keymap.set('n', '<leader>c', cmd('cclose') .. cmd('lclose'))
-vim.keymap.set('n', '<c-j>',     cmd('cnext') .. 'zz')
-vim.keymap.set('n', '<c-k>',     cmd('cprevious') .. 'zz')
+vim.keymap.set('n', '<leader>do', cmd('copen') .. '<c-w>p' .. cmd('lua vim.diagnostic.setqflist()'))
+vim.keymap.set('n', '<leader>c',  cmd('cclose') .. cmd('lclose'))
+vim.keymap.set('n', '<c-j>',      cmd('cnext') .. 'zz')
+vim.keymap.set('n', '<c-k>',      cmd('cprevious') .. 'zz')
 
 -- Popup-menu controls
 vim.keymap.set({ 'i', 'c' }, '<c-j>', '<c-n>')
@@ -63,6 +66,10 @@ vim.keymap.set('x', '<c-j>', ':move \'>+1<cr>gv=gv', { silent = true })
 -- Stay in visual mode on indent/dedent
 vim.keymap.set('x', '<', '<gv')
 vim.keymap.set('x', '>', '>gv')
+
+-- Stay in visual mode on add/subtract
+vim.keymap.set('x', '<c-a>', '<c-a>gv')
+vim.keymap.set('x', '<c-x>', '<c-x>gv')
 
 -- Write and quit
 vim.keymap.set('n', '<leader>w', cmd('write'))

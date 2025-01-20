@@ -1,0 +1,3 @@
+#!/bin/sh
+
+true | fzf --preview= --ansi --disabled --bind=change:reload:"hoogle --count=500 {q}"

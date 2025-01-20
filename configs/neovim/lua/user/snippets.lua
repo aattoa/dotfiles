@@ -12,6 +12,7 @@ return {
     all = {
         date = function () return os.date('%F') end,
         time = function () return os.date('%T') end,
+        tag = '<$1>$0</$1>',
     },
     haskell = {
         fn = '${1:name} :: ${2:type}\n$1 $0',
@@ -37,6 +38,7 @@ return {
         lam     = '[$1]($2)\n\tnoexcept(noexcept($3)) -> decltype($3)\n{\n\treturn $3;\n}',
         arm     = 'auto operator()($1) {\n\t$0\n}',
         fn      = 'auto ${1:function-name}($2) -> ${3:return-type} {\n\t$0\n}',
+        ns      = 'namespace $1 {\n\t$0\n} // namespace $1',
         fwd     = 'std::forward<decltype($1)>($1)',
         mv      = 'std::move($1)',
         to      = 'std::ranges::to<${1:std::vector}>()',
@@ -55,7 +57,6 @@ return {
         fn = 'func ${1:function-name}($2) -> $3:\n\t${4:pass}',
     },
     javascript = {
-        tag = '<$1>$0</$1>',
         log = 'console.log($0)',
     },
     sh = {

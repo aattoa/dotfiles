@@ -1,11 +1,12 @@
 #!/bin/sh
 
-indexfile=${DOTFILES}/state/headphones-control-index
-mkdir --parents "${DOTFILES}/state"
-[ -f "${indexfile}" ] || echo 1 > "${indexfile}"
-
 # $1: Message
 error () { notify "headphones-control" "Error: $1"; exit 1; }
+
+[ -n "${XDG_STATE_HOME}" ] || error "XDG_STATE_HOME is undefined"
+indexfile=${XDG_STATE_HOME}/dotfiles/headphones-control-index
+mkdir --parents "${XDG_STATE_HOME}/dotfiles"
+[ -f "${indexfile}" ] || echo 1 > "${indexfile}"
 
 # $1: Device address
 # stdout: "connect" | "disconnect"

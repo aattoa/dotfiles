@@ -1,7 +1,6 @@
 vim.filetype.add({
     extension = {
         h = 'c',
-        jsx = 'javascript',
         tex = 'tex',
         kieli = 'kieli',
     },
@@ -37,28 +36,46 @@ filetype('sh', function (buffer)
     })
 end)
 
-filetype({ 'c', 'cpp', 'rust', 'kieli' }, function (buffer)
-    vim.bo[buffer].commentstring = '// %s'
+filetype({ 'c', 'cpp', 'rust', 'kieli' }, function ()
+    vim.bo.commentstring = '// %s'
 end)
 
-filetype('cpp', function (buffer)
-    vim.b[buffer].scratchcmd = { 'run-tests', 'out/debug' }
+filetype('ocaml', function ()
+    vim.bo.commentstring = '(* %s *)'
+    vim.keymap.set('ia', '//', '(* *)<left><left><left>')
+end)
+
+filetype('asm', function ()
+    vim.bo.commentstring = '# %s'
+end)
+
+filetype('cpp', function ()
+    vim.b.scratchcmd = { 'run-tests', 'out/debug' }
+end)
+
+filetype({ 'rust', 'ocaml' }, function ()
+    vim.b.scratchcmd = { 'run-tests' }
 end)
 
 filetype('python', function (buffer)
-    vim.b[buffer].scratchcmd = { 'python', vim.fn.expand('#' .. buffer .. '%') }
+    vim.b.scratchcmd = { 'python', vim.fn.expand('#' .. buffer .. '%') }
 end)
 
-filetype('javascript', function (buffer)
-    vim.bo[buffer].omnifunc = ''
+filetype({ 'haskell', 'ocaml' }, function ()
+    vim.bo.tabstop = 2
+    vim.cmd('setlocal matchpairs-=<:>')
 end)
 
-filetype({ 'haskell', 'ocaml', 'javascript' }, function (buffer)
-    vim.bo[buffer].tabstop = 2
+filetype('gdscript', function ()
+    vim.bo.expandtab = false
 end)
 
-filetype('gdscript', function (buffer)
-    vim.bo[buffer].expandtab = false
+filetype('javascriptreact', function (buffer)
+    vim.treesitter.start(buffer, 'javascript')
+end)
+
+filetype('typescriptreact', function (buffer)
+    vim.treesitter.start(buffer, 'typescript')
 end)
 
 filetype('tex', function (buffer)
@@ -67,6 +84,10 @@ filetype('tex', function (buffer)
     vim.keymap.set('n', 'k', 'gk', { buffer = buffer })
     vim.keymap.set('n', '0', 'g0', { buffer = buffer })
     vim.keymap.set('n', '$', 'g$', { buffer = buffer })
+end)
+
+filetype('markdown', function (buffer)
+    vim.keymap.set('n', '<leader><leader>', '<cmd>silent !md-view %<cr>', { buffer = buffer })
 end)
 
 filetype('query', function (buffer)

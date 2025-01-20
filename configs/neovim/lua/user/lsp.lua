@@ -63,6 +63,16 @@ local function enable_format_on_write(client, buffer)
     end
 end
 
+vim.api.nvim_create_autocmd('LspAttach', {
+    callback = function (event)
+        local client = assert(vim.lsp.get_client_by_id(event.data.client_id))
+        create_mappings(client, event.buf)
+        enable_format_on_write(client, event.buf)
+        enable_highlight_cursor_references(client, event.buf)
+    end,
+    desc = 'LSP-specific configuration',
+})
+
 local capabilities = vim.tbl_deep_extend('force', vim.lsp.protocol.make_client_capabilities(), {
     textDocument = { completion = { completionItem = { snippetSupport = true } } },
 })
@@ -76,15 +86,8 @@ local function lsp_start(name, config, path)
         cmd_cwd      = root,
         root_dir     = root,
         settings     = config.settings,
+        on_attach    = config.on_attach,
         capabilities = capabilities,
-        on_attach    = function (client, buffer)
-            create_mappings(client, buffer)
-            enable_format_on_write(client, buffer)
-            enable_highlight_cursor_references(client, buffer)
-            if config.on_attach then
-                config.on_attach(client, buffer)
-            end
-        end,
     })
 end
 

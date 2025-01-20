@@ -8,9 +8,15 @@
 ---@type table<string, ClientConfig>
 return {
     kieli = {
-        command = { 'kieli-language-server', '--debug' },
+        command = { 'kieli-language-server' },
         filetypes = { 'kieli' },
         root = { 'build.kieli' },
+    },
+
+    shell = {
+        command = { 'shell-language-server' },
+        filetypes = { 'sh' },
+        root = {},
     },
 
     clangd = {
@@ -79,6 +85,12 @@ return {
         },
         filetypes = { 'python' },
         root = {},
+    },
+
+    tsserver = {
+        command = { 'typescript-language-server', '--stdio' },
+        filetypes = { 'javascript', 'typescript', 'javascriptreact', 'typescriptreact' },
+        root = { 'package.json', 'tsconfig.json' },
     },
 
     godot = {

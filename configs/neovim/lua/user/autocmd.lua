@@ -13,12 +13,12 @@ vim.api.nvim_create_autocmd('QuickFixCmdPost', {
 })
 
 vim.api.nvim_create_autocmd({ 'WinNew', 'VimEnter' }, {
-    command = [[call matchadd('Todo', '\ctodo\|\cfixme\|\cnocommit')]],
+    command = [[call matchadd('Todo', 'TODO\|FIXME\|NOCOMMIT')]],
     desc    = 'Define highlight matches for special text markers',
 })
 
 vim.api.nvim_create_autocmd('TermOpen', {
-    command = 'setlocal nonumber norelativenumber scrolloff=0 | startinsert',
+    command = 'setlocal nonumber norelativenumber scrolloff=0 sidescrolloff=0 | startinsert',
     desc    = 'Disable line numbers and start in terminal mode',
 })
 

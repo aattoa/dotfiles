@@ -4,6 +4,7 @@ local map = {
     NormalFloat                 = {},
     LspSignatureActiveParameter = { bold = true },
     LspReferenceText            = { bold = true, bg = vim.api.nvim_get_hl(0, { name = 'CursorLine' }).bg },
+    LspReferenceWrite           = { bold = true, bg = vim.api.nvim_get_hl(0, { name = 'CursorLine' }).bg, underline = true },
     Todo                        = { bold = true, fg = 'DarkOrange', standout = true },
     SnippetTabStop              = { italic = true },
     Constant                    = { link = 'String' },

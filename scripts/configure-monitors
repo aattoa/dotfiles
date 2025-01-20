@@ -26,7 +26,7 @@ configure () {
     esac
 }
 
-monitorfile=${DOTFILES}/state/monitors
+monitorfile=${XDG_STATE_HOME}/dotfiles/monitors
 [ -f "${monitorfile}" ] || error "Monitor file not found"
 
 # $1: primary|secondary

@@ -1,7 +1,16 @@
-configure-mouse-and-keyboard custom
-configure-monitors auto
-xset s 1800 1800 -dpms
-exec battery-sentry &
-exec slstatus &
-exec dunst &
-exec dwm
+#!/bin/sh
+
+if [ -d "${DOTFILES}/scripts" ]; then
+    "${DOTFILES}/scripts/configure-mouse-and-keyboard" custom
+    "${DOTFILES}/scripts/configure-monitors" auto
+    exec "${DOTFILES}/scripts/battery-sentry" &
+fi
+
+command -v status-bar > /dev/null && exec status-bar &
+[ -x /usr/bin/xset ] && /usr/bin/xset s 1800 1800 -dpms
+[ -x /usr/bin/dunst ] && exec /usr/bin/dunst &
+
+while true; do
+    /usr/local/bin/dwm 2> .dwm-log
+    if [ $? = 1 ]; then break; fi
+done

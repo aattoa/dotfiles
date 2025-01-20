@@ -15,8 +15,12 @@ function M.window_config(fullscreen, scale)
     }
 end
 
+---@class ScratchTerminalConfig
+---@field quick boolean Immediately close the terminal when the process exits.
+
 ---@param command? string[]|string
-function M.terminal(command)
+---@param config? ScratchTerminalConfig
+function M.terminal(command, config)
     local scale = 0.75
     local fullscreen = false
     local scratchcmd = vim.b.scratchcmd
@@ -34,7 +38,13 @@ function M.terminal(command)
     map('>', function () scale = math.min(scale + 0.025, 1) end)
 
     vim.api.nvim_buf_call(buffer, function ()
-        vim.fn.termopen(command or scratchcmd or vim.o.shell)
+        vim.fn.termopen(command or scratchcmd or vim.o.shell, {
+            on_exit = function ()
+                if config and config.quick then
+                    vim.api.nvim_buf_delete(buffer, {})
+                end
+            end,
+        })
     end)
 end
 

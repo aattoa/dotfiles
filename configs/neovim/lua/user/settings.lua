@@ -35,7 +35,6 @@ vim.opt.foldlevelstart   = 999                -- Start with all folds open
 vim.opt.sessionoptions   = 'tabpages,winsize' -- What to save in session files
 vim.opt.virtualedit      = 'block'            -- Allow going past the end of line in visual block mode
 vim.opt.jumpoptions      = 'stack'            -- Better jumplist behavior
-vim.opt.splitkeep        = 'topline'          -- Do not scroll when resizing horizontal splits
 vim.opt.showmode         = false              -- Do not show current mode
 vim.opt.wrap             = false              -- Do not wrap long lines
 vim.opt.wrapscan         = false              -- Do not wrap searches around the end of file
@@ -54,7 +53,11 @@ vim.opt.shortmess:append('c')
 -- Recursively `:find` in subdirectories
 vim.opt.path:append('**')
 
--- Completion settings
+-- Do not scroll when resizing horizontal splits
+if vim.fn.exists('&splitkeep') == 1 then
+    vim.opt.splitkeep = 'topline'
+end
+
 vim.opt.wildoptions = { 'pum', 'fuzzy' }
 vim.opt.completeopt = { 'menuone', 'noselect' }
 if vim.fn.has('nvim-0.10') == 1 then
@@ -71,6 +74,7 @@ vim.diagnostic.config({
         source = true,
     },
     severity_sort = true,
+    update_in_insert = true,
 })
 
 -- Disable regex-based syntax highlighting

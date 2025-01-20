@@ -22,7 +22,7 @@ end
 local function start_fzf_job(buffer, options)
     return vim.api.nvim_buf_call(buffer, function ()
         local result = vim.fn.tempname()
-        return vim.fn.termopen('fzf 2>/dev/null 1>' .. result, {
+        return vim.fn.termopen('fzf 2> /dev/null 1>' .. result, {
             env = {
                 FZF_DEFAULT_COMMAND = options.command,
                 FZF_DEFAULT_OPTS = string.format(
@@ -184,12 +184,7 @@ local function fzf_manpages()
 end
 
 local function fzf_hoogle()
-    run_fzf({
-        command   = 'true',
-        prompt    = 'Hoogle',
-        fzfargs   = '--preview= --ansi --disabled --bind=change:reload:"hoogle --count=500 {q}"',
-        on_result = function () end,
-    })
+    require('user.scratch').terminal('fzf-hoogle', { quick = true })
 end
 
 local function fzf_resume()

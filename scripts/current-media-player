@@ -1,7 +1,7 @@
 #!/bin/sh
 
-statefile=${DOTFILES}/state/current-media-player
-mkdir --parents "${DOTFILES}/state"
+statefile=${XDG_STATE_HOME}/dotfiles/current-media-player
+mkdir --parents "${XDG_STATE_HOME}/dotfiles"
 [ -f "${statefile}" ] || echo mpv > "${statefile}"
 
 case $# in

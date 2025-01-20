@@ -42,25 +42,6 @@ plug('aattoa', 'nvim-simple-snippets', 'VimEnter', function ()
     vim.keymap.set({ 'i', 's' }, '<c-h>', function () vim.snippet.jump(-1) end)
 end)
 
-plug('aattoa', 'nvim-cmdfloat', 'VimEnter', function ()
-    require('cmdfloat').setup({
-        default_options = {
-            on_buffer = function (buffer)
-                -- Don't use <cr> to accept completions
-                vim.keymap.set('i', '<cr>', '<cr>', { buffer = buffer })
-            end,
-            on_window = function (window)
-                vim.fn.clearmatches(window)
-                vim.wo[window].sidescrolloff = 10
-            end,
-            -- border = vim.g.floatborder,
-            completeopt = { 'menu' },
-        },
-        map_open = ':',
-        map_backup = '<leader>:',
-    })
-end)
-
 plug('nvim-treesitter', 'nvim-treesitter-textobjects', 'VimEnter', function ()
     -- No setup
 end)
@@ -111,7 +92,7 @@ plug('nvim-treesitter', 'nvim-treesitter', 'VimEnter', function ()
     end
 
     require('nvim-treesitter.configs').setup({
-        ensure_installed = { 'c', 'cpp', 'rust', 'zig', 'haskell', 'ocaml', 'lua', 'python', 'bash', 'gdscript', 'sql', 'make', 'cmake', 'json', 'toml', 'markdown' },
+        ensure_installed = { 'c', 'cpp', 'rust', 'zig', 'haskell', 'ocaml', 'roc', 'lua', 'python', 'bash', 'gdscript', 'sql', 'make', 'cmake', 'json', 'toml', 'yaml', 'markdown' },
         sync_install     = false,
         auto_install     = false,
         textobjects      = textobjects,

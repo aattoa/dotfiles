@@ -33,7 +33,7 @@ alias dune='opam exec -- dune'
 alias calendar='cal --monday $(date +%Y)'
 alias netwatch='watch --interval 0.5 netstat --inet --all --program'
 alias memcheck='valgrind --track-origins=yes --leak-check=full --show-leak-kinds=all --show-error-list=yes'
-command -v eza > /dev/null && alias ls='eza --git --no-permissions --octal-permissions --group-directories-first'
+command -v eza > /dev/null && alias ls='eza --git --no-permissions --octal-permissions --group-directories-first --no-quotes'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
@@ -59,10 +59,10 @@ export HISTSIZE=-1
 export HISTIGNORE=q:exit
 export HISTCONTROL=ignoredups
 export WATCH_INTERVAL=0.5
-export MANROFFOPT="-P -c"
-export MANPAGER="less --color=d+r --color=u+b"
 export LESS="--incsearch --ignore-case --jump-target=.3 --chop-long-lines --clear-screen --use-color --RAW-CONTROL-CHARS"
 export FZF_DEFAULT_OPTS_FILE=${DOTFILES}/configs/fzf/fzfrc
+export MANPAGER="less --color=d+r --color=u+b"
+grep --quiet '^ID=arch$' /etc/os-release && export MANROFFOPT="-P -c"
 
 # Avoid $HOME pollution
 export LESSHISTFILE=/dev/null
@@ -77,6 +77,7 @@ export GHCUP_INSTALL_BASE_PREFIX=${XDG_DATA_HOME}
 export GHCUP_USE_XDG_DIRS=yes
 export PYTHONSTARTUP=${DOTFILES}/configs/python/startup.py
 export NODE_REPL_HISTORY=${XDG_DATA_HOME}/node_repl_history
+export TS_NODE_HISTORY=${XDG_DATA_HOME}/ts_node_history
 export CUDA_CACHE_PATH=${XDG_CACHE_HOME}/nv
 export XINITRC=${DOTFILES}/configs/x/xinitrc
 export INPUTRC=${DOTFILES}/configs/readline/inputrc
@@ -84,11 +85,6 @@ export EDITRC=${DOTFILES}/configs/editline/editrc
 
 GPG_TTY=$(tty)
 export GPG_TTY
-
-md-view () {
-    out=/tmp/md-view-output.pdf
-    pandoc --output="${out}" -- "$1" && zathura -- "${out}"
-}
 
 # Make and change directory (mkdir + cd)
 mc () {
@@ -109,8 +105,31 @@ _my_shell_set_line () {
     READLINE_POINT=${#1}
 }
 
+_my_shell_fzf_has_walker () {
+    (cd /tmp; fzf --exit-0 --exact --query=MY_FZF_FLAG_SUPPORT_TEST_123456789 --walker=dir 2> /dev/null)
+    # The built in walker is significantly faster than GNU find, so this is worth checking.
+    # Walker support can be deduced from the exit status. 1 = no match, 2 = error.
+    [ $? = 1 ]
+}
+
 _my_shell_fzf () {
     fzf --height=~80% --layout=reverse --info=inline "$@"
+}
+
+_my_shell_fzf_files () {
+    if _my_shell_fzf_has_walker; then
+        _my_shell_fzf --walker=file,dir,hidden --walker-root="$1" --scheme=path
+    else
+        find "$1" -name .git -prune -or -print 2> /dev/null | _my_shell_fzf --scheme=path
+    fi
+}
+
+_my_shell_fzf_dirs () {
+    if _my_shell_fzf_has_walker; then
+        _my_shell_fzf --walker=dir,hidden --walker-root="$1" --scheme=path
+    else
+        find "$1" -name .git -prune -or -type d -print 2> /dev/null | _my_shell_fzf --scheme=path
+    fi
 }
 
 _my_shell_history () {
@@ -120,13 +139,13 @@ _my_shell_history () {
 }
 
 _my_shell_find_file () {
-    if _my_file=$(_my_shell_fzf --walker=file,dir,hidden --walker-root="$1" --scheme=path); then
+    if _my_file=$(_my_shell_fzf_files "$1"); then
         _my_shell_set_line "${READLINE_LINE}$(printf %q "${_my_file}") "
     fi
 }
 
 _my_shell_cd () {
-    if _my_dir=$(_my_shell_fzf --walker=dir,hidden --walker-root="$1" --scheme=path); then
+    if _my_dir=$(_my_shell_fzf_dirs "$1"); then
         builtin cd -- "${_my_dir}" || return
     fi
 }

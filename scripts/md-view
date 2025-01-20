@@ -1,0 +1,9 @@
+#!/bin/sh
+
+if [ -z "$1" ]; then
+    notify md-view "Expected an argument"
+    exit 1
+fi
+
+out=/tmp/md-view-output.pdf
+pandoc --output="${out}" -- "$1" && zathura -- "${out}"
