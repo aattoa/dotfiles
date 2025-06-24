@@ -5,8 +5,7 @@ vim.g.netrw_banner       = 0                  -- Disable the Netrw help banner
 vim.g.netrw_dirhistmax   = 0                  -- Disable Netrw directory history
 vim.g.netrw_cursor       = 5                  -- Make Netrw respect cursorline and cursorcolumn
 vim.g.netrw_list_hide    = '^\\.\\+\\/$'      -- Disable directory entries ./ and ../
-vim.g.floatborder        = 'single'           -- Border for all floating windows (not a built in global)
-vim.opt.modeline         = false              -- Disable unnecessary feature
+vim.g.winborder          = 'rounded'          -- Border for all floating windows (custom global)
 vim.opt.mouse            = ''                 -- Disable the mouse
 vim.opt.guicursor        = ''                 -- Disable cursor styling
 vim.opt.signcolumn       = 'no'               -- Disable the sign column
@@ -26,7 +25,9 @@ vim.opt.tabstop          = 4                  -- Tab character width
 vim.opt.shiftwidth       = 0                  -- Use tabstop value for indentation
 vim.opt.list             = true               -- Render whitespace according to listchars
 vim.opt.listchars        = 'tab:| ,trail:_'   -- Whitespace rendering settings
-vim.opt.pumheight        = 10                 -- Maximum popup menu height
+vim.opt.wildoptions      = 'pum'              -- Command line completion settings
+vim.opt.completeopt      = 'menuone,noselect' -- Insert mode completion settings
+vim.opt.pumheight        = 20                 -- Maximum popup menu height
 vim.opt.cmdwinheight     = 14                 -- Bigger command-line window
 vim.opt.scrolloff        = 10                 -- Vertical scrolloff
 vim.opt.sidescrolloff    = 40                 -- Horizontal scrolloff
@@ -53,35 +54,26 @@ vim.opt.shortmess:append('c')
 -- Recursively `:find` in subdirectories
 vim.opt.path:append('**')
 
--- Do not scroll when resizing horizontal splits
-if vim.fn.exists('&splitkeep') == 1 then
-    vim.opt.splitkeep = 'topline'
-end
-
-vim.opt.wildoptions = { 'pum', 'fuzzy' }
-vim.opt.completeopt = { 'menuone', 'noselect' }
-if vim.fn.has('nvim-0.10') == 1 then
-    vim.opt.completeopt:append('popup')
-end
-if vim.fn.has('nvim-0.11') == 1 then
-    vim.opt.completeopt:append('fuzzy')
-end
-
+-- Diagnostics framework configuration
 vim.diagnostic.config({
     float = {
-        border = vim.g.floatborder,
+        border = vim.g.winborder,
         header = '',
         source = true,
     },
+    jump = {
+        wrap = false,
+    },
     severity_sort = true,
+    virtual_text = true,
     update_in_insert = true,
 })
 
--- Disable regex-based syntax highlighting
-vim.cmd.syntax('off')
+-- Minimal runtime
+vim.opt.runtimepath = { vim.fn.stdpath('config'), vim.env.VIMRUNTIME }
 
 -- Disable some cruft
-vim.g.editorconfig = false
+vim.g.loaded_matchit = 1
 vim.g.loaded_gzip = 1
 vim.g.loaded_tar = 1
 vim.g.loaded_tarPlugin = 1
@@ -94,12 +86,20 @@ vim.g.loaded_python3_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_node_provider = 0
-vim.opt.runtimepath:remove('/usr/lib/nvim')
-vim.opt.runtimepath:remove('/etc/xdg/nvim')
-vim.opt.runtimepath:remove('/etc/xdg/nvim/after')
-vim.opt.runtimepath:remove('/usr/share/vim/vimfiles')
-vim.opt.runtimepath:remove('/usr/share/vim/vimfiles/after')
-vim.opt.runtimepath:remove('/usr/share/nvim/site')
-vim.opt.runtimepath:remove('/usr/share/nvim/site/after')
-vim.opt.runtimepath:remove('/usr/local/share/nvim/site')
-vim.opt.runtimepath:remove('/usr/local/share/nvim/site/after')
+
+-- Options specific to nvim>=0.9
+if vim.fn.has('nvim-0.9') == 1 then
+    vim.opt.wildoptions = vim.opt.wildoptions + 'fuzzy'
+end
+
+-- Options specific to nvim>=0.10
+if vim.fn.has('nvim-0.10') == 1 then
+    vim.opt.completeopt = vim.opt.completeopt + 'popup'
+    vim.opt.splitkeep = 'topline'
+end
+
+-- Options specific to nvim>=0.11
+if vim.fn.has('nvim-0.11') == 1 then
+    vim.opt.completeopt = vim.opt.completeopt + 'fuzzy'
+    vim.opt.winborder = vim.g.winborder
+end

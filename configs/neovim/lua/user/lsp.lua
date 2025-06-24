@@ -3,7 +3,7 @@ local original_open_floating_preview = vim.lsp.util.open_floating_preview
 ---@diagnostic disable-next-line: duplicate-set-field
 vim.lsp.util.open_floating_preview = function (contents, syntax, options, ...)
     return original_open_floating_preview(contents, syntax, vim.tbl_extend('keep', options or {}, {
-        border     = vim.g.floatborder,
+        border     = vim.g.winborder,
         max_height = math.floor(vim.api.nvim_win_get_height(0) / 2),
     }), ...)
 end
@@ -25,8 +25,6 @@ local function create_mappings(_, buffer)
     vim.keymap.set('n', '<leader>lt', vim.lsp.buf.type_definition, { buffer = buffer })
     vim.keymap.set('n', '<leader>lw', vim.lsp.buf.format,          { buffer = buffer })
     vim.keymap.set('n', 'K',          vim.lsp.buf.hover,           { buffer = buffer })
-
-    vim.keymap.set({ 'n', 's', 'i' }, '<c-space>', vim.lsp.buf.signature_help, { buffer = buffer })
 end
 
 ---@type fun(client: vim.lsp.Client, buffer: integer): nil
@@ -63,32 +61,49 @@ local function enable_format_on_write(client, buffer)
     end
 end
 
+---@type fun(client: vim.lsp.Client, buffer: integer): nil
+local function enable_autocomplete(client, buffer)
+    if vim.fn.has('nvim-0.11') == 1 and client.server_capabilities.completionProvider then
+        vim.lsp.completion.enable(true, client.id, buffer, {
+            autotrigger = true,
+            convert = function (item)
+                if item.insertTextFormat == vim.lsp.protocol.InsertTextFormat.Snippet then
+                    -- Remove parenthesized arguments from snippet labels. No effect on expansion.
+                    local idx = item.label:find('%(')
+                    return { word = idx and vim.trim(item.label:sub(1, idx - 1)) }
+                end
+                return {}
+            end,
+        })
+    end
+end
+
 vim.api.nvim_create_autocmd('LspAttach', {
     callback = function (event)
         local client = assert(vim.lsp.get_client_by_id(event.data.client_id))
         create_mappings(client, event.buf)
         enable_format_on_write(client, event.buf)
         enable_highlight_cursor_references(client, event.buf)
+        enable_autocomplete(client, event.buf)
     end,
     desc = 'LSP-specific configuration',
-})
-
-local capabilities = vim.tbl_deep_extend('force', vim.lsp.protocol.make_client_capabilities(), {
-    textDocument = { completion = { completionItem = { snippetSupport = true } } },
 })
 
 ---@type fun(name: string, config: ClientConfig, path: string)
 local function lsp_start(name, config, path)
     local root = vim.fs.root(path, config.root) or vim.fs.root(path, '.git') or vim.fs.dirname(path)
-    vim.lsp.start({
-        name         = name,
-        cmd          = config.command,
-        cmd_cwd      = root,
-        root_dir     = root,
-        settings     = config.settings,
-        on_attach    = config.on_attach,
-        capabilities = capabilities,
-    })
+    if type(config.command) == 'table' and vim.fn.executable(config.command[1]) == 0 then
+        vim.notify('Language server not available: ' .. config.command[1], vim.log.levels.WARN)
+    else
+        vim.lsp.start({
+            name      = name,
+            cmd       = config.command,
+            cmd_cwd   = root,
+            root_dir  = root,
+            settings  = config.settings,
+            on_attach = config.on_attach,
+        })
+    end
 end
 
 local function lsp_autogroup()
@@ -121,8 +136,8 @@ local function lsp_stop_clients()
 end
 
 local function lsp_list_clients()
-    vim.notify('LSP clients:\n' .. vim.iter(vim.lsp.get_clients()):map(function (client)
-        return ('- %s running with root directory %s'):format(client.name, client.root_dir)
+    vim.notify('Active LSP clients:\n' .. vim.iter(vim.lsp.get_clients()):map(function (client)
+        return ('- \'%s\', root directory: %s'):format(client.name, client.root_dir)
     end):join('\n'))
 end
 
@@ -131,26 +146,13 @@ local function lsp_disable()
     lsp_stop_clients()
 end
 
-local lsp_commands = {
+require('user.util').create_user_command('Lsp', {
     ['']            = lsp_list_clients,
     listClients     = lsp_list_clients,
     stopClients     = lsp_stop_clients,
     stopAutoAttach  = lsp_autostart_disable,
     startAutoAttach = lsp_autostart_enable,
     disable         = lsp_disable,
-}
-
-vim.api.nvim_create_user_command('Lsp', function (args)
-    lsp_commands[args.args]()
-end, {
-    nargs = '?',
-    complete = function (prefix)
-        return vim.tbl_filter(function (command)
-            return command:sub(1, #prefix) == prefix
-        end, vim.tbl_keys(lsp_commands))
-    end,
 })
-
-vim.keymap.set('n', '<leader>ll', lsp_list_clients)
 
 lsp_autostart_enable()

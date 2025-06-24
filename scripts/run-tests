@@ -1,30 +1,26 @@
 #!/bin/sh
 
-# $1: Message
+##@ param Message
 error () { notify "run-tests" "Error: $1"; exit 1; }
 
-run_ctest () {
-    cmake --build . || return
-    ctest --progress && return
+if [ -n "$1" ]; then
+    builtin cd -- "$1" || exit
+fi
+
+if [ -f "tree-sitter.json" ]; then
+    tree-sitter generate && tree-sitter test
+elif [ -f "CMakeCache.txt" ]; then
+    cmake --build . || exit
+    ctest --progress && exit
     ctest --rerun-failed --output-on-failure
-}
-
-# $1: Directory
-run_tests () {
-    if   [ -x "do-run-tests" ];      then ./do-run-tests
-    elif [ -f "CMakeCache.txt" ];    then run_ctest
-    elif [ -f "Cargo.toml" ];        then cargo test
-    elif [ -f "dune-project" ];      then opam exec dune test
-    else error "Could not run tests in $1"
-    fi
-}
-
-case $# in
-    0)
-        run_tests .;;
-    1)
-        builtin cd -- "$1" || error "Couldn't change directory to $1"
-        run_tests "$1";;
-    *)
-        error "Too many arguments";;
-esac
+elif [ -f "Cargo.toml" ]; then
+    cargo test
+elif [ -f "cabal.project" ]; then
+    cabal test
+elif [ -f "dune-project" ]; then
+    opam exec dune test
+elif [ -f "package.json" ]; then
+    npm run test
+else
+    error "Could not run tests in $(pwd)"
+fi

@@ -2,7 +2,7 @@
 function vim.ui.input(opts, on_confirm)
     local buffer = vim.api.nvim_create_buf(false --[[listed]], true --[[scratch]])
     local window = vim.api.nvim_open_win(buffer, true --[[enter]], {
-        border = vim.g.floatborder,
+        border = vim.g.winborder,
         width = vim.o.columns, -- Overridden below
         height = 1,
         row = 1,
@@ -43,7 +43,7 @@ function vim.ui.select(items, opts, on_choice)
 
     local function accept()
         local idx = vim.fn.line('.')
-        vim.api.nvim_win_close(window, true)
+        vim.api.nvim_win_close(window, true --[[force]])
         on_choice(items[idx], idx)
     end
     vim.keymap.set('n', 'q', '<cmd>close<cr>', { buffer = buffer })

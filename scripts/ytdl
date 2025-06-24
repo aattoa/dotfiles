@@ -2,12 +2,10 @@
 
 if [ "$1" = audio ]; then
     shift
-    args="--extract-audio --audio-format=mp3 --audio-quality=0"
+    args="--extract-audio --audio-quality=0"
 else
-    args="--format-sort=res:${YTDL_RES:-480}"
+    args="--format-sort=res:${YTDL_RES:-480} --sponsorblock-remove=default --sponsorblock-mark=all"
 fi
 
-args="${args} --embed-metadata --sponsorblock-remove=default --sponsorblock-mark=all"
-
 # shellcheck disable=2086 # Intentional word splitting
-yt-dlp ${args} "$@"
+yt-dlp --embed-metadata ${args} "$@"

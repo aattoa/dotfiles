@@ -1,5 +1,6 @@
 #!/bin/sh
 
+##@ param Directory path
 preview_directory () {
     if command -v eza > /dev/null; then
         eza --tree --level=1 --color=always -- "$1"

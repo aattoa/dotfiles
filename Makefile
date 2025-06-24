@@ -28,7 +28,7 @@ dirs:
 	@mkdir -pv ${XDG_CONFIG_HOME} ${XDG_CACHE_HOME} ${XDG_DATA_HOME} ${XDG_STATE_HOME} || true
 
 status-bar: configs/x/status-bar.c
-	mkdir -pv ${HOME}/.local/bin
+	@mkdir -pv ${HOME}/.local/bin
 	@cc ${CFLAGS} -lX11 -D_DEFAULT_SOURCE -o ${HOME}/.local/bin/$@ $^ || true
 
 bash:

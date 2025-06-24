@@ -2,7 +2,7 @@ vim.filetype.add({
     extension = {
         h = 'c',
         tex = 'tex',
-        kieli = 'kieli',
+        ki = 'kieli',
     },
     filename = {
         xinitrc = 'sh',
@@ -21,23 +21,12 @@ local function filetype(filetypes, callback)
     })
 end
 
-filetype({ 'help', 'man' }, function (buffer)
-    vim.keymap.set('n', 'J', '3<c-e>',        { buffer = buffer })
-    vim.keymap.set('n', 'K', '3<c-y>',        { buffer = buffer })
-    vim.keymap.set('n', 'q', '<cmd>quit<cr>', { buffer = buffer })
-end)
-
-filetype('sh', function (buffer)
-    vim.cmd('compiler shellcheck')
-    vim.api.nvim_create_autocmd('BufWritePost', {
-        command = 'silent make! %',
-        buffer  = buffer,
-        desc    = 'Keep shellcheck diagnostics up to date',
-    })
-end)
-
 filetype({ 'c', 'cpp', 'rust', 'kieli' }, function ()
     vim.bo.commentstring = '// %s'
+end)
+
+filetype('asm', function ()
+    vim.bo.commentstring = '# %s'
 end)
 
 filetype('ocaml', function ()
@@ -45,16 +34,12 @@ filetype('ocaml', function ()
     vim.keymap.set('ia', '//', '(* *)<left><left><left>')
 end)
 
-filetype('asm', function ()
-    vim.bo.commentstring = '# %s'
-end)
-
 filetype('cpp', function ()
     vim.b.scratchcmd = { 'run-tests', 'out/debug' }
 end)
 
-filetype({ 'rust', 'ocaml' }, function ()
-    vim.b.scratchcmd = { 'run-tests' }
+filetype({ 'c', 'cpp' }, function ()
+    vim.cmd([[call matchadd('Keyword', 'NOLINTBEGIN\|NOLINTEND\|NOLINTNEXTLINE\|NOLINT')]])
 end)
 
 filetype('python', function (buffer)
@@ -68,14 +53,6 @@ end)
 
 filetype('gdscript', function ()
     vim.bo.expandtab = false
-end)
-
-filetype('javascriptreact', function (buffer)
-    vim.treesitter.start(buffer, 'javascript')
-end)
-
-filetype('typescriptreact', function (buffer)
-    vim.treesitter.start(buffer, 'typescript')
 end)
 
 filetype('tex', function (buffer)
@@ -105,3 +82,21 @@ filetype('qf', function (buffer)
     vim.keymap.set('n', 'K', 'k<cr>zz<c-w>p', { buffer = buffer })
     vim.keymap.set('n', 'q', '<cmd>quit<cr>', { buffer = buffer })
 end)
+
+filetype({ 'help', 'man' }, function (buffer)
+    vim.keymap.set('n', 'J', '3<c-e>',        { buffer = buffer })
+    vim.keymap.set('n', 'K', '3<c-y>',        { buffer = buffer })
+    vim.keymap.set('n', 'q', '<cmd>quit<cr>', { buffer = buffer })
+end)
+
+-- Use shellcheck if shell-language-server is not available.
+if vim.fn.executable('shell-language-server') == 0 then
+    filetype('sh', function (buffer)
+        vim.cmd('compiler shellcheck')
+        vim.api.nvim_create_autocmd('BufWritePost', {
+            command = 'silent make! %',
+            buffer  = buffer,
+            desc    = 'Keep shellcheck diagnostics up to date',
+        })
+    end)
+end

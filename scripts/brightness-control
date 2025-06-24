@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# $1: New brightness
+##@ param New brightness
 control () {
     brightnessctl set "$1"
     notify-send --expire-time=250 "New brightness" "$(brightnessctl get)%"

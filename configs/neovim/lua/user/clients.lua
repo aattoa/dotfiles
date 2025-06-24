@@ -10,17 +10,31 @@ return {
     kieli = {
         command = { 'kieli-language-server' },
         filetypes = { 'kieli' },
-        root = { 'build.kieli' },
+        root = {},
     },
 
     shell = {
         command = { 'shell-language-server' },
-        filetypes = { 'sh' },
+        filetypes = { 'sh', 'zsh', 'bash' },
         root = {},
     },
 
     clangd = {
         command = { 'clangd', '--clang-tidy', '--completion-style=detailed', '--header-insertion=never', '--log=error' },
+        on_attach = function (client, buffer)
+            vim.keymap.set('n', '<leader>ls', function ()
+                -- https://clangd.llvm.org/extensions#switch-between-sourceheader
+                local method = 'textDocument/switchSourceHeader'
+                local params = vim.lsp.util.make_text_document_params(buffer)
+                client:request(method, params, function (_, result)
+                    if type(result) == 'string' and result ~= '' then
+                        vim.api.nvim_set_current_buf(vim.uri_to_bufnr(result))
+                    else
+                        vim.notify('Failed to determine source/header', vim.log.levels.INFO)
+                    end
+                end, buffer)
+            end, { buffer = buffer, desc = 'Switch source/header' })
+        end,
         filetypes = { 'c', 'cpp' },
         root = { '.clangd', 'compile_commands.json' },
     },
@@ -29,19 +43,25 @@ return {
         command = { 'rust-analyzer' },
         settings = {
             ['rust-analyzer'] = {
-                check = {
-                    command = 'clippy',
-                    ignore = { 'dead_code' },
+                completion = {
+                    postfix = { enable = false },
                 },
+                check = { command = 'clippy' },
                 checkOnSave = { enable = true },
             },
         },
         filetypes = { 'rust' },
-        root = { 'Cargo.toml', 'Cargo.lock' },
+        root = { 'Cargo.toml' },
     },
 
     zig = {
         command = { 'zls' },
+        settings = {
+            zls = {
+                semantic_tokens = 'partial',
+                enable_build_on_save = true,
+            },
+        },
         filetypes = { 'zig' },
         root = { 'build.zig' },
     },
@@ -67,6 +87,15 @@ return {
                 },
                 workspace = {
                     library = { vim.env.VIMRUNTIME },
+                },
+                completion = {
+                    callSnippet = 'Replace',
+                },
+                hint = {
+                    enable = true,
+                },
+                addonManager = {
+                    enable = false, -- Should be disabled by default, but just in case.
                 },
             },
         },
@@ -103,10 +132,11 @@ return {
     latex = {
         command = { 'texlab' },
         on_attach = function (client, buffer)
-            local function fwd()
-                client.request('textDocument/forwardSearch', vim.lsp.util.make_position_params(), function () end, buffer)
-            end
-            vim.keymap.set('n', '<leader><leader>', fwd, { buffer = buffer, desc = 'Forward Search' })
+            vim.keymap.set('n', '<leader><leader>', function ()
+                local method = 'textDocument/forwardSearch'
+                local params = vim.lsp.util.make_position_params(0, 'utf-8')
+                client:request(method, params, function () end, buffer)
+            end, { buffer = buffer, desc = 'Forward Search' })
         end,
         settings = {
             texlab = {

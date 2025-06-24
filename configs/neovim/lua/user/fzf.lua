@@ -22,7 +22,7 @@ end
 local function start_fzf_job(buffer, options)
     return vim.api.nvim_buf_call(buffer, function ()
         local result = vim.fn.tempname()
-        return vim.fn.termopen('fzf 2> /dev/null 1>' .. result, {
+        return vim.fn.jobstart('fzf 2> /dev/null 1>' .. result, {
             env = {
                 FZF_DEFAULT_COMMAND = options.command,
                 FZF_DEFAULT_OPTS = string.format(
@@ -45,6 +45,7 @@ local function start_fzf_job(buffer, options)
                 vim.fn.delete(result)
             end,
             cwd = options.directory,
+            term = true,
         })
     end)
 end
@@ -129,9 +130,10 @@ local function fzf_files(command, prompt, root)
     end
 end
 
----@type fun(prompt: string?, root: string?): function
-local function fzf_grep(prompt, root)
-    local reload = 'reload(test -n \"{q}\" && rg --color=always --smart-case --line-number --column -- {q} || true)'
+---@type fun(prompt: string?, root: string?, options: string?): function
+local function fzf_grep(prompt, root, options)
+    local rg_options = '--color=always --smart-case --line-number --column ' .. (options or '')
+    local reload = 'reload(test -n \"{q}\" && rg ' .. rg_options .. ' -- {q} || true)'
     return function ()
         run_fzf({
             command   = 'echo loading...',
@@ -200,16 +202,21 @@ local allfiles = 'find -type f'
 local gitfiles = 'git ls-files :/'
 local oldfiles = [[nvim --headless --cmd rshada --cmd 'lua io.stdout:write(vim.fn.join(vim.v.oldfiles, "\n") .. "\n")' --cmd quit]]
 
-vim.keymap.set('n', '<leader>f',    fzf_files(files))
-vim.keymap.set('n', '<leader>F',    fzf_files(allfiles, 'All'))
-vim.keymap.set('n', '<leader>g',    fzf_files(gitfiles, 'Git'))
-vim.keymap.set('n', '<leader>o',    fzf_files(oldfiles, 'History'))
-vim.keymap.set('n', '<leader>sa',   fzf_files(allfiles, 'Home', vim.env.HOME))
-vim.keymap.set('n', '<leader>sd',   fzf_files(files,    'Dotfiles', vim.env.DOTFILES))
-vim.keymap.set('n', '<leader>sD',   fzf_grep('Dotfiles', vim.env.DOTFILES))
-vim.keymap.set('n', '<leader>sm',   fzf_manpages)
-vim.keymap.set('n', '<leader>sh',   fzf_hoogle)
-vim.keymap.set('n', '<leader>r',    fzf_grep('Grep'))
-vim.keymap.set('n', '<leader>?',    fzf_help_tags)
-vim.keymap.set('n', '<leader>/',    fzf_buffer_lines)
-vim.keymap.set('n', '<leader><bs>', fzf_resume)
+local function map(keys, description, callback)
+    vim.keymap.set('n', '<leader>' .. keys, callback, { desc = 'fzf: ' .. description })
+end
+
+map('f',    'Files',          fzf_files(files))
+map('F',    'All files',      fzf_files(allfiles, 'All'))
+map('g',    'Git files',      fzf_files(gitfiles, 'Git'))
+map('o',    'Old files',      fzf_files(oldfiles, 'History'))
+map('sa',   'Home files',     fzf_files(allfiles, 'Home', vim.env.HOME))
+map('sd',   'Dotfiles',       fzf_files(files, 'Dotfiles', vim.env.DOTFILES))
+map('sD',   'Dotfiles grep',  fzf_grep('Grep dotfiles', vim.env.DOTFILES))
+map('sm',   'Manual pages',   fzf_manpages)
+map('sh',   'Haskell API',    fzf_hoogle)
+map('r',    'Grep',           fzf_grep('Grep'))
+map('R',    'Grep all',       fzf_grep('Grep all', nil, '--no-ignore'))
+map('?',    'Help tags',      fzf_help_tags)
+map('/',    'Buffer lines',   fzf_buffer_lines)
+map('<bs>', 'Resume session', fzf_resume)

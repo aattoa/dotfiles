@@ -15,7 +15,7 @@ alias mv='mv --verbose --interactive'
 alias rm='rm --verbose --interactive=once'
 alias ln='ln --verbose'
 alias rg='rg --smart-case'
-alias bc='bc --quiet --standard'
+alias bc='bc --quiet --standard --mathlib'
 alias pwd='pwd -P'
 alias ghci='ghci -v0'
 alias grep='grep --ignore-case --color=auto'
@@ -24,6 +24,7 @@ alias grep='grep --ignore-case --color=auto'
 alias q='exit'
 alias vi='nvim'
 alias vis='nvim -S'
+alias vit='nvim +terminal'
 alias md='mkdir --verbose --parents'
 alias rd='rmdir --verbose'
 alias py='python'
@@ -61,12 +62,15 @@ export HISTCONTROL=ignoredups
 export WATCH_INTERVAL=0.5
 export LESS="--incsearch --ignore-case --jump-target=.3 --chop-long-lines --clear-screen --use-color --RAW-CONTROL-CHARS"
 export FZF_DEFAULT_OPTS_FILE=${DOTFILES}/configs/fzf/fzfrc
-export MANPAGER="less --color=d+r --color=u+b"
+export PYTHON_BASIC_REPL=1 # The new Python REPL is unusable as it lacks a vi-mode.
+export MANPAGER="less --color=d+r --color=u+c"
 grep --quiet '^ID=arch$' /etc/os-release && export MANROFFOPT="-P -c"
 
 # Avoid $HOME pollution
 export LESSHISTFILE=/dev/null
 export SQLITE_HISTORY=/dev/null
+export PYTHON_HISTORY=/dev/null
+export PYTHONSTARTUP=${DOTFILES}/configs/python/startup.py
 export HISTFILE=${XDG_STATE_HOME}/bash/history
 export XAUTHORITY=${XDG_RUNTIME_DIR}/Xauthority
 export WINEPREFIX=${XDG_DATA_HOME}/wineprefixes/default
@@ -75,7 +79,6 @@ export RUSTUP_HOME=${XDG_DATA_HOME}/rustup
 export OPAMROOT=${XDG_DATA_HOME}/opam
 export GHCUP_INSTALL_BASE_PREFIX=${XDG_DATA_HOME}
 export GHCUP_USE_XDG_DIRS=yes
-export PYTHONSTARTUP=${DOTFILES}/configs/python/startup.py
 export NODE_REPL_HISTORY=${XDG_DATA_HOME}/node_repl_history
 export TS_NODE_HISTORY=${XDG_DATA_HOME}/ts_node_history
 export CUDA_CACHE_PATH=${XDG_CACHE_HOME}/nv
@@ -86,7 +89,8 @@ export EDITRC=${DOTFILES}/configs/editline/editrc
 GPG_TTY=$(tty)
 export GPG_TTY
 
-# Make and change directory (mkdir + cd)
+##@ desc Make and change directory (mkdir + cd)
+##@ param Directory name
 mc () {
     [ $# = 1 ] || exit 1
     [ ! -d "$1" ] && mkdir --parents -- "$1" || echo "Already exists: $1"
@@ -100,6 +104,7 @@ sdn () { prompt-yesno "Shut down?" && command sdn; }
 # Mimic `command` completion for `on-compilation-trigger`
 command -v _command > /dev/null && complete -F _command on-compilation-trigger
 
+##@ param New line
 _my_shell_set_line () {
     READLINE_LINE=$1
     READLINE_POINT=${#1}
@@ -116,6 +121,7 @@ _my_shell_fzf () {
     fzf --height=~80% --layout=reverse --info=inline "$@"
 }
 
+##@ param Base directory
 _my_shell_fzf_files () {
     if _my_shell_fzf_has_walker; then
         _my_shell_fzf --walker=file,dir,hidden --walker-root="$1" --scheme=path
@@ -124,6 +130,7 @@ _my_shell_fzf_files () {
     fi
 }
 
+##@ param Base directory
 _my_shell_fzf_dirs () {
     if _my_shell_fzf_has_walker; then
         _my_shell_fzf --walker=dir,hidden --walker-root="$1" --scheme=path
@@ -133,17 +140,19 @@ _my_shell_fzf_dirs () {
 }
 
 _my_shell_history () {
-    if _my_line=$(builtin history | cut --characters=8- | _my_shell_fzf --tac --no-sort --preview=); then
+    if _my_line=$(_my_shell_fzf --tac --no-sort --preview= < "${HISTFILE}"); then
         _my_shell_set_line "${_my_line}"
     fi
 }
 
+##@ param Base directory
 _my_shell_find_file () {
     if _my_file=$(_my_shell_fzf_files "$1"); then
         _my_shell_set_line "${READLINE_LINE}$(printf %q "${_my_file}") "
     fi
 }
 
+##@ param Base directory
 _my_shell_cd () {
     if _my_dir=$(_my_shell_fzf_dirs "$1"); then
         builtin cd -- "${_my_dir}" || return

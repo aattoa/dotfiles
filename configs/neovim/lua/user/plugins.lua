@@ -29,17 +29,18 @@ local function plug(author, name, event, setup)
     vim.opt.runtimepath:prepend(path)
 end
 
-plug('aattoa', 'nvim-everysig', 'LspAttach', function ()
-    require('everysig').setup({ override = true, silent = true, number = true })
+plug('aattoa', 'nvim-everysig', 'VimEnter', function ()
+    require('everysig').setup({ map = { mode = { 'n', 's', 'i' } } })
 end)
 
 plug('aattoa', 'nvim-simple-snippets', 'VimEnter', function ()
-    local ss = require('simple-snippets')
-    ss.setup({ completion = true, treesitter = true, snippets = require('user.snippets') })
-    vim.keymap.set('i',          '<c-s>', ss.complete)
-    vim.keymap.set('i',          '<c-l>', ss.expand_or_jump)
-    vim.keymap.set('s',          '<c-l>', function () vim.snippet.jump(1) end)
-    vim.keymap.set({ 'i', 's' }, '<c-h>', function () vim.snippet.jump(-1) end)
+    require('simple-snippets').setup({
+        completion = true,
+        treesitter = true,
+        snippets = require('user.snippets'),
+    })
+    vim.keymap.set('i', '<c-l>', require('simple-snippets').expand_or_jump)
+    vim.keymap.set('i', '<c-space>', require('simple-snippets').complete)
 end)
 
 plug('nvim-treesitter', 'nvim-treesitter-textobjects', 'VimEnter', function ()
@@ -106,6 +107,8 @@ plug('nvim-treesitter', 'nvim-treesitter', 'VimEnter', function ()
     -- Repeat textobject motions
     vim.keymap.set({ 'n', 'x' }, '[[', '<cmd>TSTextobjectRepeatLastMovePrevious<cr>zz')
     vim.keymap.set({ 'n', 'x' }, ']]', '<cmd>TSTextobjectRepeatLastMoveNext<cr>zz')
+    vim.keymap.set({ 'n', 'x' }, '[]', '<nop>')
+    vim.keymap.set({ 'n', 'x' }, '][', '<nop>')
 end)
 
 ---@param name string
@@ -120,9 +123,7 @@ end
 for name, plugin in pairs(plugins) do
     vim.api.nvim_create_autocmd(plugin.event, {
         callback = function ()
-            vim.schedule(function ()
-                load_plugin(name)
-            end)
+            vim.schedule(function () load_plugin(name) end)
         end,
         once = true,
         desc = 'Load plugin: ' .. name,

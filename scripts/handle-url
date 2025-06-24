@@ -1,14 +1,14 @@
 #!/bin/sh
 
-# $1: Message
+##@ param Message
 notify () { command notify "handle-url" "$1"; }
 
 strategies () {
     echo "clipboard browser ytdl ytdl-audio mpv mpv-audio dl-view wget" | tr ' ' '\n'
 }
 
-# $1: URL
-# $2: Strategy
+##@ param URL
+##@ param Strategy
 execute_strategy () {
     builtin cd -- "${HOME}/misc/media/download" || exit 1
     case $2 in

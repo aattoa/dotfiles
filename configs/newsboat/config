@@ -53,5 +53,7 @@ highlight feedlist ".*(0/0).." default default invis
 
 # Better colors
 color info black white
-color listfocus black blue
-color listfocus_unread black blue bold
+color listnormal white black
+color listnormal_unread white black bold
+color listfocus black white
+color listfocus_unread black white bold

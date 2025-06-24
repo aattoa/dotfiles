@@ -1,19 +1,19 @@
 #!/bin/sh
 
-# $1: Status
+##@ param Status
 battery () {
     cat "/sys/class/power_supply/BAT0/$1"
 }
 
-# $1: File path, must exist
+##@ param File path, must exist
 seconds_since_touch () {
     currenttime=$(date +%s)
     touchtime=$(stat --format=%Y -- "$1")
     echo $((currenttime - touchtime))
 }
 
-# $1: Integer percentage
-# $2: Optional urgency
+##@ param Integer percentage
+##@ param Optional urgency
 warn_if_less_than () {
     [ "$(battery capacity)" -le "$1" ] || return
     timestamp=/tmp/dotfiles-battery-sentry-$1-warning-timestamp

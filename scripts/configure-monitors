@@ -1,19 +1,19 @@
 #!/bin/sh
 
-# $1: Message
+##@ param Message
 error () { notify "configure-monitors" "Error: $1"; exit 1; }
 
-# $1: Primary monitor name
-# $2: Secondary monitor name
+##@ param Primary monitor name
+##@ param Secondary monitor name
 auto_configure () {
     if xrandr --listmonitors | grep --quiet --fixed-strings "$1"; then
         xrandr --output "$1" --auto --output "$2" --off
     fi
 }
 
-# $1: Primary monitor name
-# $2: Secondary monitor name
-# $3: Configuration
+##@ param Primary monitor name
+##@ param Secondary monitor name
+##@ param Configuration
 configure () {
     case $3 in
         1)    xrandr --output "$1" --auto --output "$2" --off;;
@@ -29,7 +29,7 @@ configure () {
 monitorfile=${XDG_STATE_HOME}/dotfiles/monitors
 [ -f "${monitorfile}" ] || error "Monitor file not found"
 
-# $1: primary|secondary
+##@ param "primary" | "secondary"
 monitor () {
     awk "/$1/{print\$2}" "${monitorfile}"
 }

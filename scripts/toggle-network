@@ -1,12 +1,12 @@
 #!/bin/sh
 
-# $1: Message
+##@ param Message
 notify () { command notify "toggle-network" "$1"; }
 
 nm-online --quiet --exit
 
 case $? in
-    0) nmcli networking off && rfkill block wlan && notify "Networking off";;
-    1) nmcli networking on && rfkill unblock wlan && notify "Networking on";;
+    0) nmcli radio all off && notify "Networking off";;
+    1) nmcli radio all on && notify "Networking on";;
     *) notify "Error: nm-online failed"; exit 1;;
 esac

@@ -10,9 +10,10 @@ struct std::formatter<$2> {
 
 return {
     all = {
-        date = function () return os.date('%F') end,
-        time = function () return os.date('%T') end,
-        tag = '<$1>$0</$1>',
+        date  = function () return os.date('%F') end,
+        time  = function () return os.date('%T') end,
+        tag   = '<$1>$0</$1>',
+        guard = '#ifndef $1\n#define $1\n\n$0\n\n#endif // $1',
     },
     haskell = {
         fn = '${1:name} :: ${2:type}\n$1 $0',
@@ -29,9 +30,6 @@ return {
         tests  = '#[cfg(test)]\nmod tests {\n\tuse super::*;\n\n\t$0\n}',
         test   = '#[test]\nfn ${1:test-name}() {\n\t$0\n}',
     },
-    c = {
-        guard = '#ifndef $1\n#define $1\n\n$0\n\n#endif // $1',
-    },
     cpp = {
         fmt     = cpp_formatter,
         ['for'] = 'for (${1|auto,int,std::size_t|} ${2:i} = ${3:0}; $2 != $4; ++$2) {\n\t$0\n}',
@@ -39,14 +37,13 @@ return {
         arm     = 'auto operator()($1) {\n\t$0\n}',
         fn      = 'auto ${1:function-name}($2) -> ${3:return-type} {\n\t$0\n}',
         ns      = 'namespace $1 {\n\t$0\n} // namespace $1',
-        fwd     = 'std::forward<decltype($1)>($1)',
+        fwd     = 'std::forward<$1>($0)',
         mv      = 'std::move($1)',
         to      = 'std::ranges::to<${1:std::vector}>()',
         r       = 'std::ranges::',
         v       = 'std::views::',
         c       = 'std::chrono::',
         f       = 'std::filesystem::',
-        tod     = 'cpputil::todo();',
     },
     cmake = {
         ['for'] = 'foreach ($1)\n\t$0\nendforeach ()',
@@ -70,5 +67,8 @@ return {
     },
     tex = {
         block = '\\begin{$1}\n$0\n\\end{$1}',
+    },
+    text = {
+        tst = '===\n$1\n===\n$0\n---\n\n(source_file)',
     },
 }

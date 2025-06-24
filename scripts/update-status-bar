@@ -1,3 +1,0 @@
-#!/bin/sh
-
-pkill -USR1 --exact status-bar || pkill -USR1 --exact cppstatus || pkill -USR1 --exact slstatus || true

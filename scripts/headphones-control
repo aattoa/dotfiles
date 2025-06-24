@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# $1: Message
+##@ param Message
 error () { notify "headphones-control" "Error: $1"; exit 1; }
 
 [ -n "${XDG_STATE_HOME}" ] || error "XDG_STATE_HOME is undefined"
@@ -8,8 +8,8 @@ indexfile=${XDG_STATE_HOME}/dotfiles/headphones-control-index
 mkdir --parents "${XDG_STATE_HOME}/dotfiles"
 [ -f "${indexfile}" ] || echo 1 > "${indexfile}"
 
-# $1: Device address
-# stdout: "connect" | "disconnect"
+##@ param Device address
+##@ desc stdout: "connect" | "disconnect"
 connection_status () {
     if bluetoothctl devices Connected | grep --quiet --fixed-strings "$1"; then
         echo connect
@@ -18,8 +18,8 @@ connection_status () {
     fi
 }
 
-# $1: "connect" | "disconnect"
-# $2: Device address
+##@ param "connect" | "disconnect"
+##@ param Device address
 connect_or_disconnect () {
     [ -n "${DISPLAY}" ] && notification=$(notify-send --print-id "Attempting to ${1}...")
     bluetoothctl --timeout=3 -- "$1" "$2"
@@ -31,22 +31,22 @@ connect_or_disconnect () {
     fi
 }
 
-# $1: Index
+##@ param Index
 get_info () {
     bluetoothctl devices Paired | sed --quiet "${1}p"
 }
 
-# $1: Index
+##@ param Index
 get_address () {
     get_info "$1" | cut --delimiter=' ' --fields=2
 }
 
-# $1: Index
+##@ param Index
 get_name () {
     get_info "$1" | cut --delimiter=' ' --fields=3-
 }
 
-# $1: Index
+##@ param Index
 rotate_index () {
     case $1 in
         "$(bluetoothctl devices Paired | wc --lines)")
@@ -56,7 +56,7 @@ rotate_index () {
     esac
 }
 
-# $1: New index
+##@ param New index
 update_index () {
     echo "$1" > "${indexfile}"
     [ -n "${DISPLAY}" ] || return

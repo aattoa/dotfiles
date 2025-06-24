@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# shellcheck disable=2174
+mkdir --parents --mode=777 /tmp/trash || exit
+
+for file in "$@"; do
+    if [ ! -e "${file}" ]; then
+        notify "trash: File does not exit" "${file}"
+    elif mv -- "${file}" "/tmp/trash/$(date +%s)-$(basename -- "${file}")"; then
+        notify "trash: Removed file" "${file}"
+    else
+        notify "trash: Could not remove file" "${file}"
+    fi
+done

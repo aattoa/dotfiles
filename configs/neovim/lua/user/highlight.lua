@@ -1,15 +1,18 @@
+local cursorline_bg = vim.api.nvim_get_hl and vim.api.nvim_get_hl(0, { name = 'CursorLine' }).bg
+
 ---@type table<string, vim.api.keyset.highlight>
 local map = {
     Normal                      = {},
     NormalFloat                 = {},
     LspSignatureActiveParameter = { bold = true },
-    LspReferenceText            = { bold = true, bg = vim.api.nvim_get_hl(0, { name = 'CursorLine' }).bg },
-    LspReferenceWrite           = { bold = true, bg = vim.api.nvim_get_hl(0, { name = 'CursorLine' }).bg, underline = true },
-    Todo                        = { bold = true, fg = 'DarkOrange', standout = true },
+    LspReferenceText            = { bold = true, bg = cursorline_bg },
+    LspReferenceWrite           = { bold = true, bg = cursorline_bg, underline = true },
+    Todo                        = { bold = true, fg = 'DarkOrange', underline = true },
     SnippetTabStop              = { italic = true },
     Constant                    = { link = 'String' },
-    StatusLine                  = { link = 'StatusLineNC' },
-    ['@markup.link']            = { link = 'Constant' },
+    ['@lsp.mod.deduced.cpp']    = { link = '@type.builtin' },
+    ['@markup.link']            = { bold = true },
+    ['@markup.raw.block']       = {},
 }
 
 local function apply_highlights()

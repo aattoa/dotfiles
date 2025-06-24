@@ -12,8 +12,9 @@ vim.keymap.set('n', '<leader>n', cmd('set number!') .. cmd('set relativenumber!'
 -- Handle URLs in current buffer
 vim.keymap.set('n', '<leader>u', cmd([[call system('handle-urls', bufnr())]]))
 
--- Open a terminal buffer in a new tab
+-- Open terminal buffers
 vim.keymap.set('n', '<leader>t', cmd('tab terminal'))
+vim.keymap.set('n', '<leader>T', cmd('below terminal'))
 
 -- Clear current search highlight
 vim.keymap.set('n', '<esc>', cmd('nohlsearch'))
@@ -115,10 +116,6 @@ vim.keymap.set('x', 'sa', surround('assert(', ')'))
 -- Unsurround selected text
 vim.keymap.set('x', 'S', '<esc>`>l"_x`<h"_xgvohoh')
 
--- Make it easier to hold down `[[` and `]]`
-vim.keymap.set({ 'n', 'x' }, '[]', '<nop>')
-vim.keymap.set({ 'n', 'x' }, '][', '<nop>')
-
 -- Umlauts
 vim.keymap.set({ 'i', 'c' }, '<c-a>', '<c-k>a:')
 vim.keymap.set({ 'i', 'c' }, '<c-o>', '<c-k>o:')
@@ -148,3 +145,8 @@ vim.keymap.set('n', 'X', function ()
         vim.keymap.del('n', 'k')
     end
 end)
+
+if vim.fn.has('nvim-0.10') == 1 then
+    vim.keymap.set({ 'i', 's' }, '<c-h>', function () vim.snippet.jump(-1) end, { desc = 'Jump to previous snippet placeholder' })
+    vim.keymap.set({ 'i', 's' }, '<c-l>', function () vim.snippet.jump(1) end, { desc = 'Jump to next snippet placeholder' })
+end

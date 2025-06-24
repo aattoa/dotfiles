@@ -12,7 +12,7 @@ clean () {
     sed 's/\.[^.]+$//;s/[ -_]*\[[^]]*\]$//;s/[-_]/ /g;s/\// - /g'
 }
 
-# $1: Directory
+##@ param Directory
 choose_track () {
     find "$1" -type f -printf "%P\n" | clean | number | fzf | cut --delimiter=' ' --fields=1
 }

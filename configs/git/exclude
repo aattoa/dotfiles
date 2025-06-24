@@ -7,4 +7,3 @@ __pycache__
 vgcore.*
 Session.vim
 compile_commands.json
-do-run-tests

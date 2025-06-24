@@ -13,7 +13,7 @@ vim.api.nvim_create_autocmd('QuickFixCmdPost', {
 })
 
 vim.api.nvim_create_autocmd({ 'WinNew', 'VimEnter' }, {
-    command = [[call matchadd('Todo', 'TODO\|FIXME\|NOCOMMIT')]],
+    command = [[call matchadd('Todo', '\ctodo\|\cfixme\|\cnocommit')]],
     desc    = 'Define highlight matches for special text markers',
 })
 

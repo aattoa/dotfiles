@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# $1: Message
+##@ param Message
 error () { notify "handle-podcast-urls" "Error: $1"; exit 1; }
 
 urls=$(urlscan --dedupe --no-browser | grep --fixed-strings ".mp3")

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# $1: amixer command
+##@ param amixer command
 control () {
     amixer -q set Master "$1"
 }
@@ -12,4 +12,5 @@ case $1 in
     *)      notify "volume-control" "Error: Invalid argument"; exit 1;;
 esac
 
-update-status-bar
+# Refresh the status bar
+pkill -USR1 --exact status-bar

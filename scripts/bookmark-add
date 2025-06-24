@@ -1,9 +1,9 @@
 #!/bin/sh
 
-# $1: Message
+##@ param Message
 notify () { command notify "bookmark-add" "$1"; }
 
-# $1: Message
+##@ param Message
 error () { notify "Error: $1"; exit 1; }
 
 selection=$(xclip -out -rmlastnl)

@@ -71,7 +71,7 @@ nnoremap <esc> <cmd>nohlsearch<cr>
 
 " Explore with Netrw
 nnoremap <leader>e     <cmd>Explore<cr>
-nnoremap <leader>E     <cmd>Sexplore<cr>
+nnoremap <leader>E     <cmd>Vexplore<cr>
 nnoremap <leader><c-e> <cmd>Texplore<cr>
 
 " Tab controls
@@ -159,9 +159,6 @@ cnoremap <c-o> <c-k>o:
 
 " Highlighting for 'listchars' and nonprintable characters
 highlight SpecialKey ctermfg=darkgrey
-
-" Enable builtin man plugin
-runtime ftplugin/man.vim
 
 function s:ApplyHelpBufferOptions()
     nnoremap <buffer> J 3<c-e>
